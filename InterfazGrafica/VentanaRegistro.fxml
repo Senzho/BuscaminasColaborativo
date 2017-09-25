@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="180.591796875" prefWidth="441.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
+  <children>
+    <TextField layoutX="178.0" layoutY="52.0" prefWidth="231.0" />
+    <Label layoutX="27.0" layoutY="52.0" text="Nombre de usuario:">
+      <font>
+        <Font size="16.0" />
+      </font>
+    </Label>
+    <Button layoutX="280.0" layoutY="117.0" mnemonicParsing="false" text="Registrar">
+      <font>
+        <Font size="23.0" />
+      </font>
+    </Button>
+  </children>
+</AnchorPane>

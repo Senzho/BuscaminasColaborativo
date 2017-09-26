@@ -9,27 +9,27 @@
 
 <AnchorPane id="AnchorPane" prefHeight="478.0" prefWidth="453.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
   <children>
-    <Button fx:id="btnAceptar" layoutX="318.0" layoutY="396.0" mnemonicParsing="false" text="Ok">
+    <Button layoutX="318.0" layoutY="396.0" mnemonicParsing="false" text="Ok">
       <font>
         <Font size="30.0" />
       </font>
     </Button>
-    <Label fx:id="lblNombreUsuario" layoutX="109.0" layoutY="48.0" text="Usuario" textFill="#9f9f9f" wrapText="false">
+    <Label layoutX="109.0" layoutY="48.0" text="Usuario" textFill="#9f9f9f" wrapText="false">
       <font>
         <Font name="System Bold" size="33.0" />
       </font>
     </Label>
-    <Label fx:id="lblPartidasJugadas" layoutX="52.0" layoutY="138.0" text="Partidas jugadas:">
+    <Label layoutX="52.0" layoutY="143.0" text="Partidas jugadas:">
       <font>
         <Font size="20.0" fx:id="x1" />
       </font>
     </Label>
-    <Label fx:id="lblPartidasPerdidas" font="$x1" layoutX="52.0" layoutY="219.0" text="Partidas perdidas:" />
-    <Label fx:id="lblPartidasGanadas" font="$x1" layoutX="52.0" layoutY="175.0" text="Partidas ganadas:" />
-    <Label fx:id="lblTiempoPartida" font="$x1" layoutX="50.0" layoutY="289.0" text="Tiempo promedio de partida:" />
-    <Label font="$x1" layoutX="246.0" layoutY="143.0" text="Label" />
-    <Label font="$x1" layoutX="246.0" layoutY="180.0" text="Label" />
-    <Label font="$x1" layoutX="246.0" layoutY="219.0" text="Label" />
+    <Label font="$x1" layoutX="50.0" layoutY="224.0" text="Partidas perdidas:" />
+    <Label font="$x1" layoutX="52.0" layoutY="185.0" text="Partidas ganadas:" />
+    <Label font="$x1" layoutX="50.0" layoutY="289.0" text="Tiempo promedio de partida:" />
+    <Label font="$x1" layoutX="246.0" layoutY="151.0" text="Label" />
+    <Label font="$x1" layoutX="246.0" layoutY="185.0" text="Label" />
+    <Label font="$x1" layoutX="246.0" layoutY="225.0" text="Label" />
     <Label font="$x1" layoutX="350.0" layoutY="294.0" text="Label" />
   </children>
 </AnchorPane>

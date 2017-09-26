@@ -1,4 +1,3 @@
-
 package InterfazGrafica;
 
 import javafx.application.Application;
@@ -16,5 +15,6 @@ public class VentanaInicioSesion extends Application{
         Scene scene = new Scene(layout, 400, 500);
         primaryStage.setScene(scene);
         primaryStage.show();
-    }    
+    }
+    
 }

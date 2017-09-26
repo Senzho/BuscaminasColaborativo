@@ -9,21 +9,21 @@
 
 <AnchorPane id="AnchorPane" prefHeight="443.0" prefWidth="817.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="InterfazGrafica.VentanaNuevaPartidaController">
   <children>
-    <Label id="labelJugadores" text="Jugadores:" textFill="GREY" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="27.0">
+    <Label fx:id="labelJugadores" text="Jugadores:" textFill="GREY" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="27.0">
       <font>
         <Font name="System Bold" size="40.0" fx:id="x1" />
       </font>
     </Label>
-    <Label id="labelDificultad" font="$x1" text="Dificultad:" textFill="GREY" AnchorPane.leftAnchor="306.0" AnchorPane.topAnchor="27.0" />
+    <Label fx:id="labelDificultad" font="$x1" text="Dificultad:" textFill="GREY" AnchorPane.leftAnchor="306.0" AnchorPane.topAnchor="27.0" />
     <ListView prefHeight="234.0" prefWidth="247.0" AnchorPane.bottomAnchor="117.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="92.0" />
     <Pane prefHeight="134.0" prefWidth="141.0" AnchorPane.leftAnchor="306.0" AnchorPane.topAnchor="92.0">
       <children>
-        <RadioButton id="radioFacil" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" text="Facil">
+        <RadioButton fx:id="radioFacil" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" text="Facil">
           <font>
             <Font size="20.0" fx:id="x2" />
           </font>
         </RadioButton>
-        <Label id="labelFacil" layoutX="55.0" layoutY="96.0" text="10 minas">
+        <Label fx:id="labelFacil" layoutX="55.0" layoutY="96.0" text="10 minas">
           <font>
             <Font size="18.0" fx:id="x3" />
           </font>
@@ -32,21 +32,21 @@
     </Pane>
     <Pane prefHeight="134.0" prefWidth="157.0" AnchorPane.leftAnchor="454.0" AnchorPane.topAnchor="92.0">
       <children>
-        <RadioButton id="radioMedio" font="$x2" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" text="Medio" />
-        <Label id="labelMedio" font="$x3" layoutX="71.0" layoutY="96.0" text="15 minas" />
+        <RadioButton fx:id="radioMedio" font="$x2" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" text="Medio" />
+        <Label fx:id="labelMedio" font="$x3" layoutX="71.0" layoutY="96.0" text="15 minas" />
       </children>
     </Pane>
     <Pane prefHeight="134.0" prefWidth="157.0" AnchorPane.leftAnchor="625.0" AnchorPane.topAnchor="92.0">
       <children>
-        <RadioButton id="radioAvanzado" font="$x2" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" text="Avanzado" />
-        <Label id="labelAvanzado" font="$x3" layoutX="71.0" layoutY="96.0" text="30 minas" />
+        <RadioButton fx:id="radioAvanzado" font="$x2" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" text="Avanzado" />
+        <Label fx:id="labelAvanzado" font="$x3" layoutX="71.0" layoutY="96.0" text="30 minas" />
       </children>
     </Pane>
-    <Button id="botonSolicitud" mnemonicParsing="false" prefHeight="68.0" prefWidth="280.0" text="Enviar solicitud" AnchorPane.bottomAnchor="26.0" AnchorPane.rightAnchor="35.0">
+    <Button fx:id="botonSolicitud" mnemonicParsing="false" prefHeight="68.0" prefWidth="280.0" text="Enviar solicitud" AnchorPane.bottomAnchor="26.0" AnchorPane.rightAnchor="35.0">
       <font>
         <Font size="25.0" fx:id="x4" />
       </font>
     </Button>
-    <Button id="botonCancelar" font="$x4" mnemonicParsing="false" prefHeight="68.0" prefWidth="280.0" text="Cancelar" AnchorPane.bottomAnchor="26.0" AnchorPane.rightAnchor="349.0" />
+    <Button fx:id="botonCancelar" font="$x4" mnemonicParsing="false" prefHeight="68.0" prefWidth="280.0" text="Cancelar" AnchorPane.bottomAnchor="26.0" AnchorPane.rightAnchor="349.0" />
   </children>
 </AnchorPane>

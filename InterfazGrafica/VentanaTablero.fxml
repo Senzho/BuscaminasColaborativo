@@ -47,7 +47,7 @@
         <Image url="@../RecursosGraficos/reply.png" />
       </image>
     </ImageView>
-    <Label id="labelTextoMinas" font="$x1" text="Minas:" AnchorPane.bottomAnchor="23.0" AnchorPane.rightAnchor="136.0">
+    <Label fx:id="labelTextoMinas" font="$x1" text="Minas:" AnchorPane.bottomAnchor="23.0" AnchorPane.rightAnchor="136.0">
       <textFill>
         <Color blue="0.624" green="0.624" red="0.624" fx:id="x2" />
       </textFill>

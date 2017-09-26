@@ -1,6 +1,6 @@
 package buscaminascolaborativo;
 
-import InterfazGrafica.VentanaTablero;
+import InterfazGrafica.VentanaInicioSesion;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
@@ -10,7 +10,7 @@ public class BuscaminasColaborativo extends Application {
     
     @Override
     public void start(Stage primaryStage) {
-        VentanaTablero ventana = new VentanaTablero();
+        VentanaInicioSesion ventana = new VentanaInicioSesion();
         try {
             ventana.start(new Stage());
         } catch (Exception ex) {

@@ -7,18 +7,18 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane id="AnchorPane" minHeight="166.0" prefHeight="166.0" prefWidth="440.0000999999975" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
+<AnchorPane id="AnchorPane" minHeight="166.0" prefHeight="166.0" prefWidth="440.0000999999975" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="InterfazGrafica.VentanaInicioSesionController">
   <children>
-    <Button fx:id="btnIngresar" layoutX="276.0" layoutY="94.0" mnemonicParsing="false" text="Ingresar">
+    <Button fx:id="btnIngresar" mnemonicParsing="false" onMouseReleased="#btnIngresar_MouseUp" text="Ingresar" AnchorPane.bottomAnchor="31.0" AnchorPane.rightAnchor="43.0">
       <font>
         <Font size="23.0" />
       </font>
     </Button>
-    <Label fx:id="lblNombreUsuario" layoutX="39.0" layoutY="48.0" text="Nombre de usuario:">
+    <Label fx:id="lblNombreUsuario" text="Nombre de usuario:" AnchorPane.leftAnchor="39.0" AnchorPane.topAnchor="48.0">
       <font>
         <Font size="16.0" />
       </font>
     </Label>
-    <TextField layoutX="197.0" layoutY="48.0" prefWidth="200.0" />
+    <TextField prefWidth="200.0" AnchorPane.leftAnchor="197.0" AnchorPane.rightAnchor="43.0" AnchorPane.topAnchor="48.0" />
   </children>
 </AnchorPane>

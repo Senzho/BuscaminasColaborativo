@@ -7,10 +7,13 @@ package InterfazGrafica;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.stage.Stage;
 
 /**
  *
@@ -24,11 +27,18 @@ public class VentanaInicioSesionController implements Initializable {
     private ResourceBundle rb;
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        rb = ResourceBundle.getBundle("Recursos/Idioma_ES");
+        rb = ResourceBundle.getBundle("Recursos/Idioma_ESP");
         internacionalizar();
     }
     public void internacionalizar(){
         lblNombreUsuario.setText(rb.getString("lblNombreUsuario"));
         btnIngresar.setText(rb.getString("btnIngresar"));
+    }
+    public void btnIngresar_MouseUp(){
+        try {
+            new VentanaTablero().start(new Stage());
+        } catch (Exception ex) {
+            Logger.getLogger(VentanaTableroController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

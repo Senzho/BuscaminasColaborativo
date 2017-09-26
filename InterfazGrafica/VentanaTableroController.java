@@ -6,7 +6,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
@@ -14,7 +13,6 @@ public class VentanaTableroController implements Initializable {
     @FXML
     private ImageView botonConfiguracion;
     private ImageView botonPlayPause;
-    private Label labelTiempo, labelTextoMinas;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {

@@ -37,8 +37,7 @@ public class VentanaNuevaPartidaController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        this.recursos = ResourceBundle.getBundle("Recursos/Idioma_ING");
-        this.internacionalizar();
+     
     }    
     
     public void setStage(Stage stage){
@@ -49,7 +48,8 @@ public class VentanaNuevaPartidaController implements Initializable {
         this.tableroController.setNuevaPartidaController(this);
     }
     
-    public void internacionalizar(){
+    public void internacionalizar(ResourceBundle resource){
+        this.recursos = resource;
         this.labelJugadores.setText(this.recursos.getString("labelJugadores"));
         this.labelDificultad.setText(this.recursos.getString("labelDificultad"));
         this.labelFacil.setText(this.recursos.getString("labelFacil"));

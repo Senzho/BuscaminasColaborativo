@@ -19,7 +19,8 @@ public class VentanaInicioSesionController implements Initializable {
     
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        rb = ResourceBundle.getBundle("Recursos/Idioma_ING");
+        //aqui se toma el valor del archivo (dice victor que en la siguiente linea)
+        rb = ResourceBundle.getBundle("Recursos/Idioma_ESP");
         internacionalizar();
     }
     public void setStage(Stage stage){
@@ -31,7 +32,7 @@ public class VentanaInicioSesionController implements Initializable {
         btnIngresar.setText(rb.getString("btnIngresar"));
     }
     public void btnIngresar_MouseUp(){
-        new VentanaTablero();
+        new VentanaTablero(this.rb);
         this.stage.close();
     }
 }

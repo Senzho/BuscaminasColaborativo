@@ -29,13 +29,13 @@ public class VentanaEstadisticaController implements Initializable{
     private Stage stage;
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        this.rb = ResourceBundle.getBundle("Recursos/Idioma_ING");
-        internacionalizar();
+      
     }
     public void setStage(Stage stage){
         this.stage = stage;
     }
-    public void internacionalizar(){
+    public void internacionalizar(ResourceBundle resource){
+        this.rb = resource;
         lblNombreUsuario.setText(rb.getString("lblNombreUsuario"));
         lblPartidasJugadas.setText(rb.getString("lblPartidasJugadas"));
         lblPartidasGanadas.setText(rb.getString("lblPartidasGanadas"));

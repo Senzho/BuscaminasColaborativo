@@ -16,27 +16,29 @@ public class VentanaTableroController implements Initializable {
     private Label labelTiempo;
     @FXML
     private Label labelTextoMinas;
-    
-    private ResourceBundle recursos;
+    private ResourceBundle resource;
     private VentanaNuevaPartidaController nuevaPartidaContrller;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        this.recursos = ResourceBundle.getBundle("Recursos/Idioma_ING");
-        this.internacionalizar();
+        
     }
     
     public void setNuevaPartidaController(VentanaNuevaPartidaController controller){
         this.nuevaPartidaContrller = controller;
     }
-    public void internacionalizar(){
-        this.labelTextoMinas.setText(this.recursos.getString("labelTextoMinas"));
+    public void internacionalizar(ResourceBundle rb){
+        this.resource = rb;
+        this.labelTextoMinas.setText(rb.getString("labelTextoMinas"));
+        if(nuevaPartidaContrller != null){
+            nuevaPartidaContrller.internacionalizar(resource);
+        }
     }
     
     public void botonConfiguracion_MouseUp(){
-        new VentanaConfiguracion(this);
+        new VentanaConfiguracion(this, resource);
     }
     public void botonPlayPause_MouseUp(){
-        new VentanaNuevaPartida(this);
+        new VentanaNuevaPartida(this, resource);
     }
 }

@@ -1,5 +1,6 @@
 package InterfazGrafica;
 
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
@@ -10,7 +11,9 @@ import javafx.stage.Stage;
 
 public class VentanaEstadistica extends Application{
     private VentanaConfiguracionController configuracionController;
-    public VentanaEstadistica(VentanaConfiguracionController controller){
+    private ResourceBundle resource;
+    public VentanaEstadistica(VentanaConfiguracionController controller, ResourceBundle resource){
+        this.resource = resource;
         this.configuracionController = controller;
         try {
             this.start(new Stage());
@@ -25,6 +28,7 @@ public class VentanaEstadistica extends Application{
         AnchorPane layout = loader.load();
         VentanaEstadisticaController controller = loader.getController();
         controller.setStage(primaryStage);
+        controller.internacionalizar(this.resource);
         this.configuracionController.setControladorEstadisticas(controller);
         primaryStage.setTitle("Estadisticas");
         Scene scene = new Scene(layout, 400, 500);

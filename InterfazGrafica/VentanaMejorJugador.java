@@ -1,5 +1,6 @@
 package InterfazGrafica;
 
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
@@ -10,8 +11,9 @@ import javafx.stage.Stage;
 
 public class VentanaMejorJugador extends Application{
     private VentanaConfiguracionController configuracionController;
-    
-    public VentanaMejorJugador(VentanaConfiguracionController controller){
+    private ResourceBundle resource;
+    public VentanaMejorJugador(VentanaConfiguracionController controller, ResourceBundle resource){
+        this.resource = resource;
         try {
             configuracionController = controller;
             this.start(new Stage());
@@ -26,6 +28,7 @@ public class VentanaMejorJugador extends Application{
         AnchorPane layout = loader.load();
         VentanaMejorJugadorController jugadorController = loader.getController();
         jugadorController.setStage(primaryStage);
+        jugadorController.internacionalizar(resource);
         configuracionController.setControladorMejorJugador(jugadorController);
         primaryStage.setTitle("Mejores jugadores");
         Scene scene = new Scene(layout, 400, 500);

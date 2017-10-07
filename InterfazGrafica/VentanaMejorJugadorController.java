@@ -27,10 +27,10 @@ public class VentanaMejorJugadorController implements Initializable{
     
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        rb = ResourceBundle.getBundle("Recursos/Idioma_ING");
-        internacionalizar();
+     
     }
-    public void internacionalizar(){
+    public void internacionalizar(ResourceBundle resource){
+        this.rb = resource;
         lblMejoresJugadores.setText(rb.getString("lblMejoresJugadores"));
         btnAceptar.setText(rb.getString("btnAceptar"));
     }

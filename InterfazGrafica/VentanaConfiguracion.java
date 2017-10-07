@@ -1,5 +1,6 @@
 package InterfazGrafica;
 
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
@@ -10,8 +11,9 @@ import javafx.stage.Stage;
 
 public class VentanaConfiguracion extends Application{
     private VentanaTableroController controllerTablero;
-    
-    public VentanaConfiguracion(VentanaTableroController controller){
+    private ResourceBundle resource;
+    public VentanaConfiguracion(VentanaTableroController controller, ResourceBundle resource){
+        this.resource = resource;
         this.controllerTablero = controller;
         try {
             this.start(new Stage());
@@ -26,6 +28,7 @@ public class VentanaConfiguracion extends Application{
         AnchorPane layout = loader.load();
         VentanaConfiguracionController controller = loader.getController();
         controller.setControladorTablero(this.controllerTablero);
+        controller.internacionalizar(resource);
         controller.setStage(primaryStage);
         primaryStage.setTitle("Configuración");
         Scene scene = new Scene(layout, 400, 500);

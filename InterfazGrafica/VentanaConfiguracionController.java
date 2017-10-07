@@ -33,8 +33,7 @@ public class VentanaConfiguracionController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        this.rb = ResourceBundle.getBundle("Recursos/Idioma_ING");
-        this.internacionalizar();
+     
     }
     
     public void setStage(Stage stage){
@@ -50,7 +49,8 @@ public class VentanaConfiguracionController implements Initializable {
         this.estadisticaController = controller;
     }
     
-    public void internacionalizar(){
+    public void internacionalizar(ResourceBundle resource){
+        this.rb = resource; 
         labelIdioma.setText(rb.getString("labelIdioma"));
         labelEstadisticas.setText(rb.getString("labelEstadisticas"));
         labelMejores.setText(rb.getString("labelMejores"));
@@ -59,12 +59,34 @@ public class VentanaConfiguracionController implements Initializable {
         botonOk.setText(rb.getString("botonOk"));
     }
     public void labelEstadisticas_MouseUp(){
-            new VentanaEstadistica(this);
+            new VentanaEstadistica(this, this.rb);
     }
     public void labelMejores_MouseUp(){
-            new VentanaMejorJugador(this);
+            new VentanaMejorJugador(this, this.rb);
     }
     public void botonOk_Click(){
         this.stage.close();
+    }
+    public void radioEspañol_click(){
+        this.rb = ResourceBundle.getBundle("Recursos/Idioma_ESP");
+        this.internacionalizar(rb);
+        this.controlerTablero.internacionalizar(rb);
+        if(this.estadisticaController!=null){
+            this.estadisticaController.internacionalizar(rb);
+        }
+        if(this.mejorJugadorController!=null){
+            this.mejorJugadorController.internacionalizar(rb);
+        }
+    }
+    public void radioIngles_click(){
+        this.rb = ResourceBundle.getBundle("Recursos/Idioma_ING");
+        this.internacionalizar(rb);
+        this.controlerTablero.internacionalizar(rb);
+        if(this.estadisticaController!=null){
+            this.estadisticaController.internacionalizar(rb);
+        }
+        if(this.mejorJugadorController!=null){
+            this.mejorJugadorController.internacionalizar(rb);
+        }
     }
 }

@@ -1,5 +1,6 @@
 package InterfazGrafica;
 
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
@@ -9,7 +10,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 public class VentanaTablero extends Application{
-    public VentanaTablero(){
+    private ResourceBundle resource;
+    public VentanaTablero(ResourceBundle rb){
+        this.resource = rb;
         try {
             this.start(new Stage());
         } catch (Exception ex) {
@@ -19,7 +22,10 @@ public class VentanaTablero extends Application{
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        AnchorPane layout = FXMLLoader.load(this.getClass().getResource("VentanaTablero.fxml"));
+        FXMLLoader loader = new FXMLLoader(this.getClass().getResource("VentanaTablero.fxml"));
+        AnchorPane layout = loader.load();
+        VentanaTableroController tableroController = loader.getController();
+        tableroController.internacionalizar(resource);
         primaryStage.setTitle("Buscaminas");
         Scene scene = new Scene(layout, 800, 500);
         primaryStage.setScene(scene);

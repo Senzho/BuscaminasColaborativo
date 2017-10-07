@@ -26,11 +26,28 @@ public class VentanaConfiguracionController implements Initializable {
     private Button botonOk;
     
     private ResourceBundle rb;
+    private Stage stage;
+    private VentanaTableroController controlerTablero;
+    private VentanaMejorJugadorController mejorJugadorController;
+    private VentanaEstadisticaController estadisticaController;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        this.rb = ResourceBundle.getBundle("Recursos/Idioma_ESP");
+        this.rb = ResourceBundle.getBundle("Recursos/Idioma_ING");
         this.internacionalizar();
+    }
+    
+    public void setStage(Stage stage){
+        this.stage = stage;
+    }
+    public void setControladorTablero(VentanaTableroController controller){
+        this.controlerTablero = controller;
+    }
+    public void setControladorMejorJugador(VentanaMejorJugadorController controller){
+        this.mejorJugadorController = controller;
+    }
+    public void setControladorEstadisticas(VentanaEstadisticaController controller){
+        this.estadisticaController = controller;
     }
     
     public void internacionalizar(){
@@ -42,17 +59,12 @@ public class VentanaConfiguracionController implements Initializable {
         botonOk.setText(rb.getString("botonOk"));
     }
     public void labelEstadisticas_MouseUp(){
-        try {
-            new VentanaEstadistica().start(new Stage());
-        } catch (Exception ex) {
-            Logger.getLogger(VentanaTableroController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+            new VentanaEstadistica(this);
     }
     public void labelMejores_MouseUp(){
-        try {
-            new VentanaMejorJugador().start(new Stage());
-        } catch (Exception ex) {
-            Logger.getLogger(VentanaTableroController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+            new VentanaMejorJugador(this);
+    }
+    public void botonOk_Click(){
+        this.stage.close();
     }
 }

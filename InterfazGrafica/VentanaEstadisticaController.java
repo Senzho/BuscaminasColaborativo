@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.stage.Stage;
 
 /**
  *
@@ -25,10 +26,14 @@ public class VentanaEstadisticaController implements Initializable{
     @FXML
     private Button btnAceptar;
     private ResourceBundle rb;
+    private Stage stage;
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        this.rb = ResourceBundle.getBundle("Recursos/Idioma_ESP");
+        this.rb = ResourceBundle.getBundle("Recursos/Idioma_ING");
         internacionalizar();
+    }
+    public void setStage(Stage stage){
+        this.stage = stage;
     }
     public void internacionalizar(){
         lblNombreUsuario.setText(rb.getString("lblNombreUsuario"));
@@ -37,5 +42,8 @@ public class VentanaEstadisticaController implements Initializable{
         lblPartidasPerdidas.setText(rb.getString("lblPartidasPerdidas"));
         lblTiempoPartida.setText(rb.getString("lblTiempoPartida"));
         btnAceptar.setText(rb.getString("btnAceptar"));
+    }
+    public void btnAceptar_Click(){
+        this.stage.close();
     }
 }

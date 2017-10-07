@@ -7,6 +7,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
+import javafx.stage.Stage;
 
 public class VentanaNuevaPartidaController implements Initializable {
     @FXML
@@ -31,12 +32,22 @@ public class VentanaNuevaPartidaController implements Initializable {
     private Button botonSolicitud;
     
     private ResourceBundle recursos;
+    private Stage stage;
+    private VentanaTableroController tableroController;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         this.recursos = ResourceBundle.getBundle("Recursos/Idioma_ING");
         this.internacionalizar();
     }    
+    
+    public void setStage(Stage stage){
+        this.stage = stage;
+    }
+    public void setTableroController(VentanaTableroController controller){
+        this.tableroController = controller;
+        this.tableroController.setNuevaPartidaController(this);
+    }
     
     public void internacionalizar(){
         this.labelJugadores.setText(this.recursos.getString("labelJugadores"));
@@ -49,5 +60,9 @@ public class VentanaNuevaPartidaController implements Initializable {
         this.radioAvanzado.setText(this.recursos.getString("radioAvanzado"));
         this.botonCancelar.setText(this.recursos.getString("botonCancelar"));
         this.botonSolicitud.setText(this.recursos.getString("botonSolicitud"));
+    }
+    
+    public void botonCanelar_Click(){
+        this.stage.close();
     }
 }

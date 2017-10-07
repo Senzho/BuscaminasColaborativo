@@ -47,6 +47,6 @@
         <Font size="25.0" fx:id="x4" />
       </font>
     </Button>
-    <Button fx:id="botonCancelar" font="$x4" mnemonicParsing="false" prefHeight="68.0" prefWidth="280.0" text="Cancelar" AnchorPane.bottomAnchor="26.0" AnchorPane.rightAnchor="349.0" />
+    <Button fx:id="botonCancelar" font="$x4" mnemonicParsing="false" onMouseClicked="#botonCanelar_Click" prefHeight="68.0" prefWidth="280.0" text="Cancelar" AnchorPane.bottomAnchor="26.0" AnchorPane.rightAnchor="349.0" />
   </children>
 </AnchorPane>

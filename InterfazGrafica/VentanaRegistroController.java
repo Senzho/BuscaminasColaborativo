@@ -24,7 +24,7 @@ public class VentanaRegistroController implements Initializable{
     private ResourceBundle rb;
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        rb = ResourceBundle.getBundle("Recursos/Idioma_ESP");
+        rb = ResourceBundle.getBundle("Recursos/Idioma_ING");
         internacionalizar();
     }
     public void internacionalizar(){

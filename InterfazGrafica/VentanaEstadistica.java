@@ -1,25 +1,31 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package InterfazGrafica;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
-/**
- *
- * @author Compaq-presario-cq43
- */
 public class VentanaEstadistica extends Application{
-
+    private VentanaConfiguracionController configuracionController;
+    public VentanaEstadistica(VentanaConfiguracionController controller){
+        this.configuracionController = controller;
+        try {
+            this.start(new Stage());
+        } catch (Exception ex) {
+            Logger.getLogger(VentanaEstadistica.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     @Override
     public void start(Stage primaryStage) throws Exception {
-        AnchorPane layout = FXMLLoader.load(this.getClass().getResource("VentanaEstadistica.fxml"));
+        FXMLLoader loader = new FXMLLoader(this.getClass().getResource("VentanaEstadistica.fxml"));
+        AnchorPane layout = loader.load();
+        VentanaEstadisticaController controller = loader.getController();
+        controller.setStage(primaryStage);
+        this.configuracionController.setControladorEstadisticas(controller);
         primaryStage.setTitle("Estadisticas");
         Scene scene = new Scene(layout, 400, 500);
         primaryStage.setScene(scene);

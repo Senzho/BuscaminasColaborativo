@@ -11,7 +11,10 @@ public class VentanaInicioSesion extends Application{
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        AnchorPane layout = FXMLLoader.load(this.getClass().getResource("VentanaInicioSesion.fxml"));
+        FXMLLoader loader = new FXMLLoader(this.getClass().getResource("VentanaInicioSesion.fxml"));
+        AnchorPane layout = loader.load();
+        VentanaInicioSesionController controller = loader.getController();
+        controller.setStage(primaryStage);
         primaryStage.setTitle("Iniciar sesión");
         Scene scene = new Scene(layout, 400, 200);
         primaryStage.setScene(scene);

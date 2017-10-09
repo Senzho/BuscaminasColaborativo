@@ -42,6 +42,7 @@ public class VentanaEstadisticaController implements Initializable{
         lblPartidasPerdidas.setText(rb.getString("lblPartidasPerdidas"));
         lblTiempoPartida.setText(rb.getString("lblTiempoPartida"));
         btnAceptar.setText(rb.getString("btnAceptar"));
+        this.stage.setTitle(rb.getString("nombreVentanaEstadistica"));
     }
     public void btnAceptar_Click(){
         this.stage.close();

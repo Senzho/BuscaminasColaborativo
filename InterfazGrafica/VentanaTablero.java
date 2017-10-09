@@ -25,8 +25,8 @@ public class VentanaTablero extends Application{
         FXMLLoader loader = new FXMLLoader(this.getClass().getResource("VentanaTablero.fxml"));
         AnchorPane layout = loader.load();
         VentanaTableroController tableroController = loader.getController();
+        tableroController.setStage(primaryStage);
         tableroController.internacionalizar(resource);
-        primaryStage.setTitle("Buscaminas");
         Scene scene = new Scene(layout, 800, 500);
         primaryStage.setScene(scene);
         primaryStage.show();

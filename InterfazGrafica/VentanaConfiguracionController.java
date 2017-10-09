@@ -2,8 +2,6 @@ package InterfazGrafica;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -57,12 +55,7 @@ public class VentanaConfiguracionController implements Initializable {
         radioEspañol.setText(rb.getString("radioEspañol"));
         radioIngles.setText(rb.getString("radioIngles"));
         botonOk.setText(rb.getString("botonOk"));
-    }
-    public void labelEstadisticas_MouseUp(){
-            new VentanaEstadistica(this, this.rb);
-    }
-    public void labelMejores_MouseUp(){
-            new VentanaMejorJugador(this, this.rb);
+        this.stage.setTitle(rb.getString("nombreVentanaConfiguracion"));
     }
     public void botonOk_Click(){
         this.stage.close();
@@ -88,5 +81,34 @@ public class VentanaConfiguracionController implements Initializable {
         if(this.mejorJugadorController!=null){
             this.mejorJugadorController.internacionalizar(rb);
         }
+    }
+    
+    //Eventos
+    
+    public void labelEstadisticas_MouseEnter(){
+        this.labelEstadisticas.setStyle("-fx-text-fill: #0066ff");
+    }
+    public void labelEstadisticas_MouseDown(){
+        this.labelEstadisticas.setStyle("-fx-text-fill: #58ACFA");
+    }
+    public void labelEstadisticas_MouseUp(){
+        this.labelEstadisticas.setStyle("-fx-text-fill: #0066ff");
+        new VentanaEstadistica(this, this.rb);
+    }
+    public void labelEstadisticas_MouseLeave(){
+        this.labelEstadisticas.setStyle("-fx-text-fill: #808080");
+    }
+    public void labelMejores_MouseEnter(){
+        this.labelMejores.setStyle("-fx-text-fill: #0066ff");
+    }
+    public void labelMejores_MouseDown(){
+        this.labelMejores.setStyle("-fx-text-fill: #58ACFA");
+    }
+    public void labelMejores_MouseUp(){
+        this.labelMejores.setStyle("-fx-text-fill: #0066ff");
+        new VentanaMejorJugador(this, this.rb);
+    }
+    public void labelMejores_MouseLeave(){
+        this.labelMejores.setStyle("-fx-text-fill: #808080");
     }
 }

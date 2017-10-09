@@ -30,7 +30,6 @@ public class VentanaMejorJugador extends Application{
         jugadorController.setStage(primaryStage);
         jugadorController.internacionalizar(resource);
         configuracionController.setControladorMejorJugador(jugadorController);
-        primaryStage.setTitle("Mejores jugadores");
         Scene scene = new Scene(layout, 400, 500);
         primaryStage.setScene(scene);
         primaryStage.show();

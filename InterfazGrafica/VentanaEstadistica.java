@@ -30,7 +30,6 @@ public class VentanaEstadistica extends Application{
         controller.setStage(primaryStage);
         controller.internacionalizar(this.resource);
         this.configuracionController.setControladorEstadisticas(controller);
-        primaryStage.setTitle("Estadisticas");
         Scene scene = new Scene(layout, 400, 500);
         primaryStage.setScene(scene);
         primaryStage.show();

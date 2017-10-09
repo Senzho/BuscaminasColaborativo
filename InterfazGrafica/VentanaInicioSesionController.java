@@ -13,26 +13,32 @@ public class VentanaInicioSesionController implements Initializable {
     private Label lblNombreUsuario;
     @FXML
     private Button btnIngresar;
+    @FXML
+    private Button btnRegistrar;
     
     private ResourceBundle rb;
     private Stage stage;
     
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        //aqui se toma el valor del archivo (dice victor que en la siguiente linea)
-        rb = ResourceBundle.getBundle("Recursos/Idioma_ESP");
-        internacionalizar();
+        
     }
     public void setStage(Stage stage){
         this.stage = stage;
     }
     
-    public void internacionalizar(){
+    public void internacionalizar(ResourceBundle resources){
+        this.rb = resources;
         lblNombreUsuario.setText(rb.getString("lblNombreUsuario"));
         btnIngresar.setText(rb.getString("btnIngresar"));
+        this.btnRegistrar.setText(rb.getString("btnRegistrar"));
+        this.stage.setTitle(rb.getString("nombreVentanaInicio"));
     }
     public void btnIngresar_MouseUp(){
         new VentanaTablero(this.rb);
         this.stage.close();
+    }
+    public void btnRegistrar_Click(){
+        
     }
 }

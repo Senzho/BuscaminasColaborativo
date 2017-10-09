@@ -60,6 +60,7 @@ public class VentanaNuevaPartidaController implements Initializable {
         this.radioAvanzado.setText(this.recursos.getString("radioAvanzado"));
         this.botonCancelar.setText(this.recursos.getString("botonCancelar"));
         this.botonSolicitud.setText(this.recursos.getString("botonSolicitud"));
+        this.stage.setTitle(this.recursos.getString("nombreVentanaNueva"));
     }
     
     public void botonCanelar_Click(){

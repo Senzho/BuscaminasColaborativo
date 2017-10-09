@@ -42,11 +42,11 @@
         <Label fx:id="labelAvanzado" font="$x3" layoutX="71.0" layoutY="96.0" text="30 minas" />
       </children>
     </Pane>
-    <Button fx:id="botonSolicitud" mnemonicParsing="false" prefHeight="68.0" prefWidth="280.0" text="Enviar solicitud" AnchorPane.bottomAnchor="26.0" AnchorPane.rightAnchor="35.0">
+    <Button fx:id="botonSolicitud" mnemonicParsing="false" prefHeight="68.0" prefWidth="280.0" text="Enviar solicitud" AnchorPane.bottomAnchor="26.0" AnchorPane.rightAnchor="28.0">
       <font>
         <Font size="25.0" fx:id="x4" />
       </font>
     </Button>
-    <Button fx:id="botonCancelar" font="$x4" mnemonicParsing="false" onMouseClicked="#botonCanelar_Click" prefHeight="68.0" prefWidth="280.0" text="Cancelar" AnchorPane.bottomAnchor="26.0" AnchorPane.rightAnchor="349.0" />
+    <Button fx:id="botonCancelar" font="$x4" mnemonicParsing="false" onMouseClicked="#botonCanelar_Click" prefHeight="68.0" prefWidth="280.0" text="Cancelar" AnchorPane.bottomAnchor="26.0" AnchorPane.rightAnchor="342.0" />
   </children>
 </AnchorPane>

@@ -30,8 +30,7 @@ public class VentanaNuevaPartida extends Application{
         controler.setStage(primaryStage);
         tableroController.setNuevaPartidaController(controler);
         controler.internacionalizar(resource);
-        primaryStage.setTitle("Nueva partida");
-        Scene scene = new Scene(layout, 900, 500);
+        Scene scene = new Scene(layout, 860, 460);
         primaryStage.setScene(scene);
         primaryStage.show();
     }

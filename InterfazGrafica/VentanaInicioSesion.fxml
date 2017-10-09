@@ -7,18 +7,19 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane id="AnchorPane" minHeight="166.0" prefHeight="166.0" prefWidth="440.0000999999975" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="InterfazGrafica.VentanaInicioSesionController">
+<AnchorPane id="AnchorPane" minHeight="124.0" prefHeight="124.0" prefWidth="351.0000999999975" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="InterfazGrafica.VentanaInicioSesionController">
   <children>
-    <Button fx:id="btnIngresar" mnemonicParsing="false" onMouseReleased="#btnIngresar_MouseUp" text="Ingresar" AnchorPane.bottomAnchor="31.0" AnchorPane.rightAnchor="43.0">
+    <Button fx:id="btnIngresar" mnemonicParsing="false" onMouseReleased="#btnIngresar_MouseUp" text="Ingresar" AnchorPane.bottomAnchor="21.0" AnchorPane.rightAnchor="24.0">
       <font>
-        <Font size="23.0" />
+        <Font size="23.0" fx:id="x1" />
       </font>
     </Button>
-    <Label fx:id="lblNombreUsuario" text="Nombre de usuario:" AnchorPane.leftAnchor="39.0" AnchorPane.topAnchor="48.0">
+    <Label fx:id="lblNombreUsuario" text="Nombre de usuario:" AnchorPane.leftAnchor="17.0" AnchorPane.topAnchor="17.0">
       <font>
         <Font size="16.0" />
       </font>
     </Label>
-    <TextField prefWidth="200.0" AnchorPane.leftAnchor="197.0" AnchorPane.rightAnchor="43.0" AnchorPane.topAnchor="48.0" />
+    <TextField prefWidth="151.00009999999747" AnchorPane.leftAnchor="175.5" AnchorPane.rightAnchor="24.5" AnchorPane.topAnchor="17.0" />
+    <Button id="" fx:id="btnRegistrar" font="$x1" mnemonicParsing="false" onMouseClicked="#btnRegistrar_Click" text="Registrarse" AnchorPane.bottomAnchor="21.0" AnchorPane.rightAnchor="153.0" />
   </children>
 </AnchorPane>

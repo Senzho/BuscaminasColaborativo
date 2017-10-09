@@ -14,7 +14,7 @@
         <Font size="28.0" />
       </font>
     </Button>
-    <Label fx:id="lblMejoresJugadores" text="Mejores jugadores" textFill="#9f9f9f" AnchorPane.leftAnchor="61.0" AnchorPane.topAnchor="35.0">
+    <Label fx:id="lblMejoresJugadores" alignment="CENTER" prefWidth="355.0000084472631" text="Mejores jugadores" textFill="#9f9f9f" AnchorPane.leftAnchor="44.0" AnchorPane.rightAnchor="34.0" AnchorPane.topAnchor="35.0">
       <font>
         <Font name="System Bold" size="32.0" />
       </font>

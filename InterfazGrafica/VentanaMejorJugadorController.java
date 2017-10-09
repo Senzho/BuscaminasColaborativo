@@ -33,6 +33,7 @@ public class VentanaMejorJugadorController implements Initializable{
         this.rb = resource;
         lblMejoresJugadores.setText(rb.getString("lblMejoresJugadores"));
         btnAceptar.setText(rb.getString("btnAceptar"));
+        this.stage.setTitle(rb.getString("nombreVentanaMejor"));
     }
     public void setStage(Stage stage){
         this.stage = stage;

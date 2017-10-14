@@ -1,5 +1,7 @@
 package InterfazGrafica;
 
+import LogicaNegocio.Solicitud;
+import LogicaNegocio.TipoDificultad;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
@@ -65,5 +67,25 @@ public class VentanaNuevaPartidaController implements Initializable {
     
     public void botonCanelar_Click(){
         this.stage.close();
+    }
+    public void botonSolicitud_Click(){
+        //Id's correspondientes a los identificadores de los jugadores de la partida (no implementado)
+        int idSolicitante = 1;
+        int idCompañero = 2;
+        Solicitud solicitud = null;
+        if (this.radioFacil.isSelected()){
+            solicitud = new Solicitud(idSolicitante, idCompañero, TipoDificultad.facil);
+        }else if(this.radioMedio.isSelected()){
+            solicitud = new Solicitud(idSolicitante, idCompañero, TipoDificultad.medio);
+        }else if(this.radioAvanzado.isSelected()){
+            solicitud = new Solicitud(idSolicitante, idCompañero, TipoDificultad.avanzado);
+        }
+        if (solicitud != null){
+            this.tableroController.iniciarPartida(solicitud);
+            this.stage.close();
+        }else{
+            //Enviar mensaje de error
+            System.out.println("No has seleccionado la dificultad");
+        }
     }
 }

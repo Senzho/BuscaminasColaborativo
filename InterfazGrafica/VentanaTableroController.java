@@ -1,5 +1,6 @@
 package InterfazGrafica;
 
+import LogicaNegocio.Solicitud;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
@@ -24,6 +25,8 @@ public class VentanaTableroController implements Initializable {
     private Label labelTiempo;
     @FXML
     private Label labelTextoMinas;
+    @FXML
+    private Label labelNumeroMinas;
     @FXML
     private Label resultadoJuego;
     @FXML
@@ -78,6 +81,14 @@ public class VentanaTableroController implements Initializable {
         if(nuevaPartidaContrller != null){
             nuevaPartidaContrller.internacionalizar(resource);
         }
+    }
+    public void iniciarPartida(Solicitud solicitud){
+        System.out.println("Iniciada!");
+        System.out.println("Dificultad: " + solicitud.getTipoDificultad().name());
+        System.out.println("Número de filas: " + solicitud.getNumeroFilas());
+        System.out.println("Número de columnas: " + solicitud.getNumeroColumnas());
+        System.out.println("Número de minas: " + solicitud.getNumeroMinas());
+        this.labelNumeroMinas.setText("" + solicitud.getNumeroMinas());
     }
     
     public void botonTerminar_MouseEnter(){

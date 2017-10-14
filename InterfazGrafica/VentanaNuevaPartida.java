@@ -28,6 +28,7 @@ public class VentanaNuevaPartida extends Application{
         AnchorPane layout = loader.load();
         VentanaNuevaPartidaController controler = loader.getController();
         controler.setStage(primaryStage);
+        controler.setTableroController(this.tableroController);
         tableroController.setNuevaPartidaController(controler);
         controler.internacionalizar(resource);
         Scene scene = new Scene(layout, 860, 460);

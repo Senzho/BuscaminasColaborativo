@@ -17,7 +17,7 @@
         <Image url="@../RecursosGraficos/gear.png" />
       </image>
     </ImageView>
-    <GridPane fx:id="gridJuego" prefHeight="369.609375" prefWidth="678.0" AnchorPane.bottomAnchor="102.0" AnchorPane.leftAnchor="27.0" AnchorPane.rightAnchor="26.0" AnchorPane.topAnchor="27.0">
+    <GridPane fx:id="gridJuego" hgap="1.0" prefHeight="369.609375" prefWidth="678.0" vgap="1.0" AnchorPane.bottomAnchor="102.0" AnchorPane.leftAnchor="27.0" AnchorPane.rightAnchor="26.0" AnchorPane.topAnchor="26.61">
       <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
       </columnConstraints>
@@ -46,12 +46,12 @@
       </image>
     </ImageView>
     <Label fx:id="labelTextoMinas" font="$x1" text="Minas:" textFill="BLACK" AnchorPane.bottomAnchor="33.0" AnchorPane.rightAnchor="136.0" />
-    <Label id="labelMinas" alignment="CENTER" prefWidth="98.0" text="0" textAlignment="CENTER" textFill="#ffb800" AnchorPane.bottomAnchor="26.0" AnchorPane.rightAnchor="26.0">
+    <Label id="labelMinas" fx:id="labelNumeroMinas" alignment="CENTER" prefWidth="98.0" text="0" textAlignment="CENTER" textFill="#ffb800" AnchorPane.bottomAnchor="26.0" AnchorPane.rightAnchor="26.0">
       <font>
         <Font name="System Bold" size="40.0" />
       </font>
     </Label>
-    <Label id="gameOver" fx:id="resultadoJuego" alignment="CENTER" prefHeight="100.0" prefWidth="676.0" text="Game Over" textFill="RED" visible="true" AnchorPane.bottomAnchor="298.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="41.0">
+    <Label id="gameOver" fx:id="resultadoJuego" alignment="CENTER" prefHeight="100.0" prefWidth="676.0" text="Game Over" textFill="RED" visible="false" AnchorPane.bottomAnchor="298.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="41.0">
       <effect>
         <Glow level="0.6" />
       </effect>
@@ -59,7 +59,7 @@
         <Font name="Segoe UI Bold" size="120.0" />
       </font>
     </Label>
-    <Label id="gameOver" fx:id="preguntaJuego" alignment="CENTER" prefHeight="100.0" prefWidth="676.0" text="Retry" textFill="#0c9900" visible="true" AnchorPane.bottomAnchor="202.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="-1.0" AnchorPane.topAnchor="196.61">
+    <Label id="gameOver" fx:id="preguntaJuego" alignment="CENTER" prefHeight="100.0" prefWidth="676.0" text="Retry" textFill="#0c9900" visible="false" AnchorPane.bottomAnchor="202.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="-1.0" AnchorPane.topAnchor="196.61">
       <effect>
         <DropShadow color="#00cc21" height="77.44444444444443" radius="38.222222222222214" width="77.44444444444443" />
       </effect>
@@ -67,7 +67,7 @@
         <Font name="Segoe UI Bold" size="70.0" />
       </font>
     </Label>
-    <Label id="gameOver" fx:id="respuestaSi" alignment="CENTER" minHeight="53.0" onMouseEntered="#respuestaSi_MouseEnter" onMouseExited="#respuestaSi_MouseLeave" onMousePressed="#respuestaSi_MouseDown" onMouseReleased="#respuestaSi_MouseUp" prefHeight="70.0" prefWidth="87.0" text="Yes" visible="true" AnchorPane.bottomAnchor="131.61" AnchorPane.leftAnchor="238.0" AnchorPane.topAnchor="297.0">
+    <Label id="gameOver" fx:id="respuestaSi" alignment="CENTER" minHeight="53.0" onMouseEntered="#respuestaSi_MouseEnter" onMouseExited="#respuestaSi_MouseLeave" onMousePressed="#respuestaSi_MouseDown" onMouseReleased="#respuestaSi_MouseUp" prefHeight="70.0" prefWidth="87.0" text="Yes" visible="false" AnchorPane.bottomAnchor="131.61" AnchorPane.leftAnchor="238.0" AnchorPane.topAnchor="297.0">
       <effect>
         <Glow level="0.6" />
       </effect>
@@ -78,7 +78,7 @@
         <Color blue="0.000" green="0.400" red="0.031" fx:id="x5" />
       </textFill>
     </Label>
-    <Label id="gameOver" fx:id="respuestaNo" alignment="CENTER" font="$x3" onMouseEntered="#respuestaNo_MouseEnter" onMouseExited="#respuestaNo_MouseLeave" onMousePressed="#respuestaNo_MouseDown" onMouseReleased="#respuestaNo_MouseUp" prefHeight="69.999375" prefWidth="87.0" text="No" textFill="$x5" visible="true" AnchorPane.bottomAnchor="131.61" AnchorPane.rightAnchor="226.0" AnchorPane.topAnchor="297.0">
+    <Label id="gameOver" fx:id="respuestaNo" alignment="CENTER" font="$x3" onMouseEntered="#respuestaNo_MouseEnter" onMouseExited="#respuestaNo_MouseLeave" onMousePressed="#respuestaNo_MouseDown" onMouseReleased="#respuestaNo_MouseUp" prefHeight="69.999375" prefWidth="87.0" text="No" textFill="$x5" visible="false" AnchorPane.bottomAnchor="131.61" AnchorPane.rightAnchor="226.0" AnchorPane.topAnchor="297.0">
       <effect>
         <Glow level="0.6" />
       </effect>

@@ -1,5 +1,7 @@
 package InterfazGrafica;
 
+import AccesoDatos.RegistroIdioma;
+import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
@@ -62,6 +64,7 @@ public class VentanaConfiguracionController implements Initializable {
     }
     public void radioEspañol_click(){
         this.rb = ResourceBundle.getBundle("Recursos/Idioma_ESP");
+        this.guardarArchivo("C:\\Users\\Victor Javier\\Documents\\IdiomaBuscaminas.txt", "ESP");
         this.internacionalizar(rb);
         this.controlerTablero.internacionalizar(rb);
         if(this.estadisticaController!=null){
@@ -73,6 +76,7 @@ public class VentanaConfiguracionController implements Initializable {
     }
     public void radioIngles_click(){
         this.rb = ResourceBundle.getBundle("Recursos/Idioma_ING");
+        this.guardarArchivo("C:\\Users\\Victor Javier\\Documents\\IdiomaBuscaminas.txt", "ING");
         this.internacionalizar(rb);
         this.controlerTablero.internacionalizar(rb);
         if(this.estadisticaController!=null){
@@ -81,6 +85,13 @@ public class VentanaConfiguracionController implements Initializable {
         if(this.mejorJugadorController!=null){
             this.mejorJugadorController.internacionalizar(rb);
         }
+    }
+    public void guardarArchivo(String ruta, String contenido){
+        File archivo = new File(ruta);
+        if (archivo.exists()){
+            archivo.delete();
+        }
+        RegistroIdioma.guardarIdioma(archivo, contenido);
     }
     
     //Eventos

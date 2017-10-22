@@ -1,18 +1,21 @@
 package InterfazGrafica;
 
+import LogicaNegocio.Casilla;
 import LogicaNegocio.Solicitud;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
-public class VentanaTableroController implements Initializable {
+public class VentanaTableroController implements Initializable, CasillaListener {
     @FXML
     private ImageView botonConfiguracion;
     @FXML
@@ -82,6 +85,24 @@ public class VentanaTableroController implements Initializable {
             nuevaPartidaContrller.internacionalizar(resource);
         }
     }
+    /*public ArrayList<Casilla> crearBotones(Solicitud solicitud){
+        ArrayList<Casilla> casillas = new ArrayList<>();
+        for (int i = 0; i < solicitud.getNumeroColumnas(); i++) {
+            for (int j = 0; j < solicitud.getNumeroFilas(); j++) {
+                casillas.add(new Casilla(i,j));
+            }
+        }
+        return casillas;
+    }*/
+    public void cargarPanelJugador(Solicitud solicitud){
+        //ArrayList<Casilla> casillas = this.crearBotones(solicitud);
+        for (int i = 0; i < solicitud.getNumeroColumnas(); i++) {
+            for (int j = 0; j < solicitud.getNumeroFilas(); j++) {
+                Casilla casilla = new Casilla(i,j);//casilla.getCasilla()
+                this.gridJuego.add(casilla.getCasilla(), i, j);
+            }
+        }
+    }
     public void iniciarPartida(Solicitud solicitud){
         System.out.println("Iniciada!");
         System.out.println("Dificultad: " + solicitud.getTipoDificultad().name());
@@ -89,6 +110,7 @@ public class VentanaTableroController implements Initializable {
         System.out.println("Número de columnas: " + solicitud.getNumeroColumnas());
         System.out.println("Número de minas: " + solicitud.getNumeroMinas());
         this.labelNumeroMinas.setText("" + solicitud.getNumeroMinas());
+        cargarPanelJugador(solicitud);
     }
     
     public void botonTerminar_MouseEnter(){
@@ -164,5 +186,10 @@ public class VentanaTableroController implements Initializable {
     }
     public void respuestaNo_MouseLeave(){
         this.respuestaNo.setStyle("-fx-text-fill: #086600");
+    }
+
+    @Override
+    public boolean casillaSeleccionada(int coordenadaX, int coordenadaY) {
+        return true;
     }
 }

@@ -7,12 +7,12 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.RowConstraints;
 import javafx.stage.Stage;
 
 public class VentanaTableroController implements Initializable, CasillaListener {
@@ -44,6 +44,11 @@ public class VentanaTableroController implements Initializable, CasillaListener 
     private ResourceBundle resource;
     private VentanaNuevaPartidaController nuevaPartidaContrller;
     private Stage stage;
+    private ArrayList<Casilla> historial;
+    private ArrayList<Casilla> minas;
+    private Casilla[][] matrizCasillas;
+    private int numeroColumnas;
+    private int numeroFilas;
     
     private final Image GEAR = new Image(this.getClass().getResourceAsStream("/RecursosGraficos/gear.png"));
     private final Image GEAR_HOVER = new Image(this.getClass().getResourceAsStream("/RecursosGraficos/gear-hover.png"));
@@ -63,8 +68,12 @@ public class VentanaTableroController implements Initializable, CasillaListener 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         this.resultadoJuego.setStyle("-fx-text-fill: " + this.COLOR_AMARILLO);
-        this.gridJuego.setAlignment(Pos.CENTER);
         this.gridJuego.setStyle("-fx-border-width: 2;-fx-border-color: #848484;-fx-border-style: solid;");
+        this.gridJuego.setHgap(1);
+        this.gridJuego.setVgap(1);
+        this.gridJuego.setGridLinesVisible(true);
+        this.historial = new ArrayList();
+        this.minas = new ArrayList();
     }
     
     public void setStage(Stage stage){
@@ -85,25 +94,27 @@ public class VentanaTableroController implements Initializable, CasillaListener 
             nuevaPartidaContrller.internacionalizar(resource);
         }
     }
-    /*public ArrayList<Casilla> crearBotones(Solicitud solicitud){
-        ArrayList<Casilla> casillas = new ArrayList<>();
-        for (int i = 0; i < solicitud.getNumeroColumnas(); i++) {
-            for (int j = 0; j < solicitud.getNumeroFilas(); j++) {
-                casillas.add(new Casilla(i,j));
-            }
-        }
-        return casillas;
-    }*/
     public void cargarPanelJugador(Solicitud solicitud){
-        //ArrayList<Casilla> casillas = this.crearBotones(solicitud);
+        this.matrizCasillas = new Casilla[solicitud.getNumeroColumnas()][solicitud.getNumeroFilas()];
+        ColumnConstraints columnConstraints = new ColumnConstraints();
+        RowConstraints rowConstraints = new RowConstraints();
+        for (int i = 0; i < solicitud.getNumeroColumnas(); i ++){
+            this.gridJuego.getColumnConstraints().add(columnConstraints);
+        }
+        for (int i = 0; i < solicitud.getNumeroFilas(); i ++){
+            this.gridJuego.getRowConstraints().add(rowConstraints);
+        }
         for (int i = 0; i < solicitud.getNumeroColumnas(); i++) {
             for (int j = 0; j < solicitud.getNumeroFilas(); j++) {
-                Casilla casilla = new Casilla(i,j);//casilla.getCasilla()
-                this.gridJuego.add(casilla.getCasilla(), i, j);
+                this.matrizCasillas[i][j] = new Casilla(i,j, this);
+                this.gridJuego.add(this.matrizCasillas[i][j].getCasilla(), i, j);
             }
         }
+        this.agregarMinas(solicitud.getNumeroMinas());
     }
     public void iniciarPartida(Solicitud solicitud){
+        this.numeroFilas = solicitud.getNumeroFilas();
+        this.numeroColumnas = solicitud.getNumeroColumnas();
         System.out.println("Iniciada!");
         System.out.println("Dificultad: " + solicitud.getTipoDificultad().name());
         System.out.println("Número de filas: " + solicitud.getNumeroFilas());
@@ -111,6 +122,99 @@ public class VentanaTableroController implements Initializable, CasillaListener 
         System.out.println("Número de minas: " + solicitud.getNumeroMinas());
         this.labelNumeroMinas.setText("" + solicitud.getNumeroMinas());
         cargarPanelJugador(solicitud);
+    }
+    public void mostrarMinas(){
+        for (Casilla casilla : this.minas){
+            casilla.mostrarMina();
+        }
+    }
+    public void agregarMina(int x, int y){
+        Casilla casilla = this.matrizCasillas[y][x];
+        casilla.agregarMina();
+        this.minas.add(casilla);
+    }
+    public void agregarMinas(int numeroMinas){
+        for (int i = 0; i < numeroMinas; i ++){
+            int y = this.getRandom(0, this.numeroFilas - 1);
+            int x = this.getRandom(0, this.numeroColumnas - 1);
+            this.agregarMina(y, x);
+        }
+    }
+    public int getRandom(int min, int max){
+        int numero = 0;
+        numero = (int)(Math.random()*(max - min + 1 ) + min);
+        return numero;
+    }
+    public ArrayList<Casilla> getRango(Casilla casilla){
+        ArrayList<Casilla> rango = new ArrayList();
+        int x = casilla.getX();
+        int y = casilla.getY();
+        int xInicio = x - 1;
+        int xFin = x + 1;
+        int yInicio = y - 1;
+        int yFin = y + 1;
+        if (xInicio < 0){
+            xInicio = 0;
+        }
+        if (yInicio < 0){
+            yInicio = 0;
+        }
+        if (xFin > this.numeroColumnas - 1){
+            xFin = this.numeroColumnas -1;
+        }
+        if (yFin > this.numeroFilas - 1){
+            yFin = this.numeroFilas - 1;
+        }
+        for (int i = yInicio; i < yFin + 1; i ++){
+            for (int c = xInicio; c < xFin + 1; c ++){
+                rango.add(this.matrizCasillas[c][i]);
+            } 
+        }
+        return rango;
+    }
+    public int getMinasPorRango(ArrayList<Casilla> rango){
+        int minas = 0;
+        for (Casilla casilla : rango){
+            if (casilla.tieneMina()){
+                minas ++;
+            }
+        }
+        return minas;
+    }
+    public void buscar(int x, int y){
+        Casilla casilla = this.matrizCasillas[x][y];
+        ArrayList<Casilla> rango = this.getRango(casilla);
+        int minas = this.getMinasPorRango(rango);
+        if (minas > 0){
+            casilla.descubrirCasilla();
+            casilla.establecerNumeros(minas);
+        }else{
+            for (Casilla cas : rango){
+                if (!cas.tieneMina()){
+                    int minasRango = this.getMinasPorRango(this.getRango(cas));
+                    if (minasRango > 0){
+                        cas.descubrirCasilla();
+                        cas.establecerNumeros(minasRango);
+                    }else{
+                        cas.descubrirCasilla();
+                        if (!this.yaRevisado(cas)){
+                            this.historial.add(cas);
+                            this.buscar(cas.getX(), cas.getY());
+                        }
+                    }
+                }
+            }
+        }
+    }
+    public boolean yaRevisado(Casilla casilla){
+        boolean revisado = false;
+        for (Casilla cas : this.historial){
+            if (cas.equals(casilla)){
+                revisado = true;
+                break;
+            }
+        }
+        return revisado;
     }
     
     public void botonTerminar_MouseEnter(){
@@ -189,7 +293,11 @@ public class VentanaTableroController implements Initializable, CasillaListener 
     }
 
     @Override
-    public boolean casillaSeleccionada(int coordenadaX, int coordenadaY) {
-        return true;
+    public void casillaSeleccionada(int coordenadaX, int coordenadaY) {
+        if (this.matrizCasillas[coordenadaX][coordenadaY].tieneMina()){
+            this.mostrarMinas();
+        }else{
+            this.buscar(coordenadaX, coordenadaY);
+        }
     }
 }

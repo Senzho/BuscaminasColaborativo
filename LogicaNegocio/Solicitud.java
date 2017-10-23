@@ -12,18 +12,18 @@ public class Solicitud {
         switch(this.tipoDificultad){
             case facil:
                 this.numeroMinas = 10;
-                this.filas = 8;
-                this.columnas = 5;
+                this.filas = 5;
+                this.columnas = 8;
                 break;
             case medio:
                 this.numeroMinas = 15;
-                this.filas = 10;
-                this.columnas = 7;
+                this.filas = 7;
+                this.columnas = 10;
                 break;
             case avanzado:
                 this.numeroMinas = 30;
-                this.filas = 13;
-                this.columnas = 10;
+                this.filas = 10;
+                this.columnas = 14;
                 break;
         }
     }

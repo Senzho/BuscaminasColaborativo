@@ -17,13 +17,8 @@
         <Image url="@../RecursosGraficos/gear.png" />
       </image>
     </ImageView>
-    <GridPane fx:id="gridJuego" hgap="1.0" prefHeight="369.609375" prefWidth="678.0" vgap="1.0" AnchorPane.bottomAnchor="102.0" AnchorPane.leftAnchor="27.0" AnchorPane.rightAnchor="26.0" AnchorPane.topAnchor="26.61">
-      <columnConstraints>
-        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-      </columnConstraints>
-      <rowConstraints>
-        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-      </rowConstraints>
+    <GridPane fx:id="gridJuego" alignment="CENTER" hgap="1.0" prefHeight="369.609375" prefWidth="678.0" vgap="1.0" visible="true" AnchorPane.bottomAnchor="102.0" AnchorPane.leftAnchor="27.0" AnchorPane.rightAnchor="26.0" AnchorPane.topAnchor="26.61">
+      
     </GridPane>
     <Label id="labelTiempo" layoutX="247.0" text="00:00" textFill="#9f9f9f" AnchorPane.bottomAnchor="46.0">
       <font>

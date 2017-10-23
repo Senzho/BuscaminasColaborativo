@@ -1,16 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package LogicaNegocio;
-/**
- *
- * @author Compaq-presario-cq43
- */
+
 import InterfazGrafica.CasillaListener;
 import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -19,20 +10,23 @@ public class Casilla{
     private int coordenadaX;
     private int coordenadaY;
     private boolean casillaCubierta;
+    private boolean tieneMina;
     private ImageView panelMina;
     private CasillaListener casillaListener;
     
-    public Casilla(int coordenadaX, int coordenadaY){
+    public Casilla(int coordenadaX, int coordenadaY, CasillaListener casillaListener){
+       this.casillaListener = casillaListener;
        this.coordenadaX = coordenadaX;
        this.coordenadaY = coordenadaY;  
        this.casillaCubierta = true;
+       this.tieneMina = false;
        this.panelMina = new ImageView();
-       Image image = new Image(this.getClass().getResourceAsStream("/RecursosGraficos/tres.png"));
-       panelMina.setImage(image);
-       panelMina.setFitWidth(50);
+       panelMina.setImage(new Image(this.getClass().getResourceAsStream("/RecursosGraficos/Color_Gris_Oscuro.PNG")));
+       panelMina.setFitHeight(30);
+       panelMina.setFitWidth(30);
        panelMina.setPreserveRatio(true);
-       
-       this.panelMina.addEventHandler(MouseEvent.MOUSE_EXITED, this.imageEventHandler);
+       panelMina.setPickOnBounds(true);
+       this.panelMina.addEventHandler(MouseEvent.MOUSE_CLICKED, this.imageEventHandler);
     }
     public ImageView getCasilla(){
         return this.panelMina;
@@ -40,21 +34,25 @@ public class Casilla{
     EventHandler<MouseEvent> imageEventHandler = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent event) {
-            EventType type = event.getEventType();
-            if(type.equals(MouseEvent.MOUSE_EXITED)){
-                System.out.println("click en "+coordenadaX+" : "+ coordenadaY);
-            }
+            casillaListener.casillaSeleccionada(coordenadaX, coordenadaY);
         }
     };
 
-    public boolean descubrirCasilla(int coordenadaFila, int coordenadaColumna){
-        if(coordenadaFila == coordenadaX && coordenadaColumna == coordenadaY){
-            this.casillaCubierta = false;
-        }
-        return casillaCubierta;
+    public void descubrirCasilla(){
+        this.casillaCubierta = false;
+        panelMina.setImage(new Image(this.getClass().getResourceAsStream("/RecursosGraficos/Color_Gris.PNG")));
+    }
+    public boolean estaCubierta(){
+        return this.casillaCubierta;
     }
     public void agregarMina(){
-       panelMina.setImage(new Image(this.getClass().getResourceAsStream("/RecursosGraficos/mina.png")));        
+        this.tieneMina = true;
+    }
+    public void mostrarMina(){
+       panelMina.setImage(new Image(this.getClass().getResourceAsStream("/RecursosGraficos/mina.png")));      
+    }
+    public boolean tieneMina(){
+        return this.tieneMina;
     }
     public void establecerNumeros(int numero){
         switch(numero){
@@ -84,7 +82,7 @@ public class Casilla{
             break;
         }     
     }
-    public int getx(){
+    public int getX(){
         return this.coordenadaX;
     }
     public int getY(){

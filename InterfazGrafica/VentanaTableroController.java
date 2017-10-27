@@ -7,11 +7,14 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.HPos;
+import javafx.geometry.VPos;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 import javafx.stage.Stage;
 
@@ -71,7 +74,6 @@ public class VentanaTableroController implements Initializable, CasillaListener 
         this.gridJuego.setStyle("-fx-border-width: 2;-fx-border-color: #848484;-fx-border-style: solid;");
         this.gridJuego.setHgap(1);
         this.gridJuego.setVgap(1);
-        this.gridJuego.setGridLinesVisible(true);
         this.historial = new ArrayList();
         this.minas = new ArrayList();
     }
@@ -97,7 +99,11 @@ public class VentanaTableroController implements Initializable, CasillaListener 
     public void cargarPanelJugador(Solicitud solicitud){
         this.matrizCasillas = new Casilla[solicitud.getNumeroColumnas()][solicitud.getNumeroFilas()];
         ColumnConstraints columnConstraints = new ColumnConstraints();
+        columnConstraints.setHalignment(HPos.CENTER);
+        columnConstraints.setHgrow(Priority.ALWAYS);
         RowConstraints rowConstraints = new RowConstraints();
+        rowConstraints.setValignment(VPos.CENTER);
+        rowConstraints.setVgrow(Priority.ALWAYS);
         for (int i = 0; i < solicitud.getNumeroColumnas(); i ++){
             this.gridJuego.getColumnConstraints().add(columnConstraints);
         }

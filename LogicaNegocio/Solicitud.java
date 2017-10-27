@@ -11,19 +11,19 @@ public class Solicitud {
     private void setCuadricula(){
         switch(this.tipoDificultad){
             case facil:
-                this.numeroMinas = 10;
-                this.filas = 5;
-                this.columnas = 8;
-                break;
-            case medio:
                 this.numeroMinas = 15;
                 this.filas = 7;
                 this.columnas = 10;
                 break;
-            case avanzado:
+            case medio:
                 this.numeroMinas = 30;
                 this.filas = 10;
                 this.columnas = 14;
+                break;
+            case avanzado:
+                this.numeroMinas = 45;
+                this.filas = 13;
+                this.columnas = 17;
                 break;
         }
     }

@@ -21,11 +21,11 @@ public class Casilla{
        this.casillaCubierta = true;
        this.tieneMina = false;
        this.panelMina = new ImageView();
-       panelMina.setImage(new Image(this.getClass().getResourceAsStream("/RecursosGraficos/Color_Gris_Oscuro.PNG")));
+       panelMina.setImage(new Image(this.getClass().getResourceAsStream("/RecursosGraficos/Color_Gris.PNG")));
        panelMina.setFitHeight(30);
        panelMina.setFitWidth(30);
        panelMina.setPreserveRatio(true);
-       panelMina.setPickOnBounds(true);
+       //panelMina.setPickOnBounds(true);
        this.panelMina.addEventHandler(MouseEvent.MOUSE_CLICKED, this.imageEventHandler);
     }
     public ImageView getCasilla(){
@@ -40,7 +40,7 @@ public class Casilla{
 
     public void descubrirCasilla(){
         this.casillaCubierta = false;
-        panelMina.setImage(new Image(this.getClass().getResourceAsStream("/RecursosGraficos/Color_Gris.PNG")));
+        panelMina.setImage(new Image(this.getClass().getResourceAsStream("/RecursosGraficos/Color_Blanco.PNG")));
     }
     public boolean estaCubierta(){
         return this.casillaCubierta;

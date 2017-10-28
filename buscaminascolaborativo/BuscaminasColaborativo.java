@@ -12,7 +12,7 @@ public class BuscaminasColaborativo extends Application {
     @Override
     public void start(Stage primaryStage) {
         String bundle = "Recursos/Idioma_ING";
-        File idioma = new File("C:\\Users\\Victor Javier\\Documents\\IdiomaBuscaminas.txt");
+        File idioma = new File("C:\\Buscaminas\\Idioma.txt");
         if (idioma.exists()){
             String contenido = RegistroIdioma.obtenerIdioma(idioma);
             switch(contenido){

@@ -70,7 +70,6 @@ public class VentanaTableroController implements Initializable, CasillaListener 
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        this.resultadoJuego.setStyle("-fx-text-fill: " + this.COLOR_AMARILLO);
         this.gridJuego.setStyle("-fx-border-width: 2;-fx-border-color: #848484;-fx-border-style: solid;");
         this.gridJuego.setHgap(1);
         this.gridJuego.setVgap(1);
@@ -97,13 +96,14 @@ public class VentanaTableroController implements Initializable, CasillaListener 
         }
     }
     public void cargarPanelJugador(Solicitud solicitud){
+        this.ocultarEtiquetas();
         this.matrizCasillas = new Casilla[solicitud.getNumeroColumnas()][solicitud.getNumeroFilas()];
         ColumnConstraints columnConstraints = new ColumnConstraints();
-        columnConstraints.setHalignment(HPos.CENTER);
-        columnConstraints.setHgrow(Priority.ALWAYS);
+        //columnConstraints.setHalignment(HPos.CENTER);
+        //columnConstraints.setHgrow(Priority.ALWAYS);
         RowConstraints rowConstraints = new RowConstraints();
-        rowConstraints.setValignment(VPos.CENTER);
-        rowConstraints.setVgrow(Priority.ALWAYS);
+        //rowConstraints.setValignment(VPos.CENTER);
+        //rowConstraints.setVgrow(Priority.ALWAYS);
         for (int i = 0; i < solicitud.getNumeroColumnas(); i ++){
             this.gridJuego.getColumnConstraints().add(columnConstraints);
         }
@@ -119,6 +119,9 @@ public class VentanaTableroController implements Initializable, CasillaListener 
         this.agregarMinas(solicitud.getNumeroMinas());
     }
     public void iniciarPartida(Solicitud solicitud){
+        this.reestablecerGrid();
+        this.historial.clear();
+        this.minas.clear();
         this.numeroFilas = solicitud.getNumeroFilas();
         this.numeroColumnas = solicitud.getNumeroColumnas();
         System.out.println("Iniciada!");
@@ -222,6 +225,27 @@ public class VentanaTableroController implements Initializable, CasillaListener 
         }
         return revisado;
     }
+    public void ocultarEtiquetas(){
+        this.preguntaJuego.setVisible(false);
+        this.resultadoJuego.setVisible(false);
+        this.respuestaNo.setVisible(false);
+        this.respuestaSi.setVisible(false);
+    }
+    public void partidaPerdida(){
+        this.preguntaJuego.setVisible(true);
+        this.resultadoJuego.setVisible(true);
+        this.resultadoJuego.setStyle("-fx-text-fill: " + this.COLOR_ROJO);
+        this.resultadoJuego.setText(this.resource.getString("gameOver"));
+        this.respuestaNo.setVisible(true);
+        this.respuestaSi.setVisible(true);
+    }
+    public void reestablecerGrid(){
+        this.gridJuego.getChildren().clear();
+        this.gridJuego.getRowConstraints().clear();
+        this.gridJuego.getColumnConstraints().clear();
+    }
+    
+    //Eventos:
     
     public void botonTerminar_MouseEnter(){
         this.botonTerminar.setImage(this.X_HOVER);
@@ -281,6 +305,7 @@ public class VentanaTableroController implements Initializable, CasillaListener 
     }
     public void respuestaSi_MouseUp(){
         this.respuestaSi.setStyle("-fx-text-fill: #0066ff");
+        new VentanaNuevaPartida(this, resource);
     }
     public void respuestaSi_MouseLeave(){
         this.respuestaSi.setStyle("-fx-text-fill: #086600");
@@ -293,6 +318,7 @@ public class VentanaTableroController implements Initializable, CasillaListener 
     }
     public void respuestaNo_MouseUp(){
         this.respuestaNo.setStyle("-fx-text-fill: #0066ff");
+        this.ocultarEtiquetas();
     }
     public void respuestaNo_MouseLeave(){
         this.respuestaNo.setStyle("-fx-text-fill: #086600");
@@ -302,6 +328,7 @@ public class VentanaTableroController implements Initializable, CasillaListener 
     public void casillaSeleccionada(int coordenadaX, int coordenadaY) {
         if (this.matrizCasillas[coordenadaX][coordenadaY].tieneMina()){
             this.mostrarMinas();
+            this.partidaPerdida();
         }else{
             this.buscar(coordenadaX, coordenadaY);
         }

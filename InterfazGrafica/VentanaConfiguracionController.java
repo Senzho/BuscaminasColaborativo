@@ -31,6 +31,9 @@ public class VentanaConfiguracionController implements Initializable {
     private VentanaMejorJugadorController mejorJugadorController;
     private VentanaEstadisticaController estadisticaController;
     
+    private final String NOMBRE_ARCHIVO = "Idioma.txt";
+    private final String NOMBRE_DIRECTORIO = "C:\\Buscaminas";
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
      
@@ -64,7 +67,7 @@ public class VentanaConfiguracionController implements Initializable {
     }
     public void radioEspañol_click(){
         this.rb = ResourceBundle.getBundle("Recursos/Idioma_ESP");
-        this.guardarArchivo("C:\\Users\\Victor Javier\\Documents\\IdiomaBuscaminas.txt", "ESP");
+        this.guardarArchivo(this.NOMBRE_DIRECTORIO + "\\" + this.NOMBRE_ARCHIVO, "ESP");
         this.internacionalizar(rb);
         this.controlerTablero.internacionalizar(rb);
         if(this.estadisticaController!=null){
@@ -76,7 +79,7 @@ public class VentanaConfiguracionController implements Initializable {
     }
     public void radioIngles_click(){
         this.rb = ResourceBundle.getBundle("Recursos/Idioma_ING");
-        this.guardarArchivo("C:\\Users\\Victor Javier\\Documents\\IdiomaBuscaminas.txt", "ING");
+        this.guardarArchivo(this.NOMBRE_DIRECTORIO + "\\" + this.NOMBRE_ARCHIVO, "ING");
         this.internacionalizar(rb);
         this.controlerTablero.internacionalizar(rb);
         if(this.estadisticaController!=null){
@@ -87,6 +90,10 @@ public class VentanaConfiguracionController implements Initializable {
         }
     }
     public void guardarArchivo(String ruta, String contenido){
+        File directorio = new File(this.NOMBRE_DIRECTORIO);
+        if (!directorio.exists()){
+            directorio.mkdir();
+        }
         File archivo = new File(ruta);
         if (archivo.exists()){
             archivo.delete();

@@ -140,7 +140,9 @@ public class VentanaTableroController implements Initializable, CasillaListener 
     public void agregarMina(int x, int y){
         Casilla casilla = this.matrizCasillas[y][x];
         casilla.agregarMina();
-        this.minas.add(casilla);
+        if(! this.minas.contains(casilla)){
+            this.minas.add(casilla);       
+        }
     }
     public void agregarMinas(int numeroMinas){
         for (int i = 0; i < numeroMinas; i ++){
@@ -224,6 +226,14 @@ public class VentanaTableroController implements Initializable, CasillaListener 
             }
         }
         return revisado;
+    }
+    public void partidaGanada(){
+        this.preguntaJuego.setVisible(true);
+        this.resultadoJuego.setVisible(true);
+        this.resultadoJuego.setStyle("-fx-text-fill: " + this.COLOR_AMARILLO);
+        this.resultadoJuego.setText(this.resource.getString("win"));
+        this.respuestaNo.setVisible(true);
+        this.respuestaSi.setVisible(true);
     }
     public void ocultarEtiquetas(){
         this.preguntaJuego.setVisible(false);
@@ -331,6 +341,31 @@ public class VentanaTableroController implements Initializable, CasillaListener 
             this.partidaPerdida();
         }else{
             this.buscar(coordenadaX, coordenadaY);
+            if((this.numeroColumnas* this.numeroFilas)==(todoDescubierto()+ganarParida())){
+                this.partidaGanada();
+            }
         }
+    }
+    public int todoDescubierto(){
+        int cont = 0;
+        for (int i = 0; i < numeroColumnas; i++) {
+            for (int j = 0; j < numeroFilas; j++) {
+                if(this.matrizCasillas[i][j].estaCubierta() == false && matrizCasillas[i][j].tieneMina() == false){
+                    cont+=1;
+                }
+            }
+        }
+        return cont;
+    }
+    public int ganarParida(){
+        int numero = 0;
+        for (int i = 0; i < this.numeroColumnas; i++) {
+            for (int j = 0; j < this.numeroFilas; j++) {
+                if(this.matrizCasillas[i][j].estaCubierta() && matrizCasillas[i][j].tieneMina()){
+                    numero++;
+                }
+            }
+        }
+        return numero;
     }
 }

@@ -47,9 +47,12 @@ public class Casilla{
     }
     public void agregarMina(){
         this.tieneMina = true;
+        //Prueba de gane:
+        //panelMina.setImage(new Image(this.getClass().getResourceAsStream("/RecursosGraficos/mina.png")));
     }
     public void mostrarMina(){
-       panelMina.setImage(new Image(this.getClass().getResourceAsStream("/RecursosGraficos/mina.png")));      
+       panelMina.setImage(new Image(this.getClass().getResourceAsStream("/RecursosGraficos/mina.png")));
+       this.casillaCubierta = false;
     }
     public boolean tieneMina(){
         return this.tieneMina;

@@ -48,8 +48,9 @@ public class JugadorDAOSql implements JugadorDAO {
     }
 
     @Override
-     public Jugador validarSesion(String nombreJugador) {
-        Jugador jugador = null;
+    public LogicaNegocio.Jugador validarSesion(String nombreJugador) {
+        Persistencia.Jugador jugadorPersistencia = null;
+        LogicaNegocio.Jugador jugadorPrincipal = null;
         EntityManagerFactory managerFactory = Persistence.createEntityManagerFactory("ServidorBuscaminasEjemplo1PU");
         EntityManager entityManager = managerFactory.createEntityManager();
         Query query = entityManager.createQuery("select j from Jugador j where j.nombreJugador = :nombreJugador");
@@ -57,10 +58,12 @@ public class JugadorDAOSql implements JugadorDAO {
         List<Jugador> jugadores = query.getResultList();
         for (int i = 0; i < jugadores.size(); i++) {
             if(jugadores.get(i).getNombreJugador().equals(nombreJugador)){
-                jugador = jugadores.get(i);
+                jugadorPersistencia = jugadores.get(i);
+                jugadorPrincipal = new LogicaNegocio.Jugador(jugadorPersistencia.getIdJugador(),jugadorPersistencia.getNombreJugador(),
+                jugadorPersistencia.getPartidasJugadas(),jugadorPersistencia.getPartidasPerdidas());
                 break;
             }  
         }
-        return jugador;
+        return jugadorPrincipal;
      }
 }

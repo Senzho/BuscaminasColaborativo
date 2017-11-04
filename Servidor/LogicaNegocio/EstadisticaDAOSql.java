@@ -7,7 +7,6 @@ package LogicaNegocio;
 
 import Persistencia.Jugador;
 import Persistencia.JugadorJpaController;
-import Persistencia.PartidaJpaController;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -21,19 +20,19 @@ import javax.persistence.Query;
 public class EstadisticaDAOSql implements EstadisticaDAO {
 
     @Override
-    public Jugador getJugador(int idJugador) {
+    public LogicaNegocio.Jugador getJugador(int idJugador) {
         EntityManagerFactory managerFactory = Persistence.createEntityManagerFactory("ServidorBuscaminasEjemplo1PU");
-        Persistencia.Jugador jugadorP = new Persistencia.Jugador();
         JugadorJpaController jugadorController = new JugadorJpaController(managerFactory);
         Jugador jugador = jugadorController.findJugador(idJugador);
-        return jugador;
+        LogicaNegocio.Jugador jugadorPrincipal = new LogicaNegocio.Jugador(jugador.getIdJugador(),jugador.getNombreJugador(),
+        jugador.getPartidasJugadas(),jugador.getPartidasPerdidas());
+        return jugadorPrincipal;
     }
 
     @Override
     public int getPatidasGanadas(int idJugador) {
        EntityManagerFactory managerFactory = Persistence.createEntityManagerFactory("ServidorBuscaminasEjemplo1PU");
        EntityManager entityManager = managerFactory.createEntityManager();
-       PartidaJpaController partidaController = new PartidaJpaController(managerFactory);
        Query query = entityManager.createQuery("select P from Partida P where P.idJugador.idJugador = :idJugador");
        query.setParameter("idJugador",idJugador);
        List<Persistencia.Partida> partidas = query.getResultList();
@@ -54,7 +53,6 @@ public class EstadisticaDAOSql implements EstadisticaDAO {
     public String getTiempoPromedio(int idJugador) {
         EntityManagerFactory managerFactory = Persistence.createEntityManagerFactory("ServidorBuscaminasEjemplo1PU");
         EntityManager entityManager = managerFactory.createEntityManager();
-        PartidaJpaController partidaController = new PartidaJpaController(managerFactory);
         Query query = entityManager.createQuery("select P from Partida P where P.idJugador.idJugador = :idJugador");
         query.setParameter("idJugador",idJugador);
         List<Persistencia.Partida> partidas = query.getResultList();

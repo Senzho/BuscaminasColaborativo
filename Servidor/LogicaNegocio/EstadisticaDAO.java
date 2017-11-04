@@ -5,14 +5,12 @@
  */
 package LogicaNegocio;
 
-import Persistencia.Jugador;
-
 /**
  *
  * @author Compaq-presario-cq43
  */
 public interface EstadisticaDAO {
-    public Jugador getJugador(int idJugador);
+    public LogicaNegocio.Jugador getJugador(int idJugador);
     public int getPatidasGanadas(int idJugador);
     public String getTiempoPromedio(int idJugador);
 }

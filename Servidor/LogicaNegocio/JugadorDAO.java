@@ -13,5 +13,5 @@ import Persistencia.Jugador;
  */
 public interface JugadorDAO {
     public boolean registrarJugador(String nombre);
-    public Jugador validarSesion(String nombreJugador);
+    public LogicaNegocio.Jugador validarSesion(String nombreJugador);
 }

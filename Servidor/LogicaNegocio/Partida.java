@@ -1,6 +1,8 @@
 package LogicaNegocio;
 
-public class Partida {
+import java.io.Serializable;
+
+public class Partida implements Serializable{
     private String dificultad;
     private String tiempo;
     private int idJugador;

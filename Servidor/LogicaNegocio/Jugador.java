@@ -1,6 +1,8 @@
 package LogicaNegocio;
 
-public class Jugador {
+import java.io.Serializable;
+
+public class Jugador implements Serializable {
     private int idJugador;
     private String nombreJugador;
     private int partidasJugadas;

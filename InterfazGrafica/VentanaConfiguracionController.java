@@ -1,6 +1,7 @@
 package InterfazGrafica;
 
 import AccesoDatos.RegistroIdioma;
+import LogicaNegocio.Jugador;
 import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -30,6 +31,7 @@ public class VentanaConfiguracionController implements Initializable {
     private VentanaTableroController controlerTablero;
     private VentanaMejorJugadorController mejorJugadorController;
     private VentanaEstadisticaController estadisticaController;
+    private int idJugador;
     
     private final String NOMBRE_ARCHIVO = "Idioma.txt";
     private final String NOMBRE_DIRECTORIO = "C:\\Buscaminas";
@@ -41,6 +43,9 @@ public class VentanaConfiguracionController implements Initializable {
     
     public void setStage(Stage stage){
         this.stage = stage;
+    }
+    public void setIdJugador(int idJugador){
+        this.idJugador = idJugador;
     }
     public void setControladorTablero(VentanaTableroController controller){
         this.controlerTablero = controller;
@@ -111,7 +116,7 @@ public class VentanaConfiguracionController implements Initializable {
     }
     public void labelEstadisticas_MouseUp(){
         this.labelEstadisticas.setStyle("-fx-text-fill: #0066ff");
-        new VentanaEstadistica(this, this.rb);
+        new VentanaEstadistica(this, this.rb, this.idJugador);
     }
     public void labelEstadisticas_MouseLeave(){
         this.labelEstadisticas.setStyle("-fx-text-fill: #808080");

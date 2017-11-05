@@ -1,20 +1,18 @@
 package InterfazGrafica;
 
 import LogicaNegocio.Casilla;
+import LogicaNegocio.Jugador;
 import LogicaNegocio.Solicitud;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.HPos;
-import javafx.geometry.VPos;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 import javafx.stage.Stage;
 
@@ -52,6 +50,7 @@ public class VentanaTableroController implements Initializable, CasillaListener 
     private Casilla[][] matrizCasillas;
     private int numeroColumnas;
     private int numeroFilas;
+    private Jugador jugador;
     
     private final Image GEAR = new Image(this.getClass().getResourceAsStream("/RecursosGraficos/gear.png"));
     private final Image GEAR_HOVER = new Image(this.getClass().getResourceAsStream("/RecursosGraficos/gear-hover.png"));
@@ -79,6 +78,9 @@ public class VentanaTableroController implements Initializable, CasillaListener 
     
     public void setStage(Stage stage){
         this.stage = stage;
+    }
+    public void setJugador(Jugador jugador){
+        this.jugador = jugador;
     }
     public void setNuevaPartidaController(VentanaNuevaPartidaController controller){
         this.nuevaPartidaContrller = controller;
@@ -289,7 +291,7 @@ public class VentanaTableroController implements Initializable, CasillaListener 
     }
     public void botonConfiguracion_MouseUp(){
         this.botonConfiguracion.setImage(this.GEAR_HOVER);
-        new VentanaConfiguracion(this, resource);
+        new VentanaConfiguracion(this, resource, this.jugador.getIdJugador());
     }
     public void botonCOnfiguracion_MouseLeave(){
         this.botonConfiguracion.setImage(this.GEAR);
@@ -329,6 +331,7 @@ public class VentanaTableroController implements Initializable, CasillaListener 
     public void respuestaNo_MouseUp(){
         this.respuestaNo.setStyle("-fx-text-fill: #0066ff");
         this.ocultarEtiquetas();
+        this.reestablecerGrid();
     }
     public void respuestaNo_MouseLeave(){
         this.respuestaNo.setStyle("-fx-text-fill: #086600");

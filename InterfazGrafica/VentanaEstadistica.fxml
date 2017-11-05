@@ -27,9 +27,9 @@
     <Label fx:id="lblPartidasPerdidas" font="$x1" text="Partidas perdidas:" AnchorPane.leftAnchor="48.0" AnchorPane.topAnchor="201.0" />
     <Label fx:id="lblPartidasGanadas" font="$x1" text="Partidas ganadas:" AnchorPane.leftAnchor="48.0" AnchorPane.topAnchor="157.0" />
     <Label fx:id="lblTiempoPartida" font="$x1" text="Tiempo promedio de partida:" AnchorPane.leftAnchor="46.0" AnchorPane.topAnchor="271.0" />
-    <Label font="$x1" text="0" AnchorPane.leftAnchor="242.0" AnchorPane.topAnchor="120.0" />
-    <Label font="$x1" text="0" AnchorPane.leftAnchor="242.0" AnchorPane.topAnchor="157.0" />
-    <Label font="$x1" text="0" AnchorPane.leftAnchor="242.0" AnchorPane.topAnchor="201.0" />
-    <Label font="$x1" text="00:00" AnchorPane.leftAnchor="326.0" AnchorPane.topAnchor="271.0" />
+    <Label id="lblNumeroPartidasPerdidas" fx:id="lblNumeroPartidasJugadas" font="$x1" text="0" AnchorPane.leftAnchor="242.0" AnchorPane.topAnchor="120.0" />
+    <Label fx:id="lblNumeroPartidasGanadas" font="$x1" text="0" AnchorPane.leftAnchor="242.0" AnchorPane.topAnchor="157.0" />
+    <Label fx:id="lblNumeroPartidasPerdidas" font="$x1" text="0" AnchorPane.leftAnchor="242.0" AnchorPane.topAnchor="201.0" />
+    <Label fx:id="lblValorTiempoPromedio" font="$x1" text="00:00" AnchorPane.leftAnchor="326.0" AnchorPane.topAnchor="271.0" />
   </children>
 </AnchorPane>

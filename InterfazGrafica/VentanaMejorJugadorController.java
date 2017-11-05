@@ -5,8 +5,14 @@
  */
 package InterfazGrafica;
 
+import LogicaNegocio.Cliente;
+import LogicaNegocio.Jugador;
 import java.net.URL;
+import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -27,7 +33,7 @@ public class VentanaMejorJugadorController implements Initializable{
     
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-     
+        this.cargarJugadores();
     }
     public void internacionalizar(ResourceBundle resource){
         this.rb = resource;
@@ -37,6 +43,18 @@ public class VentanaMejorJugadorController implements Initializable{
     }
     public void setStage(Stage stage){
         this.stage = stage;
+    }
+    public void cargarJugadores(){
+        try {
+            Cliente cliente = new Cliente("192.168.43.174");
+            ArrayList<Jugador> jugadores = cliente.getListaJugadores();
+            for (Jugador jugador : jugadores){
+                System.out.println("/n" + jugador.getNombreJugador() + ":");
+                System.out.println((jugador.getPartidasJugadas() - jugador.getPartidasPerdidas()) + " partidas ganadas de: " + jugador.getPartidasJugadas());
+            }
+        } catch (RemoteException ex) {
+            Logger.getLogger(VentanaMejorJugadorController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     public void btnAceptar_click(){

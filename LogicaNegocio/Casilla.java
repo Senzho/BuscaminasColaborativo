@@ -4,6 +4,7 @@ import InterfazGrafica.CasillaListener;
 import javafx.event.EventHandler;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 
 public class Casilla{
@@ -25,7 +26,6 @@ public class Casilla{
        panelMina.setFitHeight(30);
        panelMina.setFitWidth(30);
        panelMina.setPreserveRatio(true);
-       //panelMina.setPickOnBounds(true);
        this.panelMina.addEventHandler(MouseEvent.MOUSE_CLICKED, this.imageEventHandler);
     }
     public ImageView getCasilla(){
@@ -34,7 +34,9 @@ public class Casilla{
     EventHandler<MouseEvent> imageEventHandler = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent event) {
-            casillaListener.casillaSeleccionada(coordenadaX, coordenadaY);
+            if (event.getButton().equals(MouseButton.PRIMARY)){
+                casillaListener.casillaSeleccionada(coordenadaX, coordenadaY);
+            }
         }
     };
 

@@ -19,7 +19,7 @@
         <Font size="16.0" />
       </font>
     </Label>
-    <TextField prefWidth="151.00009999999747" AnchorPane.leftAnchor="175.5" AnchorPane.rightAnchor="24.5" AnchorPane.topAnchor="17.0" />
+    <TextField fx:id="txtNombreUsuario" prefWidth="151.00009999999747" AnchorPane.leftAnchor="175.5" AnchorPane.rightAnchor="24.5" AnchorPane.topAnchor="17.0" />
     <Button id="" fx:id="btnRegistrar" font="$x1" mnemonicParsing="false" onMouseClicked="#btnRegistrar_Click" text="Registrarse" AnchorPane.bottomAnchor="21.0" AnchorPane.rightAnchor="153.0" />
   </children>
 </AnchorPane>

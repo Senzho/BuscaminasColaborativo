@@ -1,5 +1,6 @@
 package InterfazGrafica;
 
+import LogicaNegocio.Jugador;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -11,7 +12,10 @@ import javafx.stage.Stage;
 
 public class VentanaTablero extends Application{
     private ResourceBundle resource;
-    public VentanaTablero(ResourceBundle rb){
+    private Jugador jugador;
+    
+    public VentanaTablero(ResourceBundle rb, Jugador jugador){
+        this.jugador = jugador;
         this.resource = rb;
         try {
             this.start(new Stage());
@@ -26,6 +30,7 @@ public class VentanaTablero extends Application{
         AnchorPane layout = loader.load();
         VentanaTableroController tableroController = loader.getController();
         tableroController.setStage(primaryStage);
+        tableroController.setJugador(this.jugador);
         tableroController.internacionalizar(resource);
         Scene scene = new Scene(layout, 800, 500);
         primaryStage.setScene(scene);

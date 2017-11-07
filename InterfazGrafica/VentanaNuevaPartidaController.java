@@ -2,14 +2,23 @@ package InterfazGrafica;
 
 import LogicaNegocio.Solicitud;
 import LogicaNegocio.TipoDificultad;
+import io.socket.client.IO;
+import io.socket.client.Socket;
+import io.socket.emitter.Emitter;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.stage.Stage;
+import org.json.JSONObject;
 
 public class VentanaNuevaPartidaController implements Initializable {
     @FXML
@@ -36,10 +45,16 @@ public class VentanaNuevaPartidaController implements Initializable {
     private ResourceBundle recursos;
     private Stage stage;
     private VentanaTableroController tableroController;
+    private Socket socket;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-     
+        try {
+            this.socket = IO.socket("http://192.168.43.174:7000");
+            this.conectar();
+        } catch (URISyntaxException ex) {
+            Logger.getLogger(VentanaNuevaPartidaController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }    
     
     public void setStage(Stage stage){
@@ -64,12 +79,39 @@ public class VentanaNuevaPartidaController implements Initializable {
         this.botonSolicitud.setText(this.recursos.getString("botonSolicitud"));
         this.stage.setTitle(this.recursos.getString("nombreVentanaNueva"));
     }
-    
-    public void botonCanelar_Click(){
+    public void conectar(){
+        this.socket.on(Socket.EVENT_CONNECT, new Emitter.Listener(){
+            @Override
+            public void call(Object... os) {
+                
+            }
+        }).on("solicitud", new Emitter.Listener() {
+            @Override
+            public void call(Object... os) {
+                JSONObject object = (JSONObject) os[0];
+                Solicitud solicitud = new Solicitud();
+                solicitud.setColumnas(object.getInt("numeroColumnas"));
+                solicitud.setFilas(object.getInt("numeroFilas"));
+                solicitud.setIdCompañero(object.getInt("idCompañero"));
+                solicitud.setIdSolicitante(object.getInt("idSolicitante"));
+                solicitud.setNumeroMinas(object.getInt("numeroMinas"));
+                Platform.runLater(()->{
+                    tableroController.iniciarPartidaCliente(solicitud);
+                    cerrarVentana();
+                });
+            }
+        });
+        this.socket.connect();
+    }
+    public void cerrarVentana(){
+        this.socket.disconnect();
         this.stage.close();
     }
+    
+    public void botonCanelar_Click(){
+        this.cerrarVentana();
+    }
     public void botonSolicitud_Click(){
-        //Id's correspondientes a los identificadores de los jugadores de la partida (no implementado)
         int idSolicitante = 1;
         int idCompañero = 2;
         Solicitud solicitud = null;
@@ -81,11 +123,10 @@ public class VentanaNuevaPartidaController implements Initializable {
             solicitud = new Solicitud(idSolicitante, idCompañero, TipoDificultad.avanzado);
         }
         if (solicitud != null){
+            socket.emit("solicitud", new JSONObject(solicitud));
             this.tableroController.iniciarPartida(solicitud);
-            this.stage.close();
         }else{
-            //Enviar mensaje de error
-            System.out.println("No has seleccionado la dificultad");
+            MessageFactory.showMessage("Warning", "Partida", "No has seleccionado la dificultad", Alert.AlertType.NONE);
         }
     }
 }

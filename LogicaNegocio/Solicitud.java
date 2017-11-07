@@ -28,13 +28,34 @@ public class Solicitud {
         }
     }
     
+    public Solicitud(){
+        
+    }
     public Solicitud(int idSolicitante, int idCompañero, TipoDificultad tipoDificultad){
         this.idSolicitante = idSolicitante;
         this.idCompañero = idCompañero;
         this.tipoDificultad = tipoDificultad;
         this.setCuadricula();
     }
-    
+
+    public void setIdSolicitante(int idSolicitante) {
+        this.idSolicitante = idSolicitante;
+    }
+    public void setIdCompañero(int idCompañero) {
+        this.idCompañero = idCompañero;
+    }
+    public void setTipoDificultad(TipoDificultad tipoDificultad) {
+        this.tipoDificultad = tipoDificultad;
+    }
+    public void setNumeroMinas(int numeroMinas) {
+        this.numeroMinas = numeroMinas;
+    }
+    public void setFilas(int filas) {
+        this.filas = filas;
+    }
+    public void setColumnas(int columnas) {
+        this.columnas = columnas;
+    }
     public int getIdSolicitante(){
         return this.idSolicitante;
     }

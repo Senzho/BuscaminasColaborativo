@@ -3,9 +3,16 @@ package InterfazGrafica;
 import LogicaNegocio.Casilla;
 import LogicaNegocio.Jugador;
 import LogicaNegocio.Solicitud;
+import io.socket.client.IO;
+import io.socket.client.Socket;
+import io.socket.emitter.Emitter;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -51,6 +58,7 @@ public class VentanaTableroController implements Initializable, CasillaListener 
     private int numeroColumnas;
     private int numeroFilas;
     private Jugador jugador;
+    private Socket socket;
     
     private final Image GEAR = new Image(this.getClass().getResourceAsStream("/RecursosGraficos/gear.png"));
     private final Image GEAR_HOVER = new Image(this.getClass().getResourceAsStream("/RecursosGraficos/gear-hover.png"));
@@ -74,6 +82,12 @@ public class VentanaTableroController implements Initializable, CasillaListener 
         this.gridJuego.setVgap(1);
         this.historial = new ArrayList();
         this.minas = new ArrayList();
+        /*try {
+            this.socket = IO.socket("http://localhost:7000");
+            this.conectar();
+        } catch (URISyntaxException ex) {
+            Logger.getLogger(VentanaTableroController.class.getName()).log(Level.SEVERE, null, ex);
+        }*/
     }
     
     public void setStage(Stage stage){
@@ -118,21 +132,22 @@ public class VentanaTableroController implements Initializable, CasillaListener 
                 this.gridJuego.add(this.matrizCasillas[i][j].getCasilla(), i, j);
             }
         }
-        this.agregarMinas(solicitud.getNumeroMinas());
     }
-    public void iniciarPartida(Solicitud solicitud){
+    public void iniciarPartidaGeneral(Solicitud solicitud){
         this.reestablecerGrid();
         this.historial.clear();
         this.minas.clear();
         this.numeroFilas = solicitud.getNumeroFilas();
         this.numeroColumnas = solicitud.getNumeroColumnas();
-        System.out.println("Iniciada!");
-        System.out.println("Dificultad: " + solicitud.getTipoDificultad().name());
-        System.out.println("Número de filas: " + solicitud.getNumeroFilas());
-        System.out.println("Número de columnas: " + solicitud.getNumeroColumnas());
-        System.out.println("Número de minas: " + solicitud.getNumeroMinas());
         this.labelNumeroMinas.setText("" + solicitud.getNumeroMinas());
         cargarPanelJugador(solicitud);
+    }
+    public void iniciarPartida(Solicitud solicitud){
+        this.iniciarPartidaGeneral(solicitud);
+        this.agregarMinas(solicitud.getNumeroMinas());
+    }
+    public void iniciarPartidaCliente(Solicitud solicitud){
+        this.iniciarPartidaGeneral(solicitud);
     }
     public void mostrarMinas(){
         for (Casilla casilla : this.minas){
@@ -256,6 +271,15 @@ public class VentanaTableroController implements Initializable, CasillaListener 
         this.gridJuego.getRowConstraints().clear();
         this.gridJuego.getColumnConstraints().clear();
     }
+    /*public void conectar(){
+        this.socket.on(Socket.EVENT_CONNECT, new Emitter.Listener(){
+            @Override
+            public void call(Object... os) {
+                
+            }
+        });
+        this.socket.connect();
+    }*/
     
     //Eventos:
     

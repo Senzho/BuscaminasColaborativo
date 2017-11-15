@@ -1,24 +1,19 @@
 package InterfazGrafica;
 
+import LogicaNegocio.Jugador;
 import LogicaNegocio.Solicitud;
 import LogicaNegocio.TipoDificultad;
-import io.socket.client.IO;
-import io.socket.client.Socket;
-import io.socket.emitter.Emitter;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
 import javafx.stage.Stage;
-import org.json.JSONObject;
 
 public class VentanaNuevaPartidaController implements Initializable {
     @FXML
@@ -41,20 +36,18 @@ public class VentanaNuevaPartidaController implements Initializable {
     private Button botonCancelar;
     @FXML
     private Button botonSolicitud;
+    @FXML
+    private ListView listaJugadores;
     
     private ResourceBundle recursos;
     private Stage stage;
     private VentanaTableroController tableroController;
-    private Socket socket;
+    private ObservableList<Jugador> jugadores;
+    private int idJugador;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        try {
-            this.socket = IO.socket("http://192.168.43.174:7000");
-            this.conectar();
-        } catch (URISyntaxException ex) {
-            Logger.getLogger(VentanaNuevaPartidaController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
     }    
     
     public void setStage(Stage stage){
@@ -63,6 +56,19 @@ public class VentanaNuevaPartidaController implements Initializable {
     public void setTableroController(VentanaTableroController controller){
         this.tableroController = controller;
         this.tableroController.setNuevaPartidaController(this);
+    }
+    public void setListaJugadores(ObservableList<Jugador> jugadores){
+        this.jugadores = jugadores;
+        for (Jugador jugador : this.jugadores){
+            this.listaJugadores.getItems().add(jugador.getNombreJugador());
+        }
+    }
+    public void setIdJugador(int idJugador){
+        this.idJugador = idJugador;
+    }
+    public void agregarJugador(Jugador jugador){
+        this.jugadores.add(jugador);
+        this.listaJugadores.getItems().add(jugador.getNombreJugador());
     }
     
     public void internacionalizar(ResourceBundle resource){
@@ -80,40 +86,27 @@ public class VentanaNuevaPartidaController implements Initializable {
         this.stage.setTitle(this.recursos.getString("nombreVentanaNueva"));
     }
     public void conectar(){
-        this.socket.on(Socket.EVENT_CONNECT, new Emitter.Listener(){
-            @Override
-            public void call(Object... os) {
-                
-            }
-        }).on("solicitud", new Emitter.Listener() {
-            @Override
-            public void call(Object... os) {
-                JSONObject object = (JSONObject) os[0];
-                Solicitud solicitud = new Solicitud();
-                solicitud.setColumnas(object.getInt("numeroColumnas"));
-                solicitud.setFilas(object.getInt("numeroFilas"));
-                solicitud.setIdCompañero(object.getInt("idCompañero"));
-                solicitud.setIdSolicitante(object.getInt("idSolicitante"));
-                solicitud.setNumeroMinas(object.getInt("numeroMinas"));
-                Platform.runLater(()->{
-                    tableroController.iniciarPartidaCliente(solicitud);
-                    cerrarVentana();
-                });
-            }
-        });
-        this.socket.connect();
+        
     }
     public void cerrarVentana(){
-        this.socket.disconnect();
         this.stage.close();
+    }
+    public int getId(String nombreJugador){
+        int id = 0;
+        for (Jugador jugador : this.jugadores){
+            if (jugador.getNombreJugador().equals(nombreJugador)){
+                id = jugador.getIdJugador();
+            }
+        }
+        return id;
     }
     
     public void botonCanelar_Click(){
         this.cerrarVentana();
     }
     public void botonSolicitud_Click(){
-        int idSolicitante = 1;
-        int idCompañero = 2;
+        int idSolicitante = this.idJugador;
+        int idCompañero = this.getId(this.listaJugadores.getSelectionModel().getSelectedItem().toString());
         Solicitud solicitud = null;
         if (this.radioFacil.isSelected()){
             solicitud = new Solicitud(idSolicitante, idCompañero, TipoDificultad.facil);
@@ -123,8 +116,7 @@ public class VentanaNuevaPartidaController implements Initializable {
             solicitud = new Solicitud(idSolicitante, idCompañero, TipoDificultad.avanzado);
         }
         if (solicitud != null){
-            socket.emit("solicitud", new JSONObject(solicitud));
-            this.tableroController.iniciarPartida(solicitud);
+            this.tableroController.enviarSolicitud(solicitud);
         }else{
             MessageFactory.showMessage("Warning", "Partida", "No has seleccionado la dificultad", Alert.AlertType.NONE);
         }

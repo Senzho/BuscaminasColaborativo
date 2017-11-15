@@ -1,9 +1,11 @@
 package InterfazGrafica;
 
+import LogicaNegocio.Jugador;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
@@ -12,9 +14,14 @@ import javafx.stage.Stage;
 public class VentanaNuevaPartida extends Application{
     private VentanaTableroController tableroController;
     private ResourceBundle resource;
-    public VentanaNuevaPartida (VentanaTableroController controler, ResourceBundle resource){
+    private int idJugador;
+    private ObservableList<Jugador> jugadores;
+    
+    public VentanaNuevaPartida (VentanaTableroController controler, ResourceBundle resource, ObservableList<Jugador> jugadores, int idJugador){
         this.resource = resource;
         this.tableroController = controler;
+        this.jugadores = jugadores;
+        this.idJugador = idJugador;
         try {
             this.start(new Stage());
         } catch (Exception ex) {
@@ -29,6 +36,8 @@ public class VentanaNuevaPartida extends Application{
         VentanaNuevaPartidaController controler = loader.getController();
         controler.setStage(primaryStage);
         controler.setTableroController(this.tableroController);
+        controler.setListaJugadores(this.jugadores);
+        controler.setIdJugador(this.idJugador);
         tableroController.setNuevaPartidaController(controler);
         controler.internacionalizar(resource);
         Scene scene = new Scene(layout, 860, 460);

@@ -13,6 +13,9 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -22,6 +25,9 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class VentanaTableroController implements Initializable, CasillaListener {
     @FXML
@@ -48,6 +54,8 @@ public class VentanaTableroController implements Initializable, CasillaListener 
     private Label respuestaNo;
     @FXML
     private GridPane gridJuego;
+    @FXML
+    private Label nombreCuentaLabel;
     
     private ResourceBundle resource;
     private VentanaNuevaPartidaController nuevaPartidaContrller;
@@ -59,6 +67,7 @@ public class VentanaTableroController implements Initializable, CasillaListener 
     private int numeroFilas;
     private Jugador jugador;
     private Socket socket;
+    private ObservableList<Jugador> listaJugadores;
     
     private final Image GEAR = new Image(this.getClass().getResourceAsStream("/RecursosGraficos/gear.png"));
     private final Image GEAR_HOVER = new Image(this.getClass().getResourceAsStream("/RecursosGraficos/gear-hover.png"));
@@ -82,19 +91,16 @@ public class VentanaTableroController implements Initializable, CasillaListener 
         this.gridJuego.setVgap(1);
         this.historial = new ArrayList();
         this.minas = new ArrayList();
-        /*try {
-            this.socket = IO.socket("http://localhost:7000");
-            this.conectar();
-        } catch (URISyntaxException ex) {
-            Logger.getLogger(VentanaTableroController.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
+        this.listaJugadores = FXCollections.observableArrayList();
     }
     
     public void setStage(Stage stage){
         this.stage = stage;
+        this.stage.setOnCloseRequest(this.windowHandler);
     }
     public void setJugador(Jugador jugador){
         this.jugador = jugador;
+        this.nombreCuentaLabel.setText(jugador.getNombreJugador());
     }
     public void setNuevaPartidaController(VentanaNuevaPartidaController controller){
         this.nuevaPartidaContrller = controller;
@@ -109,6 +115,13 @@ public class VentanaTableroController implements Initializable, CasillaListener 
         this.stage.setTitle(rb.getString("nombreVentanaTablero"));
         if(nuevaPartidaContrller != null){
             nuevaPartidaContrller.internacionalizar(resource);
+        }
+        try {
+            this.socket = IO.socket("http://192.168.43.174:7000");
+            this.conectar();
+            this.socket.emit("jugadorConectado", new JSONObject(this.jugador));
+        } catch (URISyntaxException ex) {
+            Logger.getLogger(VentanaTableroController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     public void cargarPanelJugador(Solicitud solicitud){
@@ -133,7 +146,7 @@ public class VentanaTableroController implements Initializable, CasillaListener 
             }
         }
     }
-    public void iniciarPartidaGeneral(Solicitud solicitud){
+    public void iniciarPartida(Solicitud solicitud){
         this.reestablecerGrid();
         this.historial.clear();
         this.minas.clear();
@@ -141,13 +154,6 @@ public class VentanaTableroController implements Initializable, CasillaListener 
         this.numeroColumnas = solicitud.getNumeroColumnas();
         this.labelNumeroMinas.setText("" + solicitud.getNumeroMinas());
         cargarPanelJugador(solicitud);
-    }
-    public void iniciarPartida(Solicitud solicitud){
-        this.iniciarPartidaGeneral(solicitud);
-        this.agregarMinas(solicitud.getNumeroMinas());
-    }
-    public void iniciarPartidaCliente(Solicitud solicitud){
-        this.iniciarPartidaGeneral(solicitud);
     }
     public void mostrarMinas(){
         for (Casilla casilla : this.minas){
@@ -161,18 +167,18 @@ public class VentanaTableroController implements Initializable, CasillaListener 
             this.minas.add(casilla);       
         }
     }
-    public void agregarMinas(int numeroMinas){
-        for (int i = 0; i < numeroMinas; i ++){
+    public void agregarMinas(/*int numeroMinas*/){
+        /*for (int i = 0; i < numeroMinas; i ++){
             int y = this.getRandom(0, this.numeroFilas - 1);
             int x = this.getRandom(0, this.numeroColumnas - 1);
             this.agregarMina(y, x);
-        }
+        }*/
     }
-    public int getRandom(int min, int max){
+    /*public int getRandom(int min, int max){
         int numero = 0;
         numero = (int)(Math.random()*(max - min + 1 ) + min);
         return numero;
-    }
+    }*/
     public ArrayList<Casilla> getRango(Casilla casilla){
         ArrayList<Casilla> rango = new ArrayList();
         int x = casilla.getX();
@@ -271,15 +277,62 @@ public class VentanaTableroController implements Initializable, CasillaListener 
         this.gridJuego.getRowConstraints().clear();
         this.gridJuego.getColumnConstraints().clear();
     }
-    /*public void conectar(){
-        this.socket.on(Socket.EVENT_CONNECT, new Emitter.Listener(){
+    public void mostrarVentanaNuevaPartida(){
+        new VentanaNuevaPartida(this, this.resource, this.listaJugadores, this.jugador.getIdJugador());
+    }
+    public void enviarSolicitud(Solicitud solicitud){
+    	if (this.nuevaPartidaContrller != null){
+			this.nuevaPartidaContrller.cerrarVentana();
+    	}
+        this.socket.emit("solicitudPartida", new JSONObject(solicitud));
+    }
+    public void conectar(){
+        this.socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
             @Override
             public void call(Object... os) {
                 
             }
+        }).on("solicitud", new Emitter.Listener() {
+            @Override
+            public void call(Object... os) {
+                JSONObject solicitudJson = (JSONObject) os[0];
+                Solicitud solicitud = new Solicitud();
+                solicitud.setColumnas(solicitudJson.getInt("numeroColumnas"));
+                solicitud.setFilas(solicitudJson.getInt("numeroFilas"));
+                solicitud.setIdCompañero(solicitudJson.getInt("idCompañero"));
+                solicitud.setIdSolicitante(solicitudJson.getInt("idSolicitante"));
+                solicitud.setNumeroMinas(solicitudJson.getInt("numeroMinas"));
+                Platform.runLater(()->{
+                    iniciarPartida(solicitud);
+                });
+            }
+        }).on("nuevoJugador", new Emitter.Listener() {
+            @Override
+            public void call(Object... os) {
+                JSONObject objecto = (JSONObject) os[0];
+                Jugador jugador = new Jugador(objecto.getInt("idJugador"), objecto.getString("nombreJugador"), 0, 0);
+                if (nuevaPartidaContrller != null){
+                    nuevaPartidaContrller.agregarJugador(jugador);
+                }
+            }
+        }).on("jugadorLista", new Emitter.Listener() {
+            @Override
+            public void call(Object... os) {
+                listaJugadores.clear();
+                JSONArray arregloJson = (JSONArray) os[0];
+                for (int i = 0; i < arregloJson.length(); i ++){
+                    Object objecto = arregloJson.get(i);
+                    JSONObject jsonObject = (JSONObject) objecto;
+                    Jugador jugador = new Jugador(jsonObject.getInt("idJugador"), jsonObject.getString("nombreJugador"), 0, 0);
+                    listaJugadores.add(jugador);
+                }
+                Platform.runLater(()->{
+                    mostrarVentanaNuevaPartida();
+                });
+            }
         });
         this.socket.connect();
-    }*/
+    }
     
     //Eventos:
     
@@ -328,7 +381,7 @@ public class VentanaTableroController implements Initializable, CasillaListener 
     }
     public void botonPlayPause_MouseUp(){
         this.botonPlayPause.setImage(this.TRIANGLE_RIGHT_HOVER);
-        new VentanaNuevaPartida(this, resource);
+        this.socket.emit("getJugadores");
     }
     public void botonPlayPause_MouseLeave(){
         this.botonPlayPause.setImage(this.TRIANGLE_RIGHT);
@@ -341,7 +394,7 @@ public class VentanaTableroController implements Initializable, CasillaListener 
     }
     public void respuestaSi_MouseUp(){
         this.respuestaSi.setStyle("-fx-text-fill: #0066ff");
-        new VentanaNuevaPartida(this, resource);
+        this.socket.emit("getJugadores");
     }
     public void respuestaSi_MouseLeave(){
         this.respuestaSi.setStyle("-fx-text-fill: #086600");
@@ -395,4 +448,12 @@ public class VentanaTableroController implements Initializable, CasillaListener 
         }
         return numero;
     }
+    EventHandler<WindowEvent> windowHandler = new EventHandler<WindowEvent>(){
+        @Override
+        public void handle(WindowEvent event) {
+            socket.emit("jugadorDesconectado", jugador.getIdJugador());
+            socket.disconnect();
+            System.exit(0);
+        }
+    };
 }

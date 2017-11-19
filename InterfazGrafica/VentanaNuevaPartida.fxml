@@ -7,46 +7,46 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="443.0" prefWidth="817.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="InterfazGrafica.VentanaNuevaPartidaController">
+<AnchorPane id="AnchorPane" prefHeight="464.0" prefWidth="590.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="InterfazGrafica.VentanaNuevaPartidaController">
   <children>
     <Label fx:id="labelJugadores" text="Jugadores:" textFill="GREY" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="27.0">
       <font>
         <Font name="System Bold" size="40.0" fx:id="x1" />
       </font>
     </Label>
-    <Label fx:id="labelDificultad" font="$x1" text="Dificultad:" textFill="GREY" AnchorPane.leftAnchor="306.0" AnchorPane.topAnchor="27.0" />
-    <ListView fx:id="listaJugadores" prefHeight="234.0" prefWidth="247.0" AnchorPane.bottomAnchor="117.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="92.0" />
-    <Pane prefHeight="134.0" prefWidth="141.0" AnchorPane.leftAnchor="306.0" AnchorPane.topAnchor="92.0">
+    <Label fx:id="labelDificultad" font="$x1" text="Dificultad:" textFill="GREY" AnchorPane.leftAnchor="251.0" AnchorPane.topAnchor="27.0" />
+    <ListView fx:id="listaJugadores" prefHeight="234.0" prefWidth="204.0" AnchorPane.bottomAnchor="117.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="92.0" />
+    <Pane fx:id="panelFacil" prefHeight="134.0" prefWidth="157.0" AnchorPane.leftAnchor="251.0" AnchorPane.topAnchor="92.0">
       <children>
         <RadioButton fx:id="radioFacil" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" text="Facil">
           <font>
             <Font size="20.0" fx:id="x2" />
           </font>
         </RadioButton>
-        <Label fx:id="labelFacil" layoutX="55.0" layoutY="96.0" text="10 minas">
+        <Label fx:id="labelFacil" layoutX="71.0" layoutY="96.0" text="10 minas">
           <font>
             <Font size="18.0" fx:id="x3" />
           </font>
         </Label>
       </children>
     </Pane>
-    <Pane prefHeight="134.0" prefWidth="157.0" AnchorPane.leftAnchor="454.0" AnchorPane.topAnchor="92.0">
+    <Pane fx:id="panelMedio" prefHeight="134.0" prefWidth="157.0" AnchorPane.leftAnchor="419.0" AnchorPane.topAnchor="92.0">
       <children>
         <RadioButton fx:id="radioMedio" font="$x2" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" text="Medio" />
         <Label fx:id="labelMedio" font="$x3" layoutX="71.0" layoutY="96.0" text="15 minas" />
       </children>
     </Pane>
-    <Pane prefHeight="134.0" prefWidth="157.0" AnchorPane.leftAnchor="625.0" AnchorPane.topAnchor="92.0">
+    <Pane fx:id="panelAvanzado" prefHeight="134.0" prefWidth="157.0" AnchorPane.leftAnchor="251.0" AnchorPane.topAnchor="236.0">
       <children>
         <RadioButton fx:id="radioAvanzado" font="$x2" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" text="Avanzado" />
         <Label fx:id="labelAvanzado" font="$x3" layoutX="71.0" layoutY="96.0" text="30 minas" />
       </children>
     </Pane>
-    <Button fx:id="botonSolicitud" mnemonicParsing="false" onMouseClicked="#botonSolicitud_Click" prefHeight="68.0" prefWidth="280.0" text="Enviar solicitud" AnchorPane.bottomAnchor="26.0" AnchorPane.rightAnchor="28.0">
+    <Button fx:id="botonSolicitud" minHeight="41.0" mnemonicParsing="false" onMouseClicked="#botonSolicitud_Click" prefHeight="41.0" prefWidth="232.0" text="Enviar solicitud" AnchorPane.bottomAnchor="26.0" AnchorPane.rightAnchor="24.0">
       <font>
-        <Font size="25.0" fx:id="x4" />
+        <Font size="23.0" fx:id="x4" />
       </font>
     </Button>
-    <Button fx:id="botonCancelar" font="$x4" mnemonicParsing="false" onMouseClicked="#botonCanelar_Click" prefHeight="68.0" prefWidth="280.0" text="Cancelar" AnchorPane.bottomAnchor="26.0" AnchorPane.rightAnchor="342.0" />
+    <Button fx:id="botonCancelar" font="$x4" minHeight="41.0" mnemonicParsing="false" onMouseClicked="#botonCanelar_Click" prefHeight="41.0" prefWidth="232.0" text="Cancelar" AnchorPane.bottomAnchor="26.0" AnchorPane.rightAnchor="275.0" />
   </children>
 </AnchorPane>

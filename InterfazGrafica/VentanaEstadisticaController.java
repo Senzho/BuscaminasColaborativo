@@ -67,7 +67,7 @@ public class VentanaEstadisticaController implements Initializable{
     }
     public void cargarEstadisticas(){
         try {
-            Cliente cliente = new Cliente("192.168.43.174");
+            Cliente cliente = new Cliente("localhost");
             DatosJugador datosJugador = cliente.getEstadisticas(this.idJugador);
             Jugador jugador = datosJugador.getJugador();
             this.lblNombreUsuario.setText(jugador.getNombreJugador());

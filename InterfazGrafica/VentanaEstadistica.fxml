@@ -11,7 +11,7 @@
   <children>
     <Button fx:id="btnAceptar" mnemonicParsing="false" onMouseClicked="#btnAceptar_Click" text="Ok" AnchorPane.bottomAnchor="29.0" AnchorPane.rightAnchor="42.0">
       <font>
-        <Font size="30.0" />
+        <Font size="23.0" />
       </font>
     </Button>
     <Label fx:id="lblNombreUsuario" alignment="CENTER" prefWidth="351.0" text="Usuario" textFill="#9f9f9f" wrapText="false" AnchorPane.leftAnchor="46.0" AnchorPane.rightAnchor="42.0" AnchorPane.topAnchor="48.0">

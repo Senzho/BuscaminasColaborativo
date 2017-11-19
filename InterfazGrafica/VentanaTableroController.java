@@ -9,6 +9,7 @@ import io.socket.emitter.Emitter;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,6 +19,9 @@ import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -56,6 +60,8 @@ public class VentanaTableroController implements Initializable, CasillaListener 
     private GridPane gridJuego;
     @FXML
     private Label nombreCuentaLabel;
+    @FXML
+    private Label labelBienvenido;
     
     private ResourceBundle resource;
     private VentanaNuevaPartidaController nuevaPartidaContrller;
@@ -68,6 +74,8 @@ public class VentanaTableroController implements Initializable, CasillaListener 
     private Jugador jugador;
     private Socket socket;
     private ObservableList<Jugador> listaJugadores;
+    private int idCompañero;
+    private boolean miTurno;
     
     private final Image GEAR = new Image(this.getClass().getResourceAsStream("/RecursosGraficos/gear.png"));
     private final Image GEAR_HOVER = new Image(this.getClass().getResourceAsStream("/RecursosGraficos/gear-hover.png"));
@@ -86,6 +94,7 @@ public class VentanaTableroController implements Initializable, CasillaListener 
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        this.miTurno = false;
         this.gridJuego.setStyle("-fx-border-width: 2;-fx-border-color: #848484;-fx-border-style: solid;");
         this.gridJuego.setHgap(1);
         this.gridJuego.setVgap(1);
@@ -101,12 +110,20 @@ public class VentanaTableroController implements Initializable, CasillaListener 
     public void setJugador(Jugador jugador){
         this.jugador = jugador;
         this.nombreCuentaLabel.setText(jugador.getNombreJugador());
+        try {
+            this.socket = IO.socket("http://localhost:7000");
+            this.conectar();
+            this.socket.emit("jugadorConectado", new JSONObject(this.jugador));
+        } catch (URISyntaxException ex) {
+            Logger.getLogger(VentanaTableroController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     public void setNuevaPartidaController(VentanaNuevaPartidaController controller){
         this.nuevaPartidaContrller = controller;
     }
     public void internacionalizar(ResourceBundle rb){
         this.resource = rb;
+        this.labelBienvenido.setText(rb.getString("labelBienvenido"));
         this.labelTextoMinas.setText(rb.getString("labelTextoMinas"));
         this.resultadoJuego.setText(rb.getString("win"));
         this.preguntaJuego.setText(rb.getString("newGame"));
@@ -115,13 +132,6 @@ public class VentanaTableroController implements Initializable, CasillaListener 
         this.stage.setTitle(rb.getString("nombreVentanaTablero"));
         if(nuevaPartidaContrller != null){
             nuevaPartidaContrller.internacionalizar(resource);
-        }
-        try {
-            this.socket = IO.socket("http://192.168.43.174:7000");
-            this.conectar();
-            this.socket.emit("jugadorConectado", new JSONObject(this.jugador));
-        } catch (URISyntaxException ex) {
-            Logger.getLogger(VentanaTableroController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     public void cargarPanelJugador(Solicitud solicitud){
@@ -219,23 +229,14 @@ public class VentanaTableroController implements Initializable, CasillaListener 
         Casilla casilla = this.matrizCasillas[x][y];
         ArrayList<Casilla> rango = this.getRango(casilla);
         int minas = this.getMinasPorRango(rango);
+        casilla.descubrirCasilla();
         if (minas > 0){
-            casilla.descubrirCasilla();
             casilla.establecerNumeros(minas);
         }else{
             for (Casilla cas : rango){
-                if (!cas.tieneMina()){
-                    int minasRango = this.getMinasPorRango(this.getRango(cas));
-                    if (minasRango > 0){
-                        cas.descubrirCasilla();
-                        cas.establecerNumeros(minasRango);
-                    }else{
-                        cas.descubrirCasilla();
-                        if (!this.yaRevisado(cas)){
-                            this.historial.add(cas);
-                            this.buscar(cas.getX(), cas.getY());
-                        }
-                    }
+                if (!this.yaRevisado(cas)){
+                    this.historial.add(cas);
+                    this.buscar(cas.getX(), cas.getY());
                 }
             }
         }
@@ -265,6 +266,7 @@ public class VentanaTableroController implements Initializable, CasillaListener 
         this.respuestaSi.setVisible(false);
     }
     public void partidaPerdida(){
+        this.miTurno = false;
         this.preguntaJuego.setVisible(true);
         this.resultadoJuego.setVisible(true);
         this.resultadoJuego.setStyle("-fx-text-fill: " + this.COLOR_ROJO);
@@ -281,10 +283,8 @@ public class VentanaTableroController implements Initializable, CasillaListener 
         new VentanaNuevaPartida(this, this.resource, this.listaJugadores, this.jugador.getIdJugador());
     }
     public void enviarSolicitud(Solicitud solicitud){
-    	if (this.nuevaPartidaContrller != null){
-			this.nuevaPartidaContrller.cerrarVentana();
-    	}
-        this.socket.emit("solicitudPartida", new JSONObject(solicitud));
+    	this.socket.emit("solicitudPartida", new JSONObject(solicitud));
+        this.miTurno = true;
     }
     public void conectar(){
         this.socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
@@ -292,7 +292,7 @@ public class VentanaTableroController implements Initializable, CasillaListener 
             public void call(Object... os) {
                 
             }
-        }).on("solicitud", new Emitter.Listener() {
+        }).on("iniciarPartida", new Emitter.Listener() {
             @Override
             public void call(Object... os) {
                 JSONObject solicitudJson = (JSONObject) os[0];
@@ -302,8 +302,18 @@ public class VentanaTableroController implements Initializable, CasillaListener 
                 solicitud.setIdCompañero(solicitudJson.getInt("idCompañero"));
                 solicitud.setIdSolicitante(solicitudJson.getInt("idSolicitante"));
                 solicitud.setNumeroMinas(solicitudJson.getInt("numeroMinas"));
+                idCompañero = solicitud.getIdCompañero();
                 Platform.runLater(()->{
                     iniciarPartida(solicitud);
+                    if (nuevaPartidaContrller != null){
+                        nuevaPartidaContrller.cerrarVentana();
+                    }
+                    JSONArray arregloJson = (JSONArray) os[1];
+                    for (int i = 0; i < arregloJson.length(); i ++){
+                        Object objecto = arregloJson.get(i);
+                        JSONObject jsonObject = (JSONObject) objecto;
+                        agregarMina(jsonObject.getInt("coordenadaX"), jsonObject.getInt("coordenadaY"));
+                    }
                 });
             }
         }).on("nuevoJugador", new Emitter.Listener() {
@@ -328,6 +338,42 @@ public class VentanaTableroController implements Initializable, CasillaListener 
                 }
                 Platform.runLater(()->{
                     mostrarVentanaNuevaPartida();
+                });
+            }
+        }).on("solicitud", new Emitter.Listener() {
+            @Override
+            public void call(Object... os) {
+                Platform.runLater(()->{
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.setTitle("Nueva partida");
+                    alert.setHeaderText("Solicitud");
+                    alert.setContentText("El usuario: " + "NULL" + " quiere jugar una partida contigo :)");
+                    Optional<ButtonType> respuesta = alert.showAndWait();
+                    String aceptado = "";
+                    if (respuesta.get().getButtonData().equals(ButtonData.OK_DONE)){
+                        aceptado = "aceptado";
+                    }else{
+                        aceptado = "noAceptado";
+                    }
+                    socket.emit("respuestaPartida", aceptado, os[0]);
+                });
+            }
+        }).on("rechazado", new Emitter.Listener() {
+            @Override
+            public void call(Object... os) {
+                miTurno = false;
+                Platform.runLater(()->{
+                    nuevaPartidaContrller.mostrarMensajeRechazo();
+                });
+            }
+        }).on("tiroRecibido", new Emitter.Listener() {
+            @Override
+            public void call(Object... os) {
+                miTurno = true;
+                int x = Integer.parseInt(String.valueOf(os[0]));
+                int y = Integer.parseInt(String.valueOf(os[1]));
+                Platform.runLater(()->{
+                    matrizCasillas[x][y].dispararEvento();
                 });
             }
         });
@@ -415,15 +461,23 @@ public class VentanaTableroController implements Initializable, CasillaListener 
     }
 
     @Override
-    public void casillaSeleccionada(int coordenadaX, int coordenadaY) {
-        if (this.matrizCasillas[coordenadaX][coordenadaY].tieneMina()){
-            this.mostrarMinas();
-            this.partidaPerdida();
-        }else{
-            this.buscar(coordenadaX, coordenadaY);
-            if((this.numeroColumnas* this.numeroFilas)==(todoDescubierto()+ganarParida())){
-                this.partidaGanada();
+    public void casillaSeleccionada(int coordenadaX, int coordenadaY, boolean emitir) {
+        if (this.miTurno){
+            if (emitir){
+                this.miTurno = false;
+                this.socket.emit("tiro", coordenadaX, coordenadaY, this.idCompañero);
             }
+            if (this.matrizCasillas[coordenadaX][coordenadaY].tieneMina()){
+                this.mostrarMinas();
+                this.partidaPerdida();
+            }else{
+                this.buscar(coordenadaX, coordenadaY);
+                if((this.numeroColumnas* this.numeroFilas)==(todoDescubierto()+ganarParida())){
+                    this.partidaGanada();
+                }
+            }
+        }else{
+            MessageFactory.showMessage("Información", "Turno", "Debes esperar tu turno", Alert.AlertType.INFORMATION);
         }
     }
     public int todoDescubierto(){

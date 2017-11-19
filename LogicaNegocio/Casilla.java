@@ -35,11 +35,14 @@ public class Casilla{
         @Override
         public void handle(MouseEvent event) {
             if (event.getButton().equals(MouseButton.PRIMARY)){
-                casillaListener.casillaSeleccionada(coordenadaX, coordenadaY);
+                casillaListener.casillaSeleccionada(coordenadaX, coordenadaY, true);
             }
         }
     };
 
+    public void dispararEvento(){
+        casillaListener.casillaSeleccionada(coordenadaX, coordenadaY, false);
+    }
     public void descubrirCasilla(){
         this.casillaCubierta = false;
         panelMina.setImage(new Image(this.getClass().getResourceAsStream("/RecursosGraficos/Color_Blanco.PNG")));
@@ -49,8 +52,6 @@ public class Casilla{
     }
     public void agregarMina(){
         this.tieneMina = true;
-        //Prueba de gane:
-        //panelMina.setImage(new Image(this.getClass().getResourceAsStream("/RecursosGraficos/mina.png")));
     }
     public void mostrarMina(){
        panelMina.setImage(new Image(this.getClass().getResourceAsStream("/RecursosGraficos/mina.png")));

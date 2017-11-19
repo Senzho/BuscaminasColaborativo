@@ -46,7 +46,7 @@ public class VentanaMejorJugadorController implements Initializable{
     }
     public void cargarJugadores(){
         try {
-            Cliente cliente = new Cliente("192.168.43.174");
+            Cliente cliente = new Cliente("localhost");
             ArrayList<Jugador> jugadores = cliente.getListaJugadores();
             for (Jugador jugador : jugadores){
                 System.out.println("/n" + jugador.getNombreJugador() + ":");

@@ -32,7 +32,7 @@ public class VentanaInicioSesionController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
-            this.cliente = new Cliente("192.168.43.174");
+            this.cliente = new Cliente("localhost");
         } catch (RemoteException ex) {
             Logger.getLogger(VentanaInicioSesionController.class.getName()).log(Level.SEVERE, null, ex);
         }

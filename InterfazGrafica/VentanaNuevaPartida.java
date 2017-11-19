@@ -36,11 +36,11 @@ public class VentanaNuevaPartida extends Application{
         VentanaNuevaPartidaController controler = loader.getController();
         controler.setStage(primaryStage);
         controler.setTableroController(this.tableroController);
-        controler.setListaJugadores(this.jugadores);
         controler.setIdJugador(this.idJugador);
+        controler.setListaJugadores(this.jugadores);
         tableroController.setNuevaPartidaController(controler);
         controler.internacionalizar(resource);
-        Scene scene = new Scene(layout, 860, 460);
+        Scene scene = new Scene(layout, 660, 470);
         primaryStage.setScene(scene);
         primaryStage.show();
     }

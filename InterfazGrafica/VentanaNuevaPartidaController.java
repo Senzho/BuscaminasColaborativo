@@ -13,6 +13,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 public class VentanaNuevaPartidaController implements Initializable {
@@ -38,6 +39,12 @@ public class VentanaNuevaPartidaController implements Initializable {
     private Button botonSolicitud;
     @FXML
     private ListView listaJugadores;
+    @FXML
+    private Pane panelFacil;
+    @FXML
+    private Pane panelMedio;
+    @FXML
+    private Pane panelAvanzado;
     
     private ResourceBundle recursos;
     private Stage stage;
@@ -47,7 +54,9 @@ public class VentanaNuevaPartidaController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
+        this.panelFacil.setStyle("-fx-border-width: 2;-fx-border-color: #BDBDBD;-fx-border-style: solid;");
+        this.panelMedio.setStyle("-fx-border-width: 2;-fx-border-color: #BDBDBD;-fx-border-style: solid;");
+        this.panelAvanzado.setStyle("-fx-border-width: 2;-fx-border-color: #BDBDBD;-fx-border-style: solid;");
     }    
     
     public void setStage(Stage stage){
@@ -60,7 +69,10 @@ public class VentanaNuevaPartidaController implements Initializable {
     public void setListaJugadores(ObservableList<Jugador> jugadores){
         this.jugadores = jugadores;
         for (Jugador jugador : this.jugadores){
-            this.listaJugadores.getItems().add(jugador.getNombreJugador());
+            int id = jugador.getIdJugador();
+            if (id != this.idJugador){
+                this.listaJugadores.getItems().add(jugador.getNombreJugador());
+            }
         }
     }
     public void setIdJugador(int idJugador){
@@ -85,9 +97,6 @@ public class VentanaNuevaPartidaController implements Initializable {
         this.botonSolicitud.setText(this.recursos.getString("botonSolicitud"));
         this.stage.setTitle(this.recursos.getString("nombreVentanaNueva"));
     }
-    public void conectar(){
-        
-    }
     public void cerrarVentana(){
         this.stage.close();
     }
@@ -100,25 +109,34 @@ public class VentanaNuevaPartidaController implements Initializable {
         }
         return id;
     }
+    public void mostrarMensajeRechazo(){
+        MessageFactory.showMessage("Mensaje", "Solicitud rechazada", "El usuario rechazó tu solicitud de partida :(", Alert.AlertType.INFORMATION);
+    }
     
     public void botonCanelar_Click(){
         this.cerrarVentana();
     }
     public void botonSolicitud_Click(){
         int idSolicitante = this.idJugador;
-        int idCompañero = this.getId(this.listaJugadores.getSelectionModel().getSelectedItem().toString());
-        Solicitud solicitud = null;
-        if (this.radioFacil.isSelected()){
-            solicitud = new Solicitud(idSolicitante, idCompañero, TipoDificultad.facil);
-        }else if(this.radioMedio.isSelected()){
-            solicitud = new Solicitud(idSolicitante, idCompañero, TipoDificultad.medio);
-        }else if(this.radioAvanzado.isSelected()){
-            solicitud = new Solicitud(idSolicitante, idCompañero, TipoDificultad.avanzado);
-        }
-        if (solicitud != null){
-            this.tableroController.enviarSolicitud(solicitud);
+        int idCompañero = 0;
+        Object itemSeleccionado = this.listaJugadores.getSelectionModel().getSelectedItem();
+        if (itemSeleccionado != null){
+            idCompañero = this.getId(itemSeleccionado.toString());
+            Solicitud solicitud = null;
+            if (this.radioFacil.isSelected()){
+                solicitud = new Solicitud(idSolicitante, idCompañero, TipoDificultad.facil);
+            }else if(this.radioMedio.isSelected()){
+                solicitud = new Solicitud(idSolicitante, idCompañero, TipoDificultad.medio);
+            }else if(this.radioAvanzado.isSelected()){
+                solicitud = new Solicitud(idSolicitante, idCompañero, TipoDificultad.avanzado);
+            }
+            if (solicitud != null){
+                this.tableroController.enviarSolicitud(solicitud);
+            }else{
+                MessageFactory.showMessage("Advertencia", "Partida", "No has seleccionado la dificultad", Alert.AlertType.WARNING);
+            }
         }else{
-            MessageFactory.showMessage("Warning", "Partida", "No has seleccionado la dificultad", Alert.AlertType.NONE);
+            MessageFactory.showMessage("Advertencia", "Partida", "No has seleccionado tu compañero", Alert.AlertType.WARNING);
         }
     }
 }

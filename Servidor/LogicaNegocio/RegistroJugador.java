@@ -9,7 +9,7 @@ package LogicaNegocio;
  *
  * @author Compaq-presario-cq43
  */
-public interface JugadorDAO {
-    public RegistroJugador registrarJugador(String nombre);
-    public LogicaNegocio.Jugador validarSesion(String nombreJugador);
+public enum RegistroJugador {
+    JUGADOR_EXISTENTE,
+    JUGADOR_APROBADO
 }

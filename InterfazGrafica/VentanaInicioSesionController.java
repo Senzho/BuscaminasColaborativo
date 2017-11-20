@@ -2,6 +2,7 @@ package InterfazGrafica;
 
 import LogicaNegocio.Cliente;
 import LogicaNegocio.Jugador;
+import LogicaNegocio.RegistroJugador;
 import java.net.URL;
 import java.rmi.RemoteException;
 import java.util.ResourceBundle;
@@ -63,10 +64,10 @@ public class VentanaInicioSesionController implements Initializable {
     }
     public void btnRegistrar_Click(){
         try {
-            if (cliente.registrarJugador(this.txtNombreUsuario.getText())){
+            if (cliente.registrarJugador(this.txtNombreUsuario.getText()) == RegistroJugador.JUGADOR_APROBADO){
                 MessageFactory.showMessage("Éxito", "Registro de jugador", "El jugador: " + this.txtNombreUsuario.getText() + " fue registrado exitosamente", Alert.AlertType.INFORMATION);
-            }else{
-                MessageFactory.showMessage("Error", "Registro de jugador", "El jugador: " + this.txtNombreUsuario.getText() + " no pudo ser registrado", Alert.AlertType.ERROR);
+            }else if(cliente.registrarJugador(this.txtNombreUsuario.getText()) == RegistroJugador.JUGADOR_EXISTENTE){
+                MessageFactory.showMessage("Error", "Registro de jugador", "El jugador: " + this.txtNombreUsuario.getText() + " ya existe", Alert.AlertType.ERROR);
             }
         } catch (RemoteException ex) {
             Logger.getLogger(VentanaInicioSesionController.class.getName()).log(Level.SEVERE, null, ex);

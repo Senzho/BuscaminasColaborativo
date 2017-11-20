@@ -27,24 +27,43 @@ public class JugadorDAOSql implements JugadorDAO {
         id = Integer.parseInt(String.valueOf(managerFactory.createEntityManager().createQuery(consulta, Integer.class).getSingleResult()));
         return id + 1;
     }
-    
-    @Override
-    public boolean registrarJugador(String nombre) {
+    private boolean RegistroJugador(String nombre){
         boolean registrado = false;
         EntityManagerFactory managerFactory = Persistence.createEntityManagerFactory("ServidorBuscaminasEjemplo1PU");
+        EntityManager entityManager = managerFactory.createEntityManager();
         Persistencia.Jugador jugadorP = new Persistencia.Jugador();
-        jugadorP.setIdJugador(getAsignarId());
-        jugadorP.setNombreJugador(nombre);
-        jugadorP.setPartidasJugadas(0);
-        jugadorP.setPartidasPerdidas(0);
-        JugadorJpaController jugadorController = new JugadorJpaController(managerFactory);
-        try {
-            jugadorController.create(jugadorP);
-            registrado = true;
-        } catch (Exception ex) {
-            Logger.getLogger(JugadorDAOSql.class.getName()).log(Level.SEVERE, null, ex);
-        }        
+        Query query = entityManager.createQuery("select j from Jugador j");
+        List<Persistencia.Jugador> listaJugadores = query.getResultList();
+        for (int i = 0; i < listaJugadores.size(); i++) {
+            if(listaJugadores.get(i).getNombreJugador().equals(nombre)){
+                registrado = true;
+                break;
+            }
+        }
         return registrado;
+    }
+    
+    @Override
+    public RegistroJugador registrarJugador(String nombre) {
+        RegistroJugador registro = RegistroJugador.JUGADOR_EXISTENTE;
+        EntityManagerFactory managerFactory = Persistence.createEntityManagerFactory("ServidorBuscaminasEjemplo1PU");
+        if(this.RegistroJugador(nombre) == false){           
+            Persistencia.Jugador jugadorP = new Persistencia.Jugador();
+            jugadorP.setIdJugador(getAsignarId());
+            jugadorP.setNombreJugador(nombre);
+            jugadorP.setPartidasJugadas(0);
+            jugadorP.setPartidasPerdidas(0);
+            JugadorJpaController jugadorController = new JugadorJpaController(managerFactory);
+            try {
+                jugadorController.create(jugadorP);
+                registro = RegistroJugador.JUGADOR_APROBADO;
+            } catch (Exception ex) {
+                Logger.getLogger(JugadorDAOSql.class.getName()).log(Level.SEVERE, null, ex);
+            }        
+        }else if(this.RegistroJugador(nombre) == true){
+            registro = RegistroJugador.JUGADOR_EXISTENTE;
+        }
+        return registro;
     }
 
     @Override

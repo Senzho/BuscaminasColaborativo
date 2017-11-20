@@ -27,15 +27,15 @@ public class Cliente {
         }
         return jugador;
     }
-    public boolean registrarJugador(String nombre) throws RemoteException{
-        boolean registrado = false;
+    public RegistroJugador registrarJugador(String nombre) throws RemoteException{
+        RegistroJugador registro = RegistroJugador.JUGADOR_APROBADO;
         try {
             ServidorDatos stub = (ServidorDatos) this.registro.lookup(this.ID_SERVIDOR);
-            registrado = stub.registrarJugador(nombre);
+            registro = stub.registrarJugador(nombre);
         } catch (NotBoundException ex) {
             Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return registrado;
+        return registro;
     }
     public boolean registrarPartida(Partida partida)throws RemoteException{
         boolean registrada = false;

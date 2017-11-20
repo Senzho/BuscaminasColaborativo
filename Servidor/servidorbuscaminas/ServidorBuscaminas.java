@@ -7,8 +7,8 @@ import LogicaNegocio.JugadorDAOSql;
 import LogicaNegocio.MejorJugadorDAO;
 import LogicaNegocio.Partida;
 import LogicaNegocio.PartidaDAO;
+import LogicaNegocio.RegistroJugador;
 import LogicaNegocio.ServidorDatos;
-import java.rmi.AccessException;
 import java.rmi.AlreadyBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -39,7 +39,7 @@ public class ServidorBuscaminas implements ServidorDatos {
     }
 
     @Override
-    public boolean registrarJugador(String nombreJugador) throws RemoteException {
+    public RegistroJugador registrarJugador(String nombreJugador) throws RemoteException {
         JugadorDAOSql jugadorDao = new JugadorDAOSql();
         return jugadorDao.registrarJugador(nombreJugador);
     }

@@ -64,4 +64,10 @@ public class ServidorBuscaminas implements ServidorDatos {
         MejorJugadorDAO jugador = new MejorJugadorDAO();
         return jugador.getListaJugadores();
     }
+
+    @Override
+    public boolean editarJugador(LogicaNegocio.Jugador jugador) throws RemoteException {
+        JugadorDAOSql jugadorDao = new JugadorDAOSql();
+        return jugadorDao.editarJugador(jugador);
+    }
 }

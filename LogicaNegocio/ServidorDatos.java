@@ -15,8 +15,9 @@ import java.util.ArrayList;
  */
 public interface ServidorDatos extends Remote{
     public Jugador validarSesion(String nombreJugador) throws RemoteException;
-    public boolean registrarJugador(String nombreJugador) throws RemoteException;
+    public RegistroJugador registrarJugador(String nombreJugador) throws RemoteException;
     public boolean registrarPartida(Partida partida) throws RemoteException;
     public DatosJugador getEstadisticas(int idJugador) throws RemoteException;
     public ArrayList<Jugador> getListaJugadores() throws RemoteException;
+    public boolean editarJugador(Jugador jugador) throws RemoteException;
 }

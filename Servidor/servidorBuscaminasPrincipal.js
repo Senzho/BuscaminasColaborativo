@@ -4,8 +4,8 @@ var listaDatos = new Array();
 var listaSockets = new Array();
 
 function SocketJugador(idJugador, socket){
-	this.socket = socket;
 	this.idJugador = idJugador;
+	this.socket = socket;
 }
 function Jugador(idJugador, nombreJugador) {
     this.idJugador = idJugador;
@@ -46,10 +46,20 @@ io.on("connection", function (socket) {
 		for (var i = 0; i < listaDatos.length; i++) {
             auxiliarBusqueda = listaDatos[i];
             if (auxiliarBusqueda.idJugador == idJugador) {
-                listaDatos.pop(auxiliarBusqueda);
-                console.log("jugador "+idJugador+" desconectado.");
+            	listaDatos.splice(i, 1);
+                console.log("jugador "+auxiliarBusqueda.idJugador+" desconectado.");
+                break;
             }
         }
+        for (var i = 0; i < listaSockets.length; i++) {
+            auxiliarBusqueda = listaSockets[i];
+            if (auxiliarBusqueda.idJugador == idJugador) {
+                listaSockets.splice(i, 1);
+                console.log("jugador "+auxiliarBusqueda.idJugador+" desconectado.");
+                break;
+            }
+        }
+        socket.broadcast.emit("jugadorDesconectado", idJugador);
     });
 	socket.on("solicitudPartida",function(solicitud){
             var nombre;

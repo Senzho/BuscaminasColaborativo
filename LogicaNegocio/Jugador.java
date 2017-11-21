@@ -27,4 +27,10 @@ public class Jugador implements Serializable {
     public int getPartidasPerdidas() {
         return partidasPerdidas;
     }
+    public void setPartidasJugadas(int partidasJugadas) {
+        this.partidasJugadas = partidasJugadas;
+    }
+    public void setPartidasPerdidas(int partidasPerdidas) {
+        this.partidasPerdidas = partidasPerdidas;
+    }
 }

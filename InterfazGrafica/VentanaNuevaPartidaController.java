@@ -82,6 +82,16 @@ public class VentanaNuevaPartidaController implements Initializable {
         this.jugadores.add(jugador);
         this.listaJugadores.getItems().add(jugador.getNombreJugador());
     }
+    public void eliminarJugador(int idJugador){
+        for (Object objeto : this.jugadores){
+            Jugador jugador = (Jugador) objeto;
+            if (jugador.getIdJugador() == idJugador){
+                this.jugadores.remove(objeto);
+                this.listaJugadores.getItems().remove(jugador.getNombreJugador());
+                break;
+            }
+        }
+    }
     
     public void internacionalizar(ResourceBundle resource){
         this.recursos = resource;

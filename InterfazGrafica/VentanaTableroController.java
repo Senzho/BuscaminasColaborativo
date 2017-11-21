@@ -1,13 +1,16 @@
 package InterfazGrafica;
 
 import LogicaNegocio.Casilla;
+import LogicaNegocio.Cliente;
 import LogicaNegocio.Jugador;
+import LogicaNegocio.Partida;
 import LogicaNegocio.Solicitud;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -74,8 +77,9 @@ public class VentanaTableroController implements Initializable, CasillaListener 
     private Jugador jugador;
     private Socket socket;
     private ObservableList<Jugador> listaJugadores;
-    private int idCompañero;
+    private Solicitud solicitudTurno;
     private boolean miTurno;
+    private Cliente cliente;
     
     private final Image GEAR = new Image(this.getClass().getResourceAsStream("/RecursosGraficos/gear.png"));
     private final Image GEAR_HOVER = new Image(this.getClass().getResourceAsStream("/RecursosGraficos/gear-hover.png"));
@@ -101,6 +105,11 @@ public class VentanaTableroController implements Initializable, CasillaListener 
         this.historial = new ArrayList();
         this.minas = new ArrayList();
         this.listaJugadores = FXCollections.observableArrayList();
+        try {
+            this.cliente = new Cliente("localhost");
+        } catch (RemoteException ex) {
+            Logger.getLogger(VentanaTableroController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     public void setStage(Stage stage){
@@ -177,18 +186,6 @@ public class VentanaTableroController implements Initializable, CasillaListener 
             this.minas.add(casilla);       
         }
     }
-    public void agregarMinas(/*int numeroMinas*/){
-        /*for (int i = 0; i < numeroMinas; i ++){
-            int y = this.getRandom(0, this.numeroFilas - 1);
-            int x = this.getRandom(0, this.numeroColumnas - 1);
-            this.agregarMina(y, x);
-        }*/
-    }
-    /*public int getRandom(int min, int max){
-        int numero = 0;
-        numero = (int)(Math.random()*(max - min + 1 ) + min);
-        return numero;
-    }*/
     public ArrayList<Casilla> getRango(Casilla casilla){
         ArrayList<Casilla> rango = new ArrayList();
         int x = casilla.getX();
@@ -258,6 +255,8 @@ public class VentanaTableroController implements Initializable, CasillaListener 
         this.resultadoJuego.setText(this.resource.getString("win"));
         this.respuestaNo.setVisible(true);
         this.respuestaSi.setVisible(true);
+        this.registrarPartida();
+        this.aumentarCuentaPartida(true);
     }
     public void ocultarEtiquetas(){
         this.preguntaJuego.setVisible(false);
@@ -273,6 +272,7 @@ public class VentanaTableroController implements Initializable, CasillaListener 
         this.resultadoJuego.setText(this.resource.getString("gameOver"));
         this.respuestaNo.setVisible(true);
         this.respuestaSi.setVisible(true);
+        this.aumentarCuentaPartida(false);
     }
     public void reestablecerGrid(){
         this.gridJuego.getChildren().clear();
@@ -285,6 +285,28 @@ public class VentanaTableroController implements Initializable, CasillaListener 
     public void enviarSolicitud(Solicitud solicitud){
     	this.socket.emit("solicitudPartida", new JSONObject(solicitud));
         this.miTurno = true;
+    }
+    public void registrarPartida(){
+        Partida partida = null;
+        partida = new Partida(this.solicitudTurno.getTipoDificultad().name(), this.labelTiempo.getText(), this.jugador.getIdJugador());
+        try {
+            if(!this.cliente.registrarPartida(partida)){
+                MessageFactory.showMessage("Error", "Partida", "No se pudo registrar la partida", Alert.AlertType.ERROR);
+            }
+        } catch (RemoteException ex) {
+            Logger.getLogger(VentanaTableroController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    public void aumentarCuentaPartida(boolean partidaGanada){
+        this.jugador.setPartidasJugadas(this.jugador.getPartidasJugadas() + 1);
+        if (!partidaGanada){
+            this.jugador.setPartidasPerdidas(this.jugador.getPartidasPerdidas() + 1);
+        }
+        try {
+            this.cliente.editarJugador(jugador);
+        } catch (RemoteException ex) {
+            Logger.getLogger(VentanaTableroController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     public void conectar(){
         this.socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
@@ -302,7 +324,7 @@ public class VentanaTableroController implements Initializable, CasillaListener 
                 solicitud.setIdCompañero(solicitudJson.getInt("idCompañero"));
                 solicitud.setIdSolicitante(solicitudJson.getInt("idSolicitante"));
                 solicitud.setNumeroMinas(solicitudJson.getInt("numeroMinas"));
-                idCompañero = solicitud.getIdCompañero();
+                solicitudTurno = solicitud;
                 Platform.runLater(()->{
                     iniciarPartida(solicitud);
                     if (nuevaPartidaContrller != null){
@@ -347,7 +369,7 @@ public class VentanaTableroController implements Initializable, CasillaListener 
                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                     alert.setTitle("Nueva partida");
                     alert.setHeaderText("Solicitud");
-                    alert.setContentText("El usuario: " + "NULL" + " quiere jugar una partida contigo :)");
+                    alert.setContentText("El usuario: " + os[1].toString() + " quiere jugar una partida contigo :)");
                     Optional<ButtonType> respuesta = alert.showAndWait();
                     String aceptado = "";
                     if (respuesta.get().getButtonData().equals(ButtonData.OK_DONE)){
@@ -375,6 +397,14 @@ public class VentanaTableroController implements Initializable, CasillaListener 
                 Platform.runLater(()->{
                     matrizCasillas[x][y].dispararEvento();
                 });
+            }
+        }).on("jugadorDesconectado", new Emitter.Listener() {
+            @Override
+            public void call(Object... os) {
+                if (nuevaPartidaContrller != null){
+                    int idJugador = Integer.parseInt(String.valueOf(os[0]));
+                    nuevaPartidaContrller.eliminarJugador(idJugador);
+                }
             }
         });
         this.socket.connect();
@@ -465,7 +495,7 @@ public class VentanaTableroController implements Initializable, CasillaListener 
         if (this.miTurno){
             if (emitir){
                 this.miTurno = false;
-                this.socket.emit("tiro", coordenadaX, coordenadaY, this.idCompañero);
+                this.socket.emit("tiro", coordenadaX, coordenadaY, this.solicitudTurno.getIdCompañero());
             }
             if (this.matrizCasillas[coordenadaX][coordenadaY].tieneMina()){
                 this.mostrarMinas();
@@ -505,7 +535,8 @@ public class VentanaTableroController implements Initializable, CasillaListener 
     EventHandler<WindowEvent> windowHandler = new EventHandler<WindowEvent>(){
         @Override
         public void handle(WindowEvent event) {
-            socket.emit("jugadorDesconectado", jugador.getIdJugador());
+            int id = jugador.getIdJugador();
+            socket.emit("jugadorDesconectado", id);
             socket.disconnect();
             System.exit(0);
         }

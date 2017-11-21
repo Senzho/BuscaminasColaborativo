@@ -19,4 +19,5 @@ public interface ServidorDatos extends Remote{
     public boolean registrarPartida(Partida partida) throws RemoteException;
     public DatosJugador getEstadisticas(int idJugador) throws RemoteException;
     public ArrayList<Jugador> getListaJugadores() throws RemoteException;
+    public boolean editarJugador(Jugador jugador) throws RemoteException;
 }

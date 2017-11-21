@@ -67,4 +67,14 @@ public class Cliente {
         }
         return jugadores;
     }
+    public boolean editarJugador(Jugador jugador) throws RemoteException{
+        boolean editado = true;
+        try {
+            ServidorDatos stub = (ServidorDatos) this.registro.lookup(this.ID_SERVIDOR);
+            editado = stub.editarJugador(jugador);
+        } catch (NotBoundException ex) {
+            Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return editado;
+    }
 }

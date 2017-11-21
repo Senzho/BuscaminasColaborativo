@@ -11,5 +11,6 @@ package LogicaNegocio;
  */
 public enum RegistroJugador {
     JUGADOR_EXISTENTE,
-    JUGADOR_APROBADO
+    JUGADOR_APROBADO,
+    ERROR_REGISTRO;
 }

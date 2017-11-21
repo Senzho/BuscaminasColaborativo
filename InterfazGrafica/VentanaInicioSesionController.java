@@ -68,6 +68,8 @@ public class VentanaInicioSesionController implements Initializable {
                 MessageFactory.showMessage("Éxito", "Registro de jugador", "El jugador: " + this.txtNombreUsuario.getText() + " fue registrado exitosamente", Alert.AlertType.INFORMATION);
             }else if(cliente.registrarJugador(this.txtNombreUsuario.getText()) == RegistroJugador.JUGADOR_EXISTENTE){
                 MessageFactory.showMessage("Error", "Registro de jugador", "El jugador: " + this.txtNombreUsuario.getText() + " ya existe", Alert.AlertType.ERROR);
+            }else{
+                MessageFactory.showMessage("Error", "Registro de jugador", "No se pudo acceder a la base de datos", Alert.AlertType.NONE);
             }
         } catch (RemoteException ex) {
             Logger.getLogger(VentanaInicioSesionController.class.getName()).log(Level.SEVERE, null, ex);

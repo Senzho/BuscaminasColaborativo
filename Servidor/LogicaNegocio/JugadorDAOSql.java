@@ -7,6 +7,9 @@ package LogicaNegocio;
 
 import Persistencia.Jugador;
 import Persistencia.JugadorJpaController;
+import Persistencia.PartidaJpaController;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,14 +25,14 @@ import javax.persistence.Query;
 public class JugadorDAOSql implements JugadorDAO {
     public int getAsignarId(){
         int id = 0;
-        EntityManagerFactory managerFactory = Persistence.createEntityManagerFactory("ServidorBuscaminasEjemplo1PU");
+        EntityManagerFactory managerFactory = Persistence.createEntityManagerFactory("ServidorBuscaminasPU");
         String consulta = "SELECT COUNT(j) FROM Jugador j";
         id = Integer.parseInt(String.valueOf(managerFactory.createEntityManager().createQuery(consulta, Integer.class).getSingleResult()));
         return id + 1;
     }
     private boolean RegistroJugador(String nombre){
         boolean registrado = false;
-        EntityManagerFactory managerFactory = Persistence.createEntityManagerFactory("ServidorBuscaminasEjemplo1PU");
+        EntityManagerFactory managerFactory = Persistence.createEntityManagerFactory("ServidorBuscaminasPU");
         EntityManager entityManager = managerFactory.createEntityManager();
         Persistencia.Jugador jugadorP = new Persistencia.Jugador();
         Query query = entityManager.createQuery("select j from Jugador j");
@@ -45,8 +48,8 @@ public class JugadorDAOSql implements JugadorDAO {
     
     @Override
     public RegistroJugador registrarJugador(String nombre) {
-        RegistroJugador registro = RegistroJugador.JUGADOR_EXISTENTE;
-        EntityManagerFactory managerFactory = Persistence.createEntityManagerFactory("ServidorBuscaminasEjemplo1PU");
+        RegistroJugador registro = RegistroJugador.ERROR_REGISTRO;
+        EntityManagerFactory managerFactory = Persistence.createEntityManagerFactory("ServidorBuscaminasPU");
         if(this.RegistroJugador(nombre) == false){           
             Persistencia.Jugador jugadorP = new Persistencia.Jugador();
             jugadorP.setIdJugador(getAsignarId());
@@ -70,7 +73,7 @@ public class JugadorDAOSql implements JugadorDAO {
     public LogicaNegocio.Jugador validarSesion(String nombreJugador) {
         Persistencia.Jugador jugadorPersistencia = null;
         LogicaNegocio.Jugador jugadorPrincipal = null;
-        EntityManagerFactory managerFactory = Persistence.createEntityManagerFactory("ServidorBuscaminasEjemplo1PU");
+        EntityManagerFactory managerFactory = Persistence.createEntityManagerFactory("ServidorBuscaminasPU");
         EntityManager entityManager = managerFactory.createEntityManager();
         Query query = entityManager.createQuery("select j from Jugador j where j.nombreJugador = :nombreJugador");
         query.setParameter("nombreJugador",nombreJugador);
@@ -84,5 +87,29 @@ public class JugadorDAOSql implements JugadorDAO {
             }  
         }
         return jugadorPrincipal;
-     }
+    }
+    public boolean editarJugador(LogicaNegocio.Jugador jugador){
+        boolean editado = true;
+        EntityManagerFactory managerFactory = Persistence.createEntityManagerFactory("ServidorBuscaminasPU");
+        JugadorJpaController jugadorJpaController = new JugadorJpaController(managerFactory);
+        Persistencia.Jugador jugadorJpa = new Persistencia.Jugador();
+        jugadorJpa.setIdJugador(jugador.getIdJugador());
+        jugadorJpa.setNombreJugador(jugador.getNombreJugador());
+        jugadorJpa.setPartidasJugadas(jugador.getPartidasJugadas());
+        jugadorJpa.setPartidasPerdidas(jugador.getPartidasPerdidas());
+        
+        String query = "select p from Partida p, Jugador j where j.idJugador = :idJugador";
+        List<Persistencia.Partida> partidas = managerFactory.createEntityManager().createQuery(query)
+                .setParameter("idJugador", jugador.getIdJugador())
+                .getResultList();
+        
+        jugadorJpa.setPartidaCollection(partidas);
+        try {
+            jugadorJpaController.edit(jugadorJpa);
+        } catch (Exception ex) {
+            editado = false;
+            Logger.getLogger(JugadorDAOSql.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return editado;
+    }
 }

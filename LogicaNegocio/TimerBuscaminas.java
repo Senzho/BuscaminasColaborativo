@@ -6,7 +6,6 @@
 package LogicaNegocio;
 
 import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  *
@@ -14,54 +13,22 @@ import java.util.TimerTask;
  */
 public class TimerBuscaminas {
     private Timer timer;
-    private TimerTask timerTask;
+    private TareaTimer tareaTimer;
     private TimerListener listener;
     
     public TimerBuscaminas(TimerListener listener){
         this.listener = listener;
-        this.timer = new Timer();
-        this.timerTask = new TimerTask(){
-            int minutos = 0;
-            int segundos = 0;
-            String tiempo = "";
-            @Override
-            public void run() {
-               if(segundos%60 == 0 && segundos!= 0){
-                    minutos ++;
-                    segundos = 0;
-                    tiempo = validarDatos(minutos,segundos);
-                    listener.eventoTimer(tiempo);        
-                    segundos++;
-                }else{
-                   tiempo = validarDatos(minutos,segundos);
-                    listener.eventoTimer(tiempo);
-                    segundos ++;
-                }
-            }
-        };
-    }
-    public String validarDatos(int minutos,int segundos){
-        String fecha ="";
-        String segundo = "";
-        String minuto = "";
-        if(segundos < 10){
-            segundo = "0"+segundos;
-        }
-        if(minutos < 10){
-            minuto = "0"+minutos;
-        }
-        if(minutos >= 10){
-            minuto = Integer.toString(minutos);
-        }
-        if(segundos >= 10){
-            segundo = Integer.toString(segundos);
-        }
-        return fecha = minuto+":"+segundo;
     }
     public void stop(){
-        this.timer.cancel();
+        if (this.timer != null){
+            this.timer.cancel();
+        }if (this.tareaTimer != null){
+            this.tareaTimer.cancel();
+        }
     }
     public void start(){
-        timer.schedule(timerTask, 10, 1000);
+        this.timer = new Timer();
+        this.tareaTimer = new TareaTimer(this.listener);
+        timer.schedule(tareaTimer, 10, 1000);
     }
 }

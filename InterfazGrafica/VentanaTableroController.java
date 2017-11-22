@@ -67,6 +67,8 @@ public class VentanaTableroController implements Initializable, CasillaListener,
     private Label nombreCuentaLabel;
     @FXML
     private Label labelBienvenido;
+    @FXML
+    private ImageView imagenSemaforo;
     
     private ResourceBundle resource;
     private VentanaNuevaPartidaController nuevaPartidaContrller;
@@ -96,6 +98,8 @@ public class VentanaTableroController implements Initializable, CasillaListener,
     private final Image X = new Image(this.getClass().getResourceAsStream("/RecursosGraficos/x.png"));
     private final Image X_HOVER = new Image(this.getClass().getResourceAsStream("/RecursosGraficos/x-hover.png"));
     private final Image X_PRESSED = new Image(this.getClass().getResourceAsStream("/RecursosGraficos/x-pressed.png"));
+    private final Image TRAFFIC_LIGHT_RED = new Image(this.getClass().getResourceAsStream("/RecursosGraficos/traffic_light_red.png"));
+    private final Image TRAFFIC_LIGHT_GREEN = new Image(this.getClass().getResourceAsStream("/RecursosGraficos/traffic_light_green.png"));
     private final String COLOR_ROJO = "RED";
     private final String COLOR_AMARILLO = "#ffb800";
     
@@ -110,7 +114,7 @@ public class VentanaTableroController implements Initializable, CasillaListener,
         this.minas = new ArrayList();
         this.listaJugadores = FXCollections.observableArrayList();
         try {
-            this.cliente = new Cliente("192.168.43.126");
+            this.cliente = new Cliente("localhost");
         } catch (RemoteException ex) {
             Logger.getLogger(VentanaTableroController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -124,7 +128,7 @@ public class VentanaTableroController implements Initializable, CasillaListener,
         this.jugador = jugador;
         this.nombreCuentaLabel.setText(jugador.getNombreJugador());
         try {
-            this.socket = IO.socket("http://192.168.43.126:7000");
+            this.socket = IO.socket("http://localhost:7000");
             this.conectar();
             this.socket.emit("jugadorConectado", new JSONObject(this.jugador));
         } catch (URISyntaxException ex) {
@@ -178,6 +182,11 @@ public class VentanaTableroController implements Initializable, CasillaListener,
         this.labelNumeroMinas.setText("" + solicitud.getNumeroMinas());
         cargarPanelJugador(solicitud);
         this.timer.start(); 
+        if (this.miTurno){
+            this.imagenSemaforo.setImage(this.TRAFFIC_LIGHT_GREEN);
+        }else{
+            this.imagenSemaforo.setImage(this.TRAFFIC_LIGHT_RED);
+        }
     }
     public void mostrarMinas(){
         for (Casilla casilla : this.minas){
@@ -255,6 +264,7 @@ public class VentanaTableroController implements Initializable, CasillaListener,
     }
     public void partidaGanada(){
         this.timer.stop();
+        this.imagenSemaforo.setImage(null);
         this.preguntaJuego.setVisible(true);
         this.resultadoJuego.setVisible(true);
         this.resultadoJuego.setStyle("-fx-text-fill: " + this.COLOR_AMARILLO);
@@ -272,6 +282,7 @@ public class VentanaTableroController implements Initializable, CasillaListener,
     }
     public void partidaPerdida(){
         this.timer.stop();
+        this.imagenSemaforo.setImage(null);
         this.miTurno = false;
         this.preguntaJuego.setVisible(true);
         this.resultadoJuego.setVisible(true);
@@ -404,6 +415,7 @@ public class VentanaTableroController implements Initializable, CasillaListener,
                 int x = Integer.parseInt(String.valueOf(os[0]));
                 int y = Integer.parseInt(String.valueOf(os[1]));
                 Platform.runLater(()->{
+                    imagenSemaforo.setImage(TRAFFIC_LIGHT_GREEN);
                     matrizCasillas[x][y].dispararEvento();
                 });
             }
@@ -507,6 +519,7 @@ public class VentanaTableroController implements Initializable, CasillaListener,
             if (emitir){
                 this.miTurno = false;
                 this.socket.emit("tiro", coordenadaX, coordenadaY, this.solicitudTurno.getIdCompañero());
+                this.imagenSemaforo.setImage(this.TRAFFIC_LIGHT_RED);
             }
             if (this.matrizCasillas[coordenadaX][coordenadaY].tieneMina()){
                 this.mostrarMinas();

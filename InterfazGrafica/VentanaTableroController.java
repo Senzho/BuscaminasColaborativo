@@ -69,6 +69,8 @@ public class VentanaTableroController implements Initializable, CasillaListener,
     private Label labelBienvenido;
     @FXML
     private ImageView imagenSemaforo;
+    @FXML
+    private Label labelTextoSemaforo;
     
     private ResourceBundle resource;
     private VentanaNuevaPartidaController nuevaPartidaContrller;
@@ -140,9 +142,20 @@ public class VentanaTableroController implements Initializable, CasillaListener,
     }
     public void internacionalizar(ResourceBundle rb){
         this.resource = rb;
+        if (this.imagenSemaforo.getImage() != null){
+            if (this.miTurno){
+                this.labelTextoSemaforo.setText(rb.getString("enTurno"));
+            }else{
+                this.labelTextoSemaforo.setText(rb.getString("noEnTurno"));
+            }
+        } 
         this.labelBienvenido.setText(rb.getString("labelBienvenido"));
         this.labelTextoMinas.setText(rb.getString("labelTextoMinas"));
-        this.resultadoJuego.setText(rb.getString("win"));
+        if (this.resultadoJuego.getText().startsWith("Epic") || this.resultadoJuego.getText().startsWith("Gan")){
+            this.resultadoJuego.setText(rb.getString("win"));
+        }else{
+            this.resultadoJuego.setText(rb.getString("gameOver"));
+        }
         this.preguntaJuego.setText(rb.getString("newGame"));
         this.respuestaSi.setText(rb.getString("respuestaSi"));
         this.respuestaNo.setText(rb.getString("respuestaNo"));
@@ -150,6 +163,10 @@ public class VentanaTableroController implements Initializable, CasillaListener,
         if(nuevaPartidaContrller != null){
             nuevaPartidaContrller.internacionalizar(resource);
         }
+    }
+    public void semaforo(Image imagen, String texto){
+        this.labelTextoSemaforo.setText(texto);
+        this.imagenSemaforo.setImage(imagen);
     }
     public void cargarPanelJugador(Solicitud solicitud){
         this.ocultarEtiquetas();
@@ -183,9 +200,9 @@ public class VentanaTableroController implements Initializable, CasillaListener,
         cargarPanelJugador(solicitud);
         this.timer.start(); 
         if (this.miTurno){
-            this.imagenSemaforo.setImage(this.TRAFFIC_LIGHT_GREEN);
+            this.semaforo(this.TRAFFIC_LIGHT_GREEN, this.resource.getString("enTurno"));
         }else{
-            this.imagenSemaforo.setImage(this.TRAFFIC_LIGHT_RED);
+            this.semaforo(this.TRAFFIC_LIGHT_RED, this.resource.getString("noEnTurno"));
         }
     }
     public void mostrarMinas(){
@@ -264,7 +281,7 @@ public class VentanaTableroController implements Initializable, CasillaListener,
     }
     public void partidaGanada(){
         this.timer.stop();
-        this.imagenSemaforo.setImage(null);
+        this.semaforo(null, "");
         this.preguntaJuego.setVisible(true);
         this.resultadoJuego.setVisible(true);
         this.resultadoJuego.setStyle("-fx-text-fill: " + this.COLOR_AMARILLO);
@@ -282,7 +299,7 @@ public class VentanaTableroController implements Initializable, CasillaListener,
     }
     public void partidaPerdida(){
         this.timer.stop();
-        this.imagenSemaforo.setImage(null);
+        this.semaforo(null, "");
         this.miTurno = false;
         this.preguntaJuego.setVisible(true);
         this.resultadoJuego.setVisible(true);
@@ -415,7 +432,7 @@ public class VentanaTableroController implements Initializable, CasillaListener,
                 int x = Integer.parseInt(String.valueOf(os[0]));
                 int y = Integer.parseInt(String.valueOf(os[1]));
                 Platform.runLater(()->{
-                    imagenSemaforo.setImage(TRAFFIC_LIGHT_GREEN);
+                    semaforo(TRAFFIC_LIGHT_GREEN, resource.getString("enTurno"));
                     matrizCasillas[x][y].dispararEvento();
                 });
             }
@@ -519,7 +536,7 @@ public class VentanaTableroController implements Initializable, CasillaListener,
             if (emitir){
                 this.miTurno = false;
                 this.socket.emit("tiro", coordenadaX, coordenadaY, this.solicitudTurno.getIdCompañero());
-                this.imagenSemaforo.setImage(this.TRAFFIC_LIGHT_RED);
+                this.semaforo(this.TRAFFIC_LIGHT_RED, this.resource.getString("noEnTurno"));
             }
             if (this.matrizCasillas[coordenadaX][coordenadaY].tieneMina()){
                 this.mostrarMinas();

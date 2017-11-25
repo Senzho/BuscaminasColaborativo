@@ -12,9 +12,11 @@ import javafx.stage.Stage;
 
 public class VentanaInicioSesion extends Application{
     private ResourceBundle recursos;
+    private String direccionIp;
     
-    public VentanaInicioSesion(ResourceBundle recursos){
+    public VentanaInicioSesion(ResourceBundle recursos,String direccionIp){
         this.recursos = recursos;
+        this.direccionIp = direccionIp;
         try {
             this.start(new Stage());
         } catch (Exception ex) {
@@ -28,6 +30,7 @@ public class VentanaInicioSesion extends Application{
         AnchorPane layout = loader.load();
         VentanaInicioSesionController controller = loader.getController();
         controller.setStage(primaryStage);
+        controller.setDireccionIp(this.direccionIp);
         controller.internacionalizar(this.recursos);
         Scene scene = new Scene(layout, 400, 140);
         primaryStage.setScene(scene);

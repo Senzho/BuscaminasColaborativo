@@ -11,6 +11,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -34,6 +35,7 @@ public class VentanaAjusteDireccionController implements Initializable {
     private final String NOMBRE_ARCHIVO = "direccionIP.txt";
     private final String NOMBRE_DIRECTORIO = "C:\\Buscaminas";
     private Stage stage;
+    private ResourceBundle resource;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -48,18 +50,22 @@ public class VentanaAjusteDireccionController implements Initializable {
         if (archivo.exists()){
             archivo.delete();
         }
-        RegistroIdioma.guardarIdioma(archivo,contenido);
+        if(RegistroIdioma.guardarIdioma(archivo,contenido)){
+            MessageFactory.showMessage("contenido", "informacion", "Direccion registrada", Alert.AlertType.INFORMATION);
+            this.stage.close();
+            new VentanaInicioSesion(this.resource, this.txtDireccionIP.getText());
+        }
     }
     public void setStage(Stage stage){
         this.stage = stage;
     }
     public void btnGuardar_onClicked(){
-        this.guardarArchivo(NOMBRE_DIRECTORIO, this.txtDireccionIP.getText());
+        this.guardarArchivo(NOMBRE_DIRECTORIO+"\\"+this.NOMBRE_ARCHIVO, this.txtDireccionIP.getText());
     }
     public void btnCancelar_onClicked(){
         this.stage.close();
     }
     public void internacionalizar(ResourceBundle resource){
-        
+        this.resource = resource;
     }
 }

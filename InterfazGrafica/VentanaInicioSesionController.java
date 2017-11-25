@@ -29,14 +29,11 @@ public class VentanaInicioSesionController implements Initializable {
     private ResourceBundle rb;
     private Stage stage;
     private Cliente cliente;
+    private String direccionIp;
     
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        try {
-            this.cliente = new Cliente("localhost");
-        } catch (RemoteException ex) {
-            Logger.getLogger(VentanaInicioSesionController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
     }
     public void setStage(Stage stage){
         this.stage = stage;
@@ -48,6 +45,14 @@ public class VentanaInicioSesionController implements Initializable {
         btnIngresar.setText(rb.getString("btnIngresar"));
         this.btnRegistrar.setText(rb.getString("btnRegistrar"));
         this.stage.setTitle(rb.getString("nombreVentanaInicio"));
+    }
+    public void setDireccionIp(String direccionIp){
+        this.direccionIp = direccionIp;
+        try {
+            this.cliente = new Cliente(direccionIp);
+        } catch (RemoteException ex) {
+            Logger.getLogger(VentanaInicioSesionController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     public void btnIngresar_MouseUp(){
         try {

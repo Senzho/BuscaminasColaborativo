@@ -1,6 +1,7 @@
 package buscaminascolaborativo;
 
 import AccesoDatos.RegistroIdioma;
+import InterfazGrafica.VentanaAjusteDireccion;
 import InterfazGrafica.VentanaInicioSesion;
 import java.io.File;
 import java.util.ResourceBundle;
@@ -13,6 +14,7 @@ public class BuscaminasColaborativo extends Application {
     public void start(Stage primaryStage) {
         String bundle = "Recursos/Idioma_ING";
         File idioma = new File("C:\\Buscaminas\\Idioma.txt");
+        File direccionIp = new File("C:\\Buscaminas\\direccionIP.txt");
         if (idioma.exists()){
             String contenido = RegistroIdioma.obtenerIdioma(idioma);
             switch(contenido){
@@ -25,7 +27,12 @@ public class BuscaminasColaborativo extends Application {
             }
         }
         ResourceBundle recursos = ResourceBundle.getBundle(bundle);
-        new VentanaInicioSesion(recursos);
+        if(!direccionIp.exists()){
+            new VentanaAjusteDireccion(recursos);
+        }else{
+            String direccion = RegistroIdioma.obtenerIdioma(direccionIp);
+            new VentanaInicioSesion(recursos,direccion);
+        }
     }
 
     public static void main(String[] args) {

@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane id="AnchorPane" minHeight="124.0" prefHeight="124.0" prefWidth="351.0000999999975" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="InterfazGrafica.VentanaInicioSesionController">
+<AnchorPane id="AnchorPane" minHeight="124.0" onMouseClicked="#btnIp_Click" prefHeight="150.0" prefWidth="423.0000999999975" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="InterfazGrafica.VentanaInicioSesionController">
   <children>
     <Button fx:id="btnIngresar" mnemonicParsing="false" onMouseReleased="#btnIngresar_MouseUp" text="Ingresar" AnchorPane.bottomAnchor="21.0" AnchorPane.rightAnchor="24.0">
       <font>
@@ -21,5 +21,6 @@
     </Label>
     <TextField fx:id="txtNombreUsuario" prefWidth="151.00009999999747" AnchorPane.leftAnchor="175.5" AnchorPane.rightAnchor="24.5" AnchorPane.topAnchor="17.0" />
     <Button id="" fx:id="btnRegistrar" font="$x1" mnemonicParsing="false" onMouseClicked="#btnRegistrar_Click" text="Registrarse" AnchorPane.bottomAnchor="21.0" AnchorPane.rightAnchor="153.0" />
+    <Button id="botonIp" fx:id="btnIp" font="$x1" minWidth="49.0" mnemonicParsing="false" onMouseClicked="#btnIp_Click" prefHeight="41.0" prefWidth="60.0" text="Ip" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="14.0" />
   </children>
 </AnchorPane>

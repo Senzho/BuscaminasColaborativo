@@ -13,10 +13,12 @@ import javafx.stage.Stage;
 public class VentanaTablero extends Application{
     private ResourceBundle resource;
     private Jugador jugador;
+    private String direccionIp;
     
-    public VentanaTablero(ResourceBundle rb, Jugador jugador){
+    public VentanaTablero(ResourceBundle rb, Jugador jugador, String direccionIp){
         this.jugador = jugador;
         this.resource = rb;
+        this.direccionIp = direccionIp;
         try {
             this.start(new Stage());
         } catch (Exception ex) {
@@ -30,6 +32,7 @@ public class VentanaTablero extends Application{
         AnchorPane layout = loader.load();
         VentanaTableroController tableroController = loader.getController();
         tableroController.setStage(primaryStage);
+        tableroController.setDireccionIp(this.direccionIp);
         tableroController.setJugador(this.jugador);
         tableroController.internacionalizar(resource);
         Scene scene = new Scene(layout, 800, 500);

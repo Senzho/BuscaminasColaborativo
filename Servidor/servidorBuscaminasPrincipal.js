@@ -19,6 +19,17 @@ function coordenadas(coordenadaX, coordenadaY){
 function GenerarNumeros(inicio,fin){
     return aleatorio = Math.floor(Math.random()*(fin - inicio) + parseInt(inicio));
 }
+function obtenerSocket(id){
+	var socket;
+	for (var i = 0; i < listaSockets.length; i ++){
+		var socketJugador = listaSockets[i];
+		if (socketJugador.idJugador == id){
+			socket = socketJugador.socket;
+			break;
+		}
+	}
+	return socket;
+}
 io.on("connection", function (socket) { 
     console.log("nuevo usuario conectado");
     socket.on("jugadorConectado", function (jugador) {
@@ -32,7 +43,6 @@ io.on("connection", function (socket) {
     socket.on("getJugadores", function(){
         socket.emit("jugadorLista", listaDatos);
     });
-
     socket.on("disconnect", function () {
     	console.log("Jugadores actuales");
         for (var i = 0; i< listaDatos.length; i++) {
@@ -40,7 +50,6 @@ io.on("connection", function (socket) {
         }
         
     });
-
     socket.on("jugadorDesconectado",function(idJugador){
     	var auxiliarBusqueda;
 		for (var i = 0; i < listaDatos.length; i++) {
@@ -62,7 +71,7 @@ io.on("connection", function (socket) {
         socket.broadcast.emit("jugadorDesconectado", idJugador);
     });
 	socket.on("solicitudPartida",function(solicitud){
-            var nombre;
+        var nombre;
         for(var i = 0; i < listaDatos.length; i++){
             if(listaDatos[i].idJugador == solicitud.idSolicitante){
                 nombre = listaDatos[i].nombreJugador;
@@ -70,24 +79,11 @@ io.on("connection", function (socket) {
                 break;
             }
         }
-		for(var i = 0; i< listaSockets.length; i++){
-			if(listaSockets[i].idJugador == solicitud.idCompañero){
-				listaSockets[i].socket.emit("solicitud",solicitud, nombre);
-                break;
-			}
-		}
+        obtenerSocket(solicitud.idCompañero).emit("solicitud",solicitud, nombre);
 	});
     socket.on("respuestaPartida", function(aceptado,solicitud){//solicitud.idCompañero...id cliente .iddestino dificultad
     	var auxiliarBusqueda;
-        var socketAuxiliar;
-    	for(var i = 0; i< listaSockets.length; i++){
-    		auxiliarBusqueda = listaSockets[i];
-    		if(auxiliarBusqueda.idJugador == solicitud.idSolicitante){
-                console.log("si se encontró");
-    			socketAuxiliar = auxiliarBusqueda.socket;
-    			break;
-    		}
-    	}
+    	var socketAuxiliar = obtenerSocket(solicitud.idSolicitante);
         if(aceptado == "aceptado"){
             var listaNumeros = new Array();
             for(var i = 0; i < solicitud.numeroMinas; i++){
@@ -104,18 +100,14 @@ io.on("connection", function (socket) {
             solicitud.idSolicitante = idJugador;
             socket.emit("iniciarPartida",solicitud,listaNumeros);
         }else{
-
             socketAuxiliar.emit("rechazado");
         }
     });
     socket.on("tiro",function(coordenadaX,coordenadaY,idDestino){
         console.log("recibido"+idDestino);
-        for(var i = 0; i<listaSockets.length; i++){
-            if(idDestino == listaSockets[i].idJugador){
-                console.log("entro dos veces");
-                listaSockets[i].socket.emit("tiroRecibido",coordenadaX,coordenadaY);
-                break;
-            }
-        }
+        obtenerSocket(idDestino).emit("tiroRecibido",coordenadaX,coordenadaY);
+    });
+    socket.on("terminarPartida", function(idCompañero){
+    	obtenerSocket(idCompañero).emit("partidaTerminada");
     });
 });

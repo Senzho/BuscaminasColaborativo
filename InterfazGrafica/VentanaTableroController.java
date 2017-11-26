@@ -87,6 +87,7 @@ public class VentanaTableroController implements Initializable, CasillaListener,
     private boolean miTurno;
     private Cliente cliente;
     private TimerBuscaminas timer;
+    private String direccionIp;
     
     private final Image GEAR = new Image(this.getClass().getResourceAsStream("/RecursosGraficos/gear.png"));
     private final Image GEAR_HOVER = new Image(this.getClass().getResourceAsStream("/RecursosGraficos/gear-hover.png"));
@@ -104,6 +105,7 @@ public class VentanaTableroController implements Initializable, CasillaListener,
     private final Image TRAFFIC_LIGHT_GREEN = new Image(this.getClass().getResourceAsStream("/RecursosGraficos/traffic_light_green.png"));
     private final String COLOR_ROJO = "RED";
     private final String COLOR_AMARILLO = "#ffb800";
+    private final String TIEMPO_CERO = "00:00";
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -115,27 +117,30 @@ public class VentanaTableroController implements Initializable, CasillaListener,
         this.historial = new ArrayList();
         this.minas = new ArrayList();
         this.listaJugadores = FXCollections.observableArrayList();
-        try {
-            this.cliente = new Cliente("localhost");
-        } catch (RemoteException ex) {
-            Logger.getLogger(VentanaTableroController.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
     
     public void setStage(Stage stage){
         this.stage = stage;
         this.stage.setOnCloseRequest(this.windowHandler);
     }
-    public void setJugador(Jugador jugador){
-        this.jugador = jugador;
-        this.nombreCuentaLabel.setText(jugador.getNombreJugador());
+    public void setDireccionIp(String direccionIp){
+        this.direccionIp = direccionIp;
         try {
-            this.socket = IO.socket("http://localhost:7000");
+            this.socket = IO.socket("http://" + this.direccionIp + ":7000");
             this.conectar();
-            this.socket.emit("jugadorConectado", new JSONObject(this.jugador));
         } catch (URISyntaxException ex) {
             Logger.getLogger(VentanaTableroController.class.getName()).log(Level.SEVERE, null, ex);
         }
+        try {
+            this.cliente = new Cliente(this.direccionIp);
+        } catch (RemoteException ex) {
+            Logger.getLogger(VentanaTableroController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    public void setJugador(Jugador jugador){
+        this.jugador = jugador;
+        this.nombreCuentaLabel.setText(jugador.getNombreJugador());
+        this.socket.emit("jugadorConectado", new JSONObject(this.jugador));
     }
     public void setNuevaPartidaController(VentanaNuevaPartidaController controller){
         this.nuevaPartidaContrller = controller;
@@ -279,35 +284,36 @@ public class VentanaTableroController implements Initializable, CasillaListener,
         }
         return revisado;
     }
-    public void partidaGanada(){
+    public void partidaTerminada(boolean ganada){
         this.timer.stop();
+        this.miTurno = false;
         this.semaforo(null, "");
+        this.solicitudTurno = null;
         this.preguntaJuego.setVisible(true);
         this.resultadoJuego.setVisible(true);
-        this.resultadoJuego.setStyle("-fx-text-fill: " + this.COLOR_AMARILLO);
-        this.resultadoJuego.setText(this.resource.getString("win"));
         this.respuestaNo.setVisible(true);
         this.respuestaSi.setVisible(true);
-        this.registrarPartida();
-        this.aumentarCuentaPartida(true);
+        String colorEstilo;
+        String mensaje;
+        if (ganada){
+            colorEstilo = this.COLOR_AMARILLO;
+            mensaje = this.resource.getString("win");
+        }else{
+            colorEstilo = this.COLOR_ROJO;
+            mensaje = this.resource.getString("gameOver");
+        }
+        this.resultadoJuego.setStyle("-fx-text-fill: " + colorEstilo);
+        this.resultadoJuego.setText(mensaje);
+        if (ganada){
+            this.registrarPartida();
+        }
+        this.aumentarCuentaPartida(ganada);
     }
     public void ocultarEtiquetas(){
         this.preguntaJuego.setVisible(false);
         this.resultadoJuego.setVisible(false);
         this.respuestaNo.setVisible(false);
         this.respuestaSi.setVisible(false);
-    }
-    public void partidaPerdida(){
-        this.timer.stop();
-        this.semaforo(null, "");
-        this.miTurno = false;
-        this.preguntaJuego.setVisible(true);
-        this.resultadoJuego.setVisible(true);
-        this.resultadoJuego.setStyle("-fx-text-fill: " + this.COLOR_ROJO);
-        this.resultadoJuego.setText(this.resource.getString("gameOver"));
-        this.respuestaNo.setVisible(true);
-        this.respuestaSi.setVisible(true);
-        this.aumentarCuentaPartida(false);
     }
     public void reestablecerGrid(){
         this.gridJuego.getChildren().clear();
@@ -322,8 +328,19 @@ public class VentanaTableroController implements Initializable, CasillaListener,
         this.miTurno = true;
     }
     public void registrarPartida(){
-        Partida partida = null;
-        partida = new Partida(this.solicitudTurno.getTipoDificultad().name(), this.labelTiempo.getText(), this.jugador.getIdJugador());
+        String dificultad = "";
+        switch(this.minas.size()){
+            case 15:
+            dificultad = "fácil";
+            break;
+            case 30:
+            dificultad = "medio";
+            break;
+            case 45:
+            dificultad = "avanzado";
+            break;
+        }
+        Partida partida = new Partida(dificultad, this.labelTiempo.getText(), this.jugador.getIdJugador());
         try {
             if(!this.cliente.registrarPartida(partida)){
                 MessageFactory.showMessage("Error", "Partida", "No se pudo registrar la partida", Alert.AlertType.ERROR);
@@ -406,9 +423,9 @@ public class VentanaTableroController implements Initializable, CasillaListener,
                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                     alert.setTitle("Nueva partida");
                     alert.setHeaderText("Solicitud");
-                    alert.setContentText("El usuario: " + os[1].toString() + " quiere jugar una partida contigo :)");
+                    alert.setContentText("El jugador " + os[1].toString() + " quiere jugar una partida contigo");
                     Optional<ButtonType> respuesta = alert.showAndWait();
-                    String aceptado = "";
+                    String aceptado;
                     if (respuesta.get().getButtonData().equals(ButtonData.OK_DONE)){
                         aceptado = "aceptado";
                     }else{
@@ -446,8 +463,43 @@ public class VentanaTableroController implements Initializable, CasillaListener,
                     }  
                 });
             }
+        }).on("partidaTerminada", new Emitter.Listener() {
+            @Override
+            public void call(Object... os) {
+                Platform.runLater(()->{
+                    MessageFactory.showMessage("Información", "Partida", "Tu compañero decidió terminar la partida", Alert.AlertType.INFORMATION);
+                    reestablecerGrid();
+                    semaforo(null, "");
+                    labelNumeroMinas.setText("0");
+                    timer.stop();
+                    labelTiempo.setText("00:00");
+                    solicitudTurno = null;
+                });
+            }
         });
         this.socket.connect();
+    }
+    public int todoDescubierto(){
+        int cont = 0;
+        for (int i = 0; i < numeroColumnas; i++) {
+            for (int j = 0; j < numeroFilas; j++) {
+                if(this.matrizCasillas[i][j].estaCubierta() == false && matrizCasillas[i][j].tieneMina() == false){
+                    cont+=1;
+                }
+            }
+        }
+        return cont;
+    }
+    public int ganarParida(){
+        int numero = 0;
+        for (int i = 0; i < this.numeroColumnas; i++) {
+            for (int j = 0; j < this.numeroFilas; j++) {
+                if(this.matrizCasillas[i][j].estaCubierta() && matrizCasillas[i][j].tieneMina()){
+                    numero++;
+                }
+            }
+        }
+        return numero;
     }
     
     //Eventos:
@@ -460,6 +512,14 @@ public class VentanaTableroController implements Initializable, CasillaListener,
     }
     public void botonTerminar_MouseUp(){
         this.botonTerminar.setImage(this.X_HOVER);
+        this.socket.emit("terminarPartida", this.solicitudTurno.getIdCompañero());
+        reestablecerGrid();
+        semaforo(null, "");
+        labelNumeroMinas.setText("0");
+        timer.stop();
+        labelTiempo.setText("00:00");
+        solicitudTurno = null;
+        MessageFactory.showMessage("Infromación", "Partida", "Partida terminada", Alert.AlertType.INFORMATION);
     }
     public void botonTerminar_MouseLeave(){
         this.botonTerminar.setImage(this.X);
@@ -484,7 +544,7 @@ public class VentanaTableroController implements Initializable, CasillaListener,
     }
     public void botonConfiguracion_MouseUp(){
         this.botonConfiguracion.setImage(this.GEAR_HOVER);
-        new VentanaConfiguracion(this, resource, this.jugador.getIdJugador());
+        new VentanaConfiguracion(this, resource, this.jugador.getIdJugador(), this.direccionIp);
     }
     public void botonCOnfiguracion_MouseLeave(){
         this.botonConfiguracion.setImage(this.GEAR);
@@ -523,6 +583,8 @@ public class VentanaTableroController implements Initializable, CasillaListener,
     }
     public void respuestaNo_MouseUp(){
         this.respuestaNo.setStyle("-fx-text-fill: #0066ff");
+        this.labelNumeroMinas.setText("0");
+        this.labelTiempo.setText("00:00");
         this.ocultarEtiquetas();
         this.reestablecerGrid();
     }
@@ -540,39 +602,18 @@ public class VentanaTableroController implements Initializable, CasillaListener,
             }
             if (this.matrizCasillas[coordenadaX][coordenadaY].tieneMina()){
                 this.mostrarMinas();
-                this.partidaPerdida();
+                this.partidaTerminada(false);
             }else{
                 this.buscar(coordenadaX, coordenadaY);
                 if((this.numeroColumnas* this.numeroFilas)==(todoDescubierto()+ganarParida())){
-                    this.partidaGanada();
+                    this.partidaTerminada(true);
                 }
             }
         }else{
             MessageFactory.showMessage("Información", "Turno", "Debes esperar tu turno", Alert.AlertType.INFORMATION);
         }
     }
-    public int todoDescubierto(){
-        int cont = 0;
-        for (int i = 0; i < numeroColumnas; i++) {
-            for (int j = 0; j < numeroFilas; j++) {
-                if(this.matrizCasillas[i][j].estaCubierta() == false && matrizCasillas[i][j].tieneMina() == false){
-                    cont+=1;
-                }
-            }
-        }
-        return cont;
-    }
-    public int ganarParida(){
-        int numero = 0;
-        for (int i = 0; i < this.numeroColumnas; i++) {
-            for (int j = 0; j < this.numeroFilas; j++) {
-                if(this.matrizCasillas[i][j].estaCubierta() && matrizCasillas[i][j].tieneMina()){
-                    numero++;
-                }
-            }
-        }
-        return numero;
-    }
+    
     EventHandler<WindowEvent> windowHandler = new EventHandler<WindowEvent>(){
         @Override
         public void handle(WindowEvent event) {

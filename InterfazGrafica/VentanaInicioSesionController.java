@@ -25,6 +25,8 @@ public class VentanaInicioSesionController implements Initializable {
     private Button btnRegistrar;
     @FXML
     private TextField txtNombreUsuario;
+    @FXML
+    private Button btnIp;
     
     private ResourceBundle rb;
     private Stage stage;
@@ -58,7 +60,7 @@ public class VentanaInicioSesionController implements Initializable {
         try {
             Jugador jugador = this.cliente.validarSesión(this.txtNombreUsuario.getText());
             if (jugador != null){
-                new VentanaTablero(this.rb, jugador);
+                new VentanaTablero(this.rb, jugador, this.direccionIp);
                 this.stage.close();
             }else{
                 MessageFactory.showMessage("Error", "Cuenta de acceso", "No se encuentra " + this.txtNombreUsuario.getText() + " en la base de datos", Alert.AlertType.WARNING);    
@@ -69,15 +71,24 @@ public class VentanaInicioSesionController implements Initializable {
     }
     public void btnRegistrar_Click(){
         try {
-            if (cliente.registrarJugador(this.txtNombreUsuario.getText()) == RegistroJugador.JUGADOR_APROBADO){
-                MessageFactory.showMessage("Éxito", "Registro de jugador", "El jugador: " + this.txtNombreUsuario.getText() + " fue registrado exitosamente", Alert.AlertType.INFORMATION);
-            }else if(cliente.registrarJugador(this.txtNombreUsuario.getText()) == RegistroJugador.JUGADOR_EXISTENTE){
-                MessageFactory.showMessage("Error", "Registro de jugador", "El jugador: " + this.txtNombreUsuario.getText() + " ya existe", Alert.AlertType.ERROR);
-            }else{
-                MessageFactory.showMessage("Error", "Registro de jugador", "No se pudo acceder a la base de datos", Alert.AlertType.NONE);
+            RegistroJugador registro = cliente.registrarJugador(this.txtNombreUsuario.getText());
+            switch(registro){
+                case JUGADOR_APROBADO:
+                    MessageFactory.showMessage("Éxito", "Registro de jugador", "El jugador: " + this.txtNombreUsuario.getText() + " fue registrado exitosamente", Alert.AlertType.INFORMATION);
+                    break;
+                case JUGADOR_EXISTENTE:
+                    MessageFactory.showMessage("Error", "Registro de jugador", "El jugador: " + this.txtNombreUsuario.getText() + " ya existe", Alert.AlertType.ERROR);
+                    break;
+                case ERROR_REGISTRO:
+                    MessageFactory.showMessage("Error", "Registro de jugador", "No se pudo acceder a la base de datos", Alert.AlertType.NONE);
+                    break;
             }
         } catch (RemoteException ex) {
             Logger.getLogger(VentanaInicioSesionController.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    public void btnIp_Click(){
+        new VentanaAjusteDireccion(this.rb);
+        this.stage.close();
     }
 }

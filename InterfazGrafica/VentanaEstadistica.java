@@ -14,11 +14,13 @@ public class VentanaEstadistica extends Application{
     private VentanaConfiguracionController configuracionController;
     private ResourceBundle resource;
     private int idJugador;
+    private String direccionIp;
     
-    public VentanaEstadistica(VentanaConfiguracionController controller, ResourceBundle resource, int idJugador){
+    public VentanaEstadistica(VentanaConfiguracionController controller, ResourceBundle resource, int idJugador, String direccionIp){
         this.resource = resource;
         this.configuracionController = controller;
         this.idJugador = idJugador;
+        this.direccionIp = direccionIp;
         try {
             this.start(new Stage());
         } catch (Exception ex) {
@@ -33,6 +35,7 @@ public class VentanaEstadistica extends Application{
         VentanaEstadisticaController controller = loader.getController();
         controller.setStage(primaryStage);
         controller.internacionalizar(this.resource);
+        controller.setDireccionIp(this.direccionIp);
         controller.setIdJugador(this.idJugador);
         this.configuracionController.setControladorEstadisticas(controller);
         Scene scene = new Scene(layout, 400, 500);

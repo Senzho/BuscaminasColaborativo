@@ -30,10 +30,11 @@ public class VentanaMejorJugadorController implements Initializable{
     private Button btnAceptar;
     private ResourceBundle rb;
     private Stage stage;
+    private String direccionIp;
     
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        this.cargarJugadores();
+        
     }
     public void internacionalizar(ResourceBundle resource){
         this.rb = resource;
@@ -44,9 +45,13 @@ public class VentanaMejorJugadorController implements Initializable{
     public void setStage(Stage stage){
         this.stage = stage;
     }
+    public void setDireccionIp(String direccionIp){
+        this.direccionIp = direccionIp;
+        this.cargarJugadores();
+    }
     public void cargarJugadores(){
         try {
-            Cliente cliente = new Cliente("localhost");
+            Cliente cliente = new Cliente(this.direccionIp);
             ArrayList<Jugador> jugadores = cliente.getListaJugadores();
             for (Jugador jugador : jugadores){
                 System.out.println("/n" + jugador.getNombreJugador() + ":");

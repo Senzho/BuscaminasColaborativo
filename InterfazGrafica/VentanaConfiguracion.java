@@ -14,11 +14,13 @@ public class VentanaConfiguracion extends Application{
     private VentanaTableroController controllerTablero;
     private ResourceBundle resource;
     private int idJugador;
+    private String direccionIp;
     
-    public VentanaConfiguracion(VentanaTableroController controller, ResourceBundle resource, int idJugador){
+    public VentanaConfiguracion(VentanaTableroController controller, ResourceBundle resource, int idJugador, String direccionIp){
         this.resource = resource;
         this.idJugador = idJugador;
         this.controllerTablero = controller;
+        this.direccionIp = direccionIp;
         try {
             this.start(new Stage());
         } catch (Exception ex) {
@@ -34,6 +36,7 @@ public class VentanaConfiguracion extends Application{
         controller.setControladorTablero(this.controllerTablero);
         controller.setStage(primaryStage);
         controller.setIdJugador(this.idJugador);
+        controller.setDireccionIp(this.direccionIp);
         controller.internacionalizar(resource);
         Scene scene = new Scene(layout, 400, 500);
         primaryStage.setScene(scene);

@@ -6,9 +6,13 @@
 package InterfazGrafica;
 
 import AccesoDatos.RegistroIdioma;
+import LogicaNegocio.InvalidIpAddressException;
+import LogicaNegocio.IpAddress;
 import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -60,7 +64,13 @@ public class VentanaAjusteDireccionController implements Initializable {
         this.stage = stage;
     }
     public void btnGuardar_onClicked(){
-        this.guardarArchivo(NOMBRE_DIRECTORIO+"\\"+this.NOMBRE_ARCHIVO, this.txtDireccionIP.getText());
+        try {
+            IpAddress direccion = new IpAddress(this.txtDireccionIP.getText());
+            this.guardarArchivo(NOMBRE_DIRECTORIO+"\\"+this.NOMBRE_ARCHIVO, direccion.getAddress());
+        } catch (InvalidIpAddressException ex) {
+            Logger.getLogger(VentanaAjusteDireccionController.class.getName()).log(Level.SEVERE, null, ex);
+            MessageFactory.showMessage("Error", "Dirección", "La dirección IP no es válida", Alert.AlertType.INFORMATION);
+        }
     }
     public void btnCancelar_onClicked(){
         this.stage.close();

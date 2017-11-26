@@ -43,6 +43,7 @@ public class VentanaEstadisticaController implements Initializable{
     private ResourceBundle rb;
     private Stage stage;
     private int idJugador;
+    private String direccionIp;
     
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -54,6 +55,9 @@ public class VentanaEstadisticaController implements Initializable{
     public void setIdJugador(int idJugador){
         this.idJugador = idJugador;
         this.cargarEstadisticas();
+    }
+    public void setDireccionIp(String direccionIp){
+        this.direccionIp = direccionIp;
     }
     public void internacionalizar(ResourceBundle resource){
         this.rb = resource;
@@ -67,7 +71,7 @@ public class VentanaEstadisticaController implements Initializable{
     }
     public void cargarEstadisticas(){
         try {
-            Cliente cliente = new Cliente("localhost");
+            Cliente cliente = new Cliente(this.direccionIp);
             DatosJugador datosJugador = cliente.getEstadisticas(this.idJugador);
             Jugador jugador = datosJugador.getJugador();
             this.lblNombreUsuario.setText(jugador.getNombreJugador());

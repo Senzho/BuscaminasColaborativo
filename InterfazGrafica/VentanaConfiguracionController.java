@@ -32,6 +32,7 @@ public class VentanaConfiguracionController implements Initializable {
     private VentanaMejorJugadorController mejorJugadorController;
     private VentanaEstadisticaController estadisticaController;
     private int idJugador;
+    private String direccionIp;
     
     private final String NOMBRE_ARCHIVO = "Idioma.txt";
     private final String NOMBRE_DIRECTORIO = "C:\\Buscaminas";
@@ -46,6 +47,9 @@ public class VentanaConfiguracionController implements Initializable {
     }
     public void setIdJugador(int idJugador){
         this.idJugador = idJugador;
+    }
+    public void setDireccionIp(String direccionIp){
+        this.direccionIp = direccionIp;
     }
     public void setControladorTablero(VentanaTableroController controller){
         this.controlerTablero = controller;
@@ -116,7 +120,7 @@ public class VentanaConfiguracionController implements Initializable {
     }
     public void labelEstadisticas_MouseUp(){
         this.labelEstadisticas.setStyle("-fx-text-fill: #0066ff");
-        new VentanaEstadistica(this, this.rb, this.idJugador);
+        new VentanaEstadistica(this, this.rb, this.idJugador, this.direccionIp);
     }
     public void labelEstadisticas_MouseLeave(){
         this.labelEstadisticas.setStyle("-fx-text-fill: #808080");
@@ -129,7 +133,7 @@ public class VentanaConfiguracionController implements Initializable {
     }
     public void labelMejores_MouseUp(){
         this.labelMejores.setStyle("-fx-text-fill: #0066ff");
-        new VentanaMejorJugador(this, this.rb);
+        new VentanaMejorJugador(this, this.rb, this.direccionIp);
     }
     public void labelMejores_MouseLeave(){
         this.labelMejores.setStyle("-fx-text-fill: #808080");

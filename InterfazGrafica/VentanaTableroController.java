@@ -4,6 +4,7 @@ import LogicaNegocio.Casilla;
 import LogicaNegocio.Cliente;
 import LogicaNegocio.Jugador;
 import LogicaNegocio.Partida;
+import LogicaNegocio.Reproductor;
 import LogicaNegocio.Solicitud;
 import LogicaNegocio.TimerBuscaminas;
 import LogicaNegocio.TimerListener;
@@ -294,10 +295,13 @@ public class VentanaTableroController implements Initializable, CasillaListener,
         this.respuestaSi.setVisible(true);
         String colorEstilo;
         String mensaje;
+        Reproductor reproductor;
         if (ganada){
+            reproductor = new Reproductor("/RecursosAudio/win.wav");
             colorEstilo = this.COLOR_AMARILLO;
             mensaje = this.resource.getString("win");
         }else{
+            reproductor = new Reproductor("/RecursosAudio/fail.wav");
             colorEstilo = this.COLOR_ROJO;
             mensaje = this.resource.getString("gameOver");
         }
@@ -634,6 +638,9 @@ public class VentanaTableroController implements Initializable, CasillaListener,
         public void handle(WindowEvent event) {
             int id = jugador.getIdJugador();
             socket.emit("jugadorDesconectado", id);
+            if (solicitudTurno != null){
+                socket.emit("terminarPartida", solicitudTurno.getIdCompañero());
+            }
             socket.disconnect();
             System.exit(0);
         }

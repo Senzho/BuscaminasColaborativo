@@ -51,6 +51,7 @@ public class EstadisticaDAOSql implements EstadisticaDAO {
  
     @Override
     public String getTiempoPromedio(int idJugador) {
+        int numeroPartidas = 0;
         EntityManagerFactory managerFactory = Persistence.createEntityManagerFactory("ServidorBuscaminasEjemplo1PU");
         EntityManager entityManager = managerFactory.createEntityManager();
         Query query = entityManager.createQuery("select P from Partida P where P.idJugador.idJugador = :idJugador");
@@ -61,7 +62,16 @@ public class EstadisticaDAOSql implements EstadisticaDAO {
             int aux = contador;
             contador = calcularSegundos(partidas.get(i).getTiempo())+ aux;
         }
-        int numeroPartidas = contador/partidas.size();
-        return Integer.toString(numeroPartidas);
+        if(!partidas.isEmpty()){
+           numeroPartidas = contador/partidas.size();
+        }
+        return calcularMinutos(numeroPartidas);
+    }
+    public String calcularMinutos(int numeroPartidas){
+        String tiempoPromedio = "";
+        int minutos = numeroPartidas/60;
+        int segundos = numeroPartidas%60;
+        tiempoPromedio = minutos+":"+segundos;
+        return tiempoPromedio;
     }
 }

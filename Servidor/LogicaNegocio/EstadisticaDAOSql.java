@@ -69,9 +69,17 @@ public class EstadisticaDAOSql implements EstadisticaDAO {
     }
     public String calcularMinutos(int numeroPartidas){
         String tiempoPromedio = "";
+        String minutoFinal = "";
+        String segundoFinal = "";
         int minutos = numeroPartidas/60;
         int segundos = numeroPartidas%60;
-        tiempoPromedio = minutos+":"+segundos;
+        if(minutos < 10){
+            minutoFinal = "0" + minutos;
+        }
+        if(segundos < 10){
+            segundoFinal = "0" + segundos;
+        }
+        tiempoPromedio = minutoFinal+":"+segundoFinal;
         return tiempoPromedio;
     }
 }

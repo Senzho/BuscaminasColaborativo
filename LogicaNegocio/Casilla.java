@@ -12,6 +12,7 @@ public class Casilla{
     private int coordenadaY;
     private boolean casillaCubierta;
     private boolean tieneMina;
+    private boolean marcada;
     private ImageView panelMina;
     private CasillaListener casillaListener;
     
@@ -21,6 +22,7 @@ public class Casilla{
        this.coordenadaY = coordenadaY;  
        this.casillaCubierta = true;
        this.tieneMina = false;
+       this.marcada = false;
        this.panelMina = new ImageView();
        panelMina.setImage(new Image(this.getClass().getResourceAsStream("/RecursosGraficos/Color_Gris.PNG")));
        panelMina.setFitHeight(30);
@@ -35,7 +37,13 @@ public class Casilla{
         @Override
         public void handle(MouseEvent event) {
             if (event.getButton().equals(MouseButton.PRIMARY)){
-                casillaListener.casillaSeleccionada(coordenadaX, coordenadaY, true);
+                if (!marcada){
+                    casillaListener.casillaSeleccionada(coordenadaX, coordenadaY, true);
+                }
+            }else{
+                if (casillaCubierta){
+                    casillaListener.casillaMarcada(coordenadaX, coordenadaY);
+                }
             }
         }
     };
@@ -47,8 +55,20 @@ public class Casilla{
         this.casillaCubierta = false;
         panelMina.setImage(new Image(this.getClass().getResourceAsStream("/RecursosGraficos/Color_Blanco.PNG")));
     }
+    public void marcar(){
+        if (!this.marcada){
+            this.marcada = true;
+            panelMina.setImage(new Image(this.getClass().getResourceAsStream("/RecursosGraficos/flag.png")));
+        }else{
+            this.marcada = false;
+            panelMina.setImage(new Image(this.getClass().getResourceAsStream("/RecursosGraficos/Color_Gris.PNG")));
+        }
+    }
     public boolean estaCubierta(){
         return this.casillaCubierta;
+    }
+    public boolean estaMarcada(){
+        return this.marcada;
     }
     public void agregarMina(){
         this.tieneMina = true;

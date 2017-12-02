@@ -110,4 +110,7 @@ io.on("connection", function (socket) {
     socket.on("terminarPartida", function(idCompañero){
     	obtenerSocket(idCompañero).emit("partidaTerminada");
     });
+    socket.on("marca", function(coordenadaX, coordenadaY, idDestino){
+    	obtenerSocket(idDestino).emit("marcaRecibida", coordenadaX, coordenadaY);
+    });
 });

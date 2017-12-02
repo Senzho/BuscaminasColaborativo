@@ -288,7 +288,6 @@ public class VentanaTableroController implements Initializable, CasillaListener,
         this.timer.stop();
         this.miTurno = false;
         this.semaforo(null, "");
-        this.solicitudTurno = null;
         this.preguntaJuego.setVisible(true);
         this.resultadoJuego.setVisible(true);
         this.respuestaNo.setVisible(true);
@@ -304,9 +303,7 @@ public class VentanaTableroController implements Initializable, CasillaListener,
         }
         this.resultadoJuego.setStyle("-fx-text-fill: " + colorEstilo);
         this.resultadoJuego.setText(mensaje);
-        if (ganada){
-            this.registrarPartida();
-        }
+        this.solicitudTurno = null;
         this.aumentarCuentaPartida(ganada);
     }
     public void ocultarEtiquetas(){
@@ -327,7 +324,7 @@ public class VentanaTableroController implements Initializable, CasillaListener,
     	this.socket.emit("solicitudPartida", new JSONObject(solicitud));
         this.miTurno = true;
     }
-    public void registrarPartida(){
+    public void registrarPartida(int idJugador, int idCompañero){
         String dificultad = "";
         switch(this.minas.size()){
             case 15:
@@ -340,9 +337,10 @@ public class VentanaTableroController implements Initializable, CasillaListener,
             dificultad = "avanzado";
             break;
         }
-        Partida partida = new Partida(dificultad, this.labelTiempo.getText(), this.jugador.getIdJugador());
+        Partida partidaJugador = new Partida(dificultad, this.labelTiempo.getText(), idJugador);
+        Partida partidaCompañero = new Partida(dificultad, this.labelTiempo.getText(), idCompañero);
         try {
-            if(!this.cliente.registrarPartida(partida)){
+            if(!this.cliente.registrarPartida(partidaJugador) || !this.cliente.registrarPartida(partidaCompañero)){
                 MessageFactory.showMessage("Error", "Partida", "No se pudo registrar la partida", Alert.AlertType.ERROR);
             }
         } catch (RemoteException ex) {
@@ -476,6 +474,15 @@ public class VentanaTableroController implements Initializable, CasillaListener,
                     solicitudTurno = null;
                 });
             }
+        }).on("marcaRecibida", new Emitter.Listener() {
+            @Override
+            public void call(Object... os) {
+                int x = Integer.parseInt(String.valueOf(os[0]));
+                int y = Integer.parseInt(String.valueOf(os[1]));
+                Platform.runLater(()->{
+                    matrizCasillas[x][y].marcar();
+                });
+            }
         });
         this.socket.connect();
     }
@@ -606,12 +613,20 @@ public class VentanaTableroController implements Initializable, CasillaListener,
             }else{
                 this.buscar(coordenadaX, coordenadaY);
                 if((this.numeroColumnas* this.numeroFilas)==(todoDescubierto()+ganarParida())){
+                    if (emitir){
+                        this.registrarPartida(this.jugador.getIdJugador(), this.solicitudTurno.getIdCompañero());
+                    }
                     this.partidaTerminada(true);
                 }
             }
         }else{
             MessageFactory.showMessage("Información", "Turno", "Debes esperar tu turno", Alert.AlertType.INFORMATION);
         }
+    }
+    @Override
+    public void casillaMarcada(int x, int y) {
+        this.socket.emit("marca", x, y, this.solicitudTurno.getIdCompañero());
+        this.matrizCasillas[x][y].marcar();
     }
     
     EventHandler<WindowEvent> windowHandler = new EventHandler<WindowEvent>(){

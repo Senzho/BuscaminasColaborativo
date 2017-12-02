@@ -97,12 +97,10 @@ public class JugadorDAOSql implements JugadorDAO {
         jugadorJpa.setNombreJugador(jugador.getNombreJugador());
         jugadorJpa.setPartidasJugadas(jugador.getPartidasJugadas());
         jugadorJpa.setPartidasPerdidas(jugador.getPartidasPerdidas());
-        
-        String query = "select p from Partida p, Jugador j where j.idJugador = :idJugador";
+        String query = "select p from Partida p where p.idJugador.idJugador = :idJugador";
         List<Persistencia.Partida> partidas = managerFactory.createEntityManager().createQuery(query)
                 .setParameter("idJugador", jugador.getIdJugador())
                 .getResultList();
-        
         jugadorJpa.setPartidaCollection(partidas);
         try {
             jugadorJpaController.edit(jugadorJpa);

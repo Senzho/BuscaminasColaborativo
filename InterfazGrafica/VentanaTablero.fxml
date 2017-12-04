@@ -12,13 +12,13 @@
 
 <AnchorPane id="AnchorPane" fx:id="anchorPane" prefHeight="560.609375" prefWidth="731.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="InterfazGrafica.VentanaTableroController">
   <children>
-    <ImageView fx:id="botonConfiguracion" fitHeight="53.0" fitWidth="53.0" focusTraversable="false" onMouseEntered="#botonCOnfiguracion_MouseEnter" onMouseExited="#botonCOnfiguracion_MouseLeave" onMousePressed="#botonCOnfiguracion_MouseDown" onMouseReleased="#botonConfiguracion_MouseUp" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="24.0" AnchorPane.leftAnchor="27.0">
+    <ImageView fx:id="botonConfiguracion" fitHeight="53.0" fitWidth="53.0" focusTraversable="false" onMouseEntered="#botonCOnfiguracion_MouseEnter" onMouseExited="#botonCOnfiguracion_MouseLeave" onMousePressed="#botonCOnfiguracion_MouseDown" onMouseReleased="#botonConfiguracion_MouseUp" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="27.0">
       <image>
         <Image url="@../RecursosGraficos/gear.png" />
       </image>
     </ImageView>
     <GridPane fx:id="gridJuego" alignment="CENTER" hgap="1.0" prefHeight="409.99937559604643" prefWidth="678.0" vgap="1.0" visible="true" AnchorPane.bottomAnchor="102.0" AnchorPane.leftAnchor="27.0" AnchorPane.rightAnchor="26.0" AnchorPane.topAnchor="48.61" />
-    <Label id="labelTiempo" layoutX="112.0" text="00:00" textFill="#9f9f9f" AnchorPane.bottomAnchor="46.0">
+    <Label fx:id="labelTiempo" layoutX="112.0" text="00:00" textFill="#9f9f9f" AnchorPane.bottomAnchor="46.0">
       <font>
         <Font size="30.0" fx:id="x1" />
       </font>
@@ -84,6 +84,12 @@
     <Label fx:id="nombreCuentaLabel" prefWidth="471.0" text="Victor" textFill="GREY" AnchorPane.leftAnchor="94.0" AnchorPane.rightAnchor="166.0" AnchorPane.topAnchor="12.0">
       <font>
         <Font size="16.0" />
+      </font>
+    </Label>
+    <ImageView id="botonConfiguracion" fx:id="imagenSemaforo" fitHeight="36.61000061035156" fitWidth="36.61000061035156" focusTraversable="false" onMousePressed="#botonCOnfiguracion_MouseDown" onMouseReleased="#botonConfiguracion_MouseUp" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="26.39" AnchorPane.topAnchor="8.0" />
+    <Label fx:id="labelTextoSemaforo" alignment="CENTER_RIGHT" prefWidth="72.0" text="" textAlignment="LEFT" textFill="GREY" AnchorPane.rightAnchor="67.0" AnchorPane.topAnchor="16.0">
+      <font>
+        <Font name="System Bold" size="16.0" />
       </font>
     </Label>
   </children>

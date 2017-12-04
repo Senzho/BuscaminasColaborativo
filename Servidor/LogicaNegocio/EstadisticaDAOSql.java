@@ -21,7 +21,7 @@ public class EstadisticaDAOSql implements EstadisticaDAO {
 
     @Override
     public LogicaNegocio.Jugador getJugador(int idJugador) {
-        EntityManagerFactory managerFactory = Persistence.createEntityManagerFactory("ServidorBuscaminasEjemplo1PU");
+        EntityManagerFactory managerFactory = Persistence.createEntityManagerFactory("ServidorBuscaminasPU");
         JugadorJpaController jugadorController = new JugadorJpaController(managerFactory);
         Jugador jugador = jugadorController.findJugador(idJugador);
         LogicaNegocio.Jugador jugadorPrincipal = new LogicaNegocio.Jugador(jugador.getIdJugador(),jugador.getNombreJugador(),
@@ -31,7 +31,7 @@ public class EstadisticaDAOSql implements EstadisticaDAO {
 
     @Override
     public int getPatidasGanadas(int idJugador) {
-       EntityManagerFactory managerFactory = Persistence.createEntityManagerFactory("ServidorBuscaminasEjemplo1PU");
+       EntityManagerFactory managerFactory = Persistence.createEntityManagerFactory("ServidorBuscaminasPU");
        EntityManager entityManager = managerFactory.createEntityManager();
        Query query = entityManager.createQuery("select P from Partida P where P.idJugador.idJugador = :idJugador");
        query.setParameter("idJugador",idJugador);
@@ -52,7 +52,7 @@ public class EstadisticaDAOSql implements EstadisticaDAO {
     @Override
     public String getTiempoPromedio(int idJugador) {
         int numeroPartidas = 0;
-        EntityManagerFactory managerFactory = Persistence.createEntityManagerFactory("ServidorBuscaminasEjemplo1PU");
+        EntityManagerFactory managerFactory = Persistence.createEntityManagerFactory("ServidorBuscaminasPU");
         EntityManager entityManager = managerFactory.createEntityManager();
         Query query = entityManager.createQuery("select P from Partida P where P.idJugador.idJugador = :idJugador");
         query.setParameter("idJugador",idJugador);
@@ -69,10 +69,10 @@ public class EstadisticaDAOSql implements EstadisticaDAO {
     }
     public String calcularMinutos(int numeroPartidas){
         String tiempoPromedio = "";
-        String minutoFinal = "";
-        String segundoFinal = "";
         int minutos = numeroPartidas/60;
         int segundos = numeroPartidas%60;
+        String minutoFinal = minutos + "";
+        String segundoFinal = segundos + "";
         if(minutos < 10){
             minutoFinal = "0" + minutos;
         }

@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane id="AnchorPane" minHeight="124.0" onMouseClicked="#btnIp_Click" prefHeight="150.0" prefWidth="423.0000999999975" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="InterfazGrafica.VentanaInicioSesionController">
+<AnchorPane id="AnchorPane" minHeight="124.0" prefHeight="150.0" prefWidth="423.0000999999975" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="InterfazGrafica.VentanaInicioSesionController">
   <children>
     <Button fx:id="btnIngresar" mnemonicParsing="false" onMouseReleased="#btnIngresar_MouseUp" text="Ingresar" AnchorPane.bottomAnchor="21.0" AnchorPane.rightAnchor="24.0">
       <font>

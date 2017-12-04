@@ -10,6 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
@@ -81,6 +82,7 @@ public class VentanaEstadisticaController implements Initializable{
             this.lblValorTiempoPromedio.setText(datosJugador.getTiempoPromedio());
         } catch (RemoteException ex) {
             Logger.getLogger(VentanaEstadisticaController.class.getName()).log(Level.SEVERE, null, ex);
+            MessageFactory.showMessage("error conexion", "conexion servidor", "no podemos conectarnos... prueba cambiando tu IP", Alert.AlertType.ERROR);
         }
     }
     

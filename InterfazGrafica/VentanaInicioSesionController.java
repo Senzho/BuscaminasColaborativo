@@ -12,6 +12,7 @@ import java.rmi.RemoteException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -57,14 +58,15 @@ public class VentanaInicioSesionController implements Initializable {
     public void setDireccionIp(String direccionIp){
         this.direccionIp = direccionIp;
         try {
-            this.socket = IO.socket("http://" + this.direccionIp + ":7000");
-            this.conectar();
-        } catch (URISyntaxException ex) {
-            Logger.getLogger(VentanaTableroController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try {
             this.cliente = new Cliente(direccionIp);
         } catch (RemoteException ex) {
+            Logger.getLogger(VentanaInicioSesionController.class.getName()).log(Level.SEVERE, null, ex);
+            MessageFactory.showMessage("error conexion", "conexion servidor", "no podemos conectarnos... prueba cambiando tu IP", Alert.AlertType.ERROR);
+        }
+        try {
+            this.socket = IO.socket("http://"+direccionIp+":7000");
+            this.conectar();
+        } catch (URISyntaxException ex) {
             Logger.getLogger(VentanaInicioSesionController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -78,26 +80,30 @@ public class VentanaInicioSesionController implements Initializable {
             @Override
             public void call(Object... os) {
                 boolean valido = (boolean) os[0];
-                if(valido == true){
-                    MessageFactory.showMessage("advertencia", "ayuda", "jugadorConectado", Alert.AlertType.WARNING);
-                }else{
-                    new VentanaTablero(rb, jugador, direccionIp);
-                    stage.close();
-                }
+                Platform.runLater(()->{
+                    if(!valido){
+                        new VentanaTablero(rb, jugador, direccionIp);
+                        stage.close();
+                    }else{
+                        MessageFactory.showMessage("Error", "Cuenta de acceso", "we ... nms!!",Alert.AlertType.WARNING);
+                    }
+                });   
             }
         });
+        socket.connect();
     }
 
     public void btnIngresar_MouseUp() {
         try {
             jugador = this.cliente.validarSesión(this.txtNombreUsuario.getText());
             if (jugador != null) {
-                this.socket.emit("buscarJugador", jugador.getIdJugador());
+                socket.emit("validarSesion",jugador.getIdJugador());
             } else {
                 MessageFactory.showMessage("Error", "Cuenta de acceso", "No se encuentra " + this.txtNombreUsuario.getText() + " en la base de datos", Alert.AlertType.WARNING);
             }
         } catch (RemoteException ex) {
             Logger.getLogger(VentanaInicioSesionController.class.getName()).log(Level.SEVERE, null, ex);
+            MessageFactory.showMessage("error conexion", "conexion servidor", "no podemos conectarnos... prueba cambiando tu IP", Alert.AlertType.ERROR);
         }
     }
 
@@ -117,6 +123,7 @@ public class VentanaInicioSesionController implements Initializable {
             }
         } catch (RemoteException ex) {
             Logger.getLogger(VentanaInicioSesionController.class.getName()).log(Level.SEVERE, null, ex);
+            MessageFactory.showMessage("error conexion", "conexion servidor", "no podemos conectarnos... prueba cambiando tu IP", Alert.AlertType.ERROR);
         }
     }
     public void btnIp_Click(){

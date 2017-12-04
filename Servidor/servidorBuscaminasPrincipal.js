@@ -110,16 +110,18 @@ io.on("connection", function (socket) {
     socket.on("terminarPartida", function(idCompañero){
     	obtenerSocket(idCompañero).emit("partidaTerminada");
     });
+	
     socket.on("marca", function(coordenadaX, coordenadaY, idDestino){
     	obtenerSocket(idDestino).emit("marcaRecibida", coordenadaX, coordenadaY);
     });
-    socket.on("buscarJugador",function(idJugador){
-    	var valido = false;
-    	for(var i = 0; i < listaSockets.length; i++){
-    		if(listaSockets[i].idJugador == idJugador){
-    			valido = true;
-    		}
-    	}
-    	socket.emit("jugadorConectado",valido);
-    });
+	socket.on("validarSesion",function(idJugador){
+		var valido = false;
+		for(var i = 0; i < listaSockets.length; i++){
+			if(listaSockets[i].idJugador == idJugador){
+				valido = true;
+				break;
+			}
+		}
+		socket.emit("jugadorConectado", valido);
+	});
 });

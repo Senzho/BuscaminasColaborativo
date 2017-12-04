@@ -136,6 +136,7 @@ public class VentanaTableroController implements Initializable, CasillaListener,
             this.cliente = new Cliente(this.direccionIp);
         } catch (RemoteException ex) {
             Logger.getLogger(VentanaTableroController.class.getName()).log(Level.SEVERE, null, ex);
+            MessageFactory.showMessage("error conexion", "conexion servidor", "no podemos conectarnos... prueba cambiando tu IP", Alert.AlertType.ERROR);
         }
     }
     public void setJugador(Jugador jugador){
@@ -349,6 +350,7 @@ public class VentanaTableroController implements Initializable, CasillaListener,
             }
         } catch (RemoteException ex) {
             Logger.getLogger(VentanaTableroController.class.getName()).log(Level.SEVERE, null, ex);
+            MessageFactory.showMessage("error conexion", "conexion servidor", "no podemos conectarnos... prueba cambiando tu IP", Alert.AlertType.ERROR);
         }
     }
     public void aumentarCuentaPartida(boolean partidaGanada){
@@ -360,6 +362,7 @@ public class VentanaTableroController implements Initializable, CasillaListener,
             this.cliente.editarJugador(jugador);
         } catch (RemoteException ex) {
             Logger.getLogger(VentanaTableroController.class.getName()).log(Level.SEVERE, null, ex);
+            MessageFactory.showMessage("error conexion", "conexion servidor", "no podemos conectarnos... prueba cambiando tu IP", Alert.AlertType.ERROR);
         }
     }
     public void conectar(){
@@ -371,6 +374,9 @@ public class VentanaTableroController implements Initializable, CasillaListener,
         }).on("iniciarPartida", new Emitter.Listener() {
             @Override
             public void call(Object... os) {
+                if(solicitudTurno != null){
+                    socket.emit("terminarPartida",solicitudTurno.getIdCompañero());
+                }
                 JSONObject solicitudJson = (JSONObject) os[0];
                 Solicitud solicitud = new Solicitud();
                 solicitud.setColumnas(solicitudJson.getInt("numeroColumnas"));

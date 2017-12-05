@@ -55,7 +55,7 @@ public class VentanaAjusteDireccionController implements Initializable {
             archivo.delete();
         }
         if(RegistroIdioma.guardarIdioma(archivo,contenido)){
-            MessageFactory.showMessage("contenido", "informacion", "Direccion registrada", Alert.AlertType.INFORMATION);
+            MessageFactory.showMessage(this.resource.getString("contenido"),resource.getString("informacion"),resource.getString("direccionRegistrada"), Alert.AlertType.INFORMATION);
             this.stage.close();
             new VentanaInicioSesion(this.resource, this.txtDireccionIP.getText());
         }
@@ -69,7 +69,7 @@ public class VentanaAjusteDireccionController implements Initializable {
             this.guardarArchivo(NOMBRE_DIRECTORIO+"\\"+this.NOMBRE_ARCHIVO, direccion.getAddress());
         } catch (InvalidIpAddressException ex) {
             Logger.getLogger(VentanaAjusteDireccionController.class.getName()).log(Level.SEVERE, null, ex);
-            MessageFactory.showMessage("Error", "Dirección", "La dirección IP no es válida", Alert.AlertType.INFORMATION);
+            MessageFactory.showMessage(resource.getString("error"),resource.getString("direccion"),resource.getString("ipNoValida"), Alert.AlertType.INFORMATION);
         }
     }
     public void btnCancelar_onClicked(){

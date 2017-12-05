@@ -61,7 +61,7 @@ public class VentanaInicioSesionController implements Initializable {
             this.cliente = new Cliente(direccionIp);
         } catch (RemoteException ex) {
             Logger.getLogger(VentanaInicioSesionController.class.getName()).log(Level.SEVERE, null, ex);
-            MessageFactory.showMessage("error conexion", "conexion servidor", "no podemos conectarnos... prueba cambiando tu IP", Alert.AlertType.ERROR);
+            MessageFactory.showMessage(rb.getString("errorConexion"),rb.getString("conexionServidor"), rb.getString("mensajeErrorIP"), Alert.AlertType.ERROR);
         }
         try {
             this.socket = IO.socket("http://"+direccionIp+":7000");
@@ -85,7 +85,7 @@ public class VentanaInicioSesionController implements Initializable {
                         new VentanaTablero(rb, jugador, direccionIp);
                         stage.close();
                     }else{
-                        MessageFactory.showMessage("Error", "Cuenta de acceso", "we ... nms!!",Alert.AlertType.WARNING);
+                        MessageFactory.showMessage(rb.getString("error"), rb.getString("cuentaAcceso"),rb.getString("inicioSesionFallido"),Alert.AlertType.WARNING);
                     }
                 });   
             }
@@ -99,7 +99,7 @@ public class VentanaInicioSesionController implements Initializable {
             if (jugador != null) {
                 socket.emit("validarSesion",jugador.getIdJugador());
             } else {
-                MessageFactory.showMessage("Error", "Cuenta de acceso", "No se encuentra " + this.txtNombreUsuario.getText() + " en la base de datos", Alert.AlertType.WARNING);
+                MessageFactory.showMessage(rb.getString("error"), rb.getString("cuentaAcceso"),rb.getString("noEncontrado") + this.txtNombreUsuario.getText() + rb.getString("baseDatos"), Alert.AlertType.WARNING);
             }
         } catch (RemoteException ex) {
             Logger.getLogger(VentanaInicioSesionController.class.getName()).log(Level.SEVERE, null, ex);
@@ -112,18 +112,18 @@ public class VentanaInicioSesionController implements Initializable {
             RegistroJugador registro = cliente.registrarJugador(this.txtNombreUsuario.getText());
             switch(registro){
                 case JUGADOR_APROBADO:
-                    MessageFactory.showMessage("Éxito", "Registro de jugador", "El jugador: " + this.txtNombreUsuario.getText() + " fue registrado exitosamente", Alert.AlertType.INFORMATION);
+                    MessageFactory.showMessage(rb.getString("exito"),rb.getString("registroJugador"), rb.getString("elJugador") + this.txtNombreUsuario.getText() + rb.getString("registroExitoso"), Alert.AlertType.INFORMATION);
                     break;
                 case JUGADOR_EXISTENTE:
-                    MessageFactory.showMessage("Error", "Registro de jugador", "El jugador: " + this.txtNombreUsuario.getText() + " ya existe", Alert.AlertType.ERROR);
+                    MessageFactory.showMessage(rb.getString("error"), rb.getString("registroJugador"),  rb.getString("elJugador")+ this.txtNombreUsuario.getText() + rb.getString("yaExiste"), Alert.AlertType.ERROR);
                     break;
                 case ERROR_REGISTRO:
-                    MessageFactory.showMessage("Error", "Registro de jugador", "No se pudo acceder a la base de datos", Alert.AlertType.NONE);
+                    MessageFactory.showMessage(rb.getString("error"), rb.getString("registroJugador"), rb.getString("accesoNegado"), Alert.AlertType.NONE);
                     break;
             }
         } catch (RemoteException ex) {
             Logger.getLogger(VentanaInicioSesionController.class.getName()).log(Level.SEVERE, null, ex);
-            MessageFactory.showMessage("error conexion", "conexion servidor", "no podemos conectarnos... prueba cambiando tu IP", Alert.AlertType.ERROR);
+            MessageFactory.showMessage(rb.getString("errorConexion"), rb.getString("conexionServidor"), rb.getString("mensajeErrorIP"), Alert.AlertType.ERROR);
         }
     }
     public void btnIp_Click(){

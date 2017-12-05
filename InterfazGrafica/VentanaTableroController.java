@@ -136,7 +136,7 @@ public class VentanaTableroController implements Initializable, CasillaListener,
             this.cliente = new Cliente(this.direccionIp);
         } catch (RemoteException ex) {
             Logger.getLogger(VentanaTableroController.class.getName()).log(Level.SEVERE, null, ex);
-            MessageFactory.showMessage("error conexion", "conexion servidor", "no podemos conectarnos... prueba cambiando tu IP", Alert.AlertType.ERROR);
+            MessageFactory.showMessage(this.resource.getString("errorConexion"), this.resource.getString("conexionServidor"), this.resource.getString("mensajeErrorIP"), Alert.AlertType.ERROR);
         }
     }
     public void setJugador(Jugador jugador){
@@ -350,7 +350,7 @@ public class VentanaTableroController implements Initializable, CasillaListener,
             }
         } catch (RemoteException ex) {
             Logger.getLogger(VentanaTableroController.class.getName()).log(Level.SEVERE, null, ex);
-            MessageFactory.showMessage("error conexion", "conexion servidor", "no podemos conectarnos... prueba cambiando tu IP", Alert.AlertType.ERROR);
+            MessageFactory.showMessage(this.resource.getString("errorConexion"), this.resource.getString("conexionServidor"), this.resource.getString("mensajeErrorIP"), Alert.AlertType.ERROR);
         }
     }
     public void aumentarCuentaPartida(boolean partidaGanada){
@@ -362,7 +362,7 @@ public class VentanaTableroController implements Initializable, CasillaListener,
             this.cliente.editarJugador(jugador);
         } catch (RemoteException ex) {
             Logger.getLogger(VentanaTableroController.class.getName()).log(Level.SEVERE, null, ex);
-            MessageFactory.showMessage("error conexion", "conexion servidor", "no podemos conectarnos... prueba cambiando tu IP", Alert.AlertType.ERROR);
+            MessageFactory.showMessage(this.resource.getString("errorConexion"), this.resource.getString("conexionServidor"), this.resource.getString("mensajeErrorIP"), Alert.AlertType.ERROR);
         }
     }
     public void conectar(){
@@ -429,9 +429,9 @@ public class VentanaTableroController implements Initializable, CasillaListener,
             public void call(Object... os) {
                 Platform.runLater(()->{
                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                    alert.setTitle("Nueva partida");
-                    alert.setHeaderText("Solicitud");
-                    alert.setContentText("El jugador " + os[1].toString() + " quiere jugar una partida contigo");
+                    alert.setTitle(resource.getString("nuevaPartida"));
+                    alert.setHeaderText(resource.getString("solicitud"));
+                    alert.setContentText(resource.getString("elJugador")+ os[1].toString() + resource.getString("mensajeSolicitudPartida"));
                     Optional<ButtonType> respuesta = alert.showAndWait();
                     String aceptado;
                     if (respuesta.get().getButtonData().equals(ButtonData.OK_DONE)){
@@ -475,7 +475,7 @@ public class VentanaTableroController implements Initializable, CasillaListener,
             @Override
             public void call(Object... os) {
                 Platform.runLater(()->{
-                    MessageFactory.showMessage("Información", "Partida", "Tu compañero decidió terminar la partida", Alert.AlertType.INFORMATION);
+                    MessageFactory.showMessage(resource.getString("informacion"), resource.getString("partida"), resource.getString("mensajePartidaAbandonada"), Alert.AlertType.INFORMATION);
                     reestablecerGrid();
                     semaforo(null, "");
                     labelNumeroMinas.setText("0");
@@ -536,7 +536,7 @@ public class VentanaTableroController implements Initializable, CasillaListener,
         timer.stop();
         labelTiempo.setText("00:00");
         solicitudTurno = null;
-        MessageFactory.showMessage("Infromación", "Partida", "Partida terminada", Alert.AlertType.INFORMATION);
+        MessageFactory.showMessage(this.resource.getString("informacion"),this.resource.getString("partida"), this.resource.getString("mensajePartidaTerminada"), Alert.AlertType.INFORMATION);
     }
     public void botonTerminar_MouseLeave(){
         this.botonTerminar.setImage(this.X);
@@ -630,7 +630,7 @@ public class VentanaTableroController implements Initializable, CasillaListener,
                 }
             }
         }else{
-            MessageFactory.showMessage("Información", "Turno", "Debes esperar tu turno", Alert.AlertType.INFORMATION);
+            MessageFactory.showMessage(this.resource.getString("informacion"),this.resource.getString("turno"), this.resource.getString("mensajeEsperaturno"), Alert.AlertType.INFORMATION);
         }
     }
     @Override

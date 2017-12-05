@@ -120,7 +120,7 @@ public class VentanaNuevaPartidaController implements Initializable {
         return id;
     }
     public void mostrarMensajeRechazo(){
-        MessageFactory.showMessage("Mensaje", "Solicitud rechazada", "El usuario rechazó tu solicitud de partida :(", Alert.AlertType.INFORMATION);
+        MessageFactory.showMessage(recursos.getString("Mensaje"), recursos.getString("solicitudRechazada"), recursos.getString("rechazoPartida"), Alert.AlertType.INFORMATION);
     }
     
     public void botonCanelar_Click(){
@@ -143,10 +143,10 @@ public class VentanaNuevaPartidaController implements Initializable {
             if (solicitud != null){
                 this.tableroController.enviarSolicitud(solicitud);
             }else{
-                MessageFactory.showMessage("Advertencia", "Partida", "No has seleccionado la dificultad", Alert.AlertType.WARNING);
+                MessageFactory.showMessage(recursos.getString("advertencia"),recursos.getString("partida"),recursos.getString("seleccionDificultad"), Alert.AlertType.WARNING);
             }
         }else{
-            MessageFactory.showMessage("Advertencia", "Partida", "No has seleccionado tu compañero", Alert.AlertType.WARNING);
+            MessageFactory.showMessage(recursos.getString("advertencia"), recursos.getString("partida"),recursos.getString("seleccionCompañero"), Alert.AlertType.WARNING);
         }
     }
 }

@@ -82,7 +82,7 @@ public class VentanaEstadisticaController implements Initializable{
             this.lblValorTiempoPromedio.setText(datosJugador.getTiempoPromedio());
         } catch (RemoteException ex) {
             Logger.getLogger(VentanaEstadisticaController.class.getName()).log(Level.SEVERE, null, ex);
-            MessageFactory.showMessage("error conexion", "conexion servidor", "no podemos conectarnos... prueba cambiando tu IP", Alert.AlertType.ERROR);
+            MessageFactory.showMessage(rb.getString("errorConexion"), rb.getString("conexionServidor"), rb.getString("mensajeErrorIP"), Alert.AlertType.ERROR);
         }
     }
     

@@ -331,7 +331,7 @@ public class VentanaTableroController implements Initializable, CasillaListener,
     }
     public void registrarPartida(int idJugador, int idCompañero){
         String dificultad = "";
-        switch(this.minas.size()){
+        switch(this.solicitudTurno.getNumeroMinas()){
             case 15:
             dificultad = "fácil";
             break;
@@ -346,7 +346,7 @@ public class VentanaTableroController implements Initializable, CasillaListener,
         Partida partidaCompañero = new Partida(dificultad, this.labelTiempo.getText(), idCompañero);
         try {
             if(!this.cliente.registrarPartida(partidaJugador) || !this.cliente.registrarPartida(partidaCompañero)){
-                MessageFactory.showMessage("Error", "Partida", "No se pudo registrar la partida", Alert.AlertType.ERROR);
+                MessageFactory.showMessage(resource.getString("error"), resource.getString("partida"), resource.getString("accesoNegado"), Alert.AlertType.ERROR);
             }
         } catch (RemoteException ex) {
             Logger.getLogger(VentanaTableroController.class.getName()).log(Level.SEVERE, null, ex);
@@ -528,15 +528,17 @@ public class VentanaTableroController implements Initializable, CasillaListener,
         this.botonTerminar.setImage(this.X_PRESSED);
     }
     public void botonTerminar_MouseUp(){
-        this.botonTerminar.setImage(this.X_HOVER);
-        this.socket.emit("terminarPartida", this.solicitudTurno.getIdCompañero());
-        reestablecerGrid();
-        semaforo(null, "");
-        labelNumeroMinas.setText("0");
-        timer.stop();
-        labelTiempo.setText("00:00");
-        solicitudTurno = null;
-        MessageFactory.showMessage(this.resource.getString("informacion"),this.resource.getString("partida"), this.resource.getString("mensajePartidaTerminada"), Alert.AlertType.INFORMATION);
+        if (this.solicitudTurno != null){
+            this.botonTerminar.setImage(this.X_HOVER);
+            this.socket.emit("terminarPartida", this.solicitudTurno.getIdCompañero());
+            reestablecerGrid();
+            semaforo(null, "");
+            labelNumeroMinas.setText("0");
+            timer.stop();
+            labelTiempo.setText("00:00");
+            solicitudTurno = null;
+            MessageFactory.showMessage(this.resource.getString("informacion"),this.resource.getString("partida"), this.resource.getString("mensajePartidaTerminada"), Alert.AlertType.INFORMATION);
+        }  
     }
     public void botonTerminar_MouseLeave(){
         this.botonTerminar.setImage(this.X);

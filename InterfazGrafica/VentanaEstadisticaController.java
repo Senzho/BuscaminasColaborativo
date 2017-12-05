@@ -62,7 +62,6 @@ public class VentanaEstadisticaController implements Initializable{
     }
     public void internacionalizar(ResourceBundle resource){
         this.rb = resource;
-        lblNombreUsuario.setText(rb.getString("lblNombreUsuario"));
         lblPartidasJugadas.setText(rb.getString("lblPartidasJugadas"));
         lblPartidasGanadas.setText(rb.getString("lblPartidasGanadas"));
         lblPartidasPerdidas.setText(rb.getString("lblPartidasPerdidas"));

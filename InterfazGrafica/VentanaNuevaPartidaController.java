@@ -28,6 +28,8 @@ public class VentanaNuevaPartidaController implements Initializable {
     @FXML
     private Label labelAvanzado;
     @FXML
+    private Label labelRespuesta;
+    @FXML
     private RadioButton radioFacil;
     @FXML
     private RadioButton radioMedio;
@@ -105,6 +107,7 @@ public class VentanaNuevaPartidaController implements Initializable {
         this.radioAvanzado.setText(this.recursos.getString("radioAvanzado"));
         this.botonCancelar.setText(this.recursos.getString("botonCancelar"));
         this.botonSolicitud.setText(this.recursos.getString("botonSolicitud"));
+        this.labelRespuesta.setText(recursos.getString("labelRespuestaListo"));
         this.stage.setTitle(this.recursos.getString("nombreVentanaNueva"));
     }
     public void cerrarVentana(){
@@ -120,7 +123,8 @@ public class VentanaNuevaPartidaController implements Initializable {
         return id;
     }
     public void mostrarMensajeRechazo(){
-        MessageFactory.showMessage(recursos.getString("Mensaje"), recursos.getString("solicitudRechazada"), recursos.getString("rechazoPartida"), Alert.AlertType.INFORMATION);
+        this.labelRespuesta.setText(recursos.getString("labelRespuestaListo"));
+        MessageFactory.showMessage(recursos.getString("mensaje"), recursos.getString("solicitudRechazada"), recursos.getString("rechazoPartida"), Alert.AlertType.INFORMATION);
     }
     
     public void botonCanelar_Click(){
@@ -141,12 +145,13 @@ public class VentanaNuevaPartidaController implements Initializable {
                 solicitud = new Solicitud(idSolicitante, idCompañero, TipoDificultad.avanzado);
             }
             if (solicitud != null){
+                this.labelRespuesta.setText(recursos.getString("labelRespuestaEspera"));
                 this.tableroController.enviarSolicitud(solicitud);
             }else{
-                MessageFactory.showMessage(recursos.getString("advertencia"),recursos.getString("partida"),recursos.getString("seleccionDificultad"), Alert.AlertType.WARNING);
+                MessageFactory.showMessage(recursos.getString("advertencia"), recursos.getString("partida"), recursos.getString("seleccionDificultad"), Alert.AlertType.WARNING);
             }
         }else{
-            MessageFactory.showMessage(recursos.getString("advertencia"), recursos.getString("partida"),recursos.getString("seleccionCompañero"), Alert.AlertType.WARNING);
+            MessageFactory.showMessage(recursos.getString("advertencia"), recursos.getString("partida"), recursos.getString("seleccionCompañero"), Alert.AlertType.WARNING);
         }
     }
 }

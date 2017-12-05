@@ -7,6 +7,7 @@ package InterfazGrafica;
 
 import LogicaNegocio.Cliente;
 import LogicaNegocio.Jugador;
+import java.io.IOException;
 import java.net.URL;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -14,10 +15,14 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
 
 /**
@@ -29,6 +34,8 @@ public class VentanaMejorJugadorController implements Initializable{
     private Label lblMejoresJugadores;
     @FXML
     private Button btnAceptar;
+    @FXML
+    private FlowPane panelJugadores;
     private ResourceBundle rb;
     private Stage stage;
     private String direccionIp;
@@ -55,8 +62,16 @@ public class VentanaMejorJugadorController implements Initializable{
             Cliente cliente = new Cliente(this.direccionIp);
             ArrayList<Jugador> jugadores = cliente.getListaJugadores();
             for (Jugador jugador : jugadores){
-                System.out.println("/n" + jugador.getNombreJugador() + ":");
-                System.out.println((jugador.getPartidasJugadas() - jugador.getPartidasPerdidas()) + " partidas ganadas de: " + jugador.getPartidasJugadas());
+                FXMLLoader loader = new FXMLLoader(this.getClass().getResource("PanelJugador.fxml"));
+                AnchorPane panel;
+                try {
+                    panel = loader.load();
+                    panelJugadorController controller = loader.getController();
+                    controller.setValues(jugador.getNombreJugador() + ":", (jugador.getPartidasJugadas() - jugador.getPartidasPerdidas()) + " partidas ganadas de: " + jugador.getPartidasJugadas());
+                    this.panelJugadores.getChildren().add(panel);
+                } catch (IOException ex) {
+                    Logger.getLogger(VentanaMejorJugadorController.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         } catch (RemoteException ex) {
             Logger.getLogger(VentanaMejorJugadorController.class.getName()).log(Level.SEVERE, null, ex);

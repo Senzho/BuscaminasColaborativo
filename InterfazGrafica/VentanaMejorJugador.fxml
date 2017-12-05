@@ -19,9 +19,9 @@
         <Font name="System Bold" size="32.0" />
       </font>
     </Label>
-    <ScrollPane prefHeight="314.0" prefWidth="406.0" AnchorPane.bottomAnchor="84.0" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="85.0">
+    <ScrollPane id="panelJugadores" prefHeight="314.0" prefWidth="406.0" AnchorPane.bottomAnchor="84.0" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="85.0">
       <content>
-        <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
+        <FlowPane fx:id="panelJugadores" prefHeight="313.0" prefWidth="392.0001220703125" />
       </content>
     </ScrollPane>
   </children>

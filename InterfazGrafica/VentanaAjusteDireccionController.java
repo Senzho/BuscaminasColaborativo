@@ -17,6 +17,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -36,6 +37,11 @@ public class VentanaAjusteDireccionController implements Initializable {
     private Button btnCancelar;
     @FXML
     private TextField txtDireccionIP;
+    @FXML
+    private Label lblDireccion;
+    @FXML
+    private Label lblMensajeInstruccion;
+    
     private final String NOMBRE_ARCHIVO = "direccionIP.txt";
     private final String NOMBRE_DIRECTORIO = "C:\\Buscaminas";
     private Stage stage;
@@ -77,5 +83,10 @@ public class VentanaAjusteDireccionController implements Initializable {
     }
     public void internacionalizar(ResourceBundle resource){
         this.resource = resource;
+        this.stage.setTitle(this.resource.getString("nombreVentanaIp"));
+        this.btnCancelar.setText(this.resource.getString("botonCancelar"));
+        this.btnGuardar.setText(this.resource.getString("botonGuardar"));
+        this.lblDireccion.setText(this.resource.getString("labelDireccion"));
+        this.lblMensajeInstruccion.setText(this.resource.getString("labelMensajeInstruccion"));
     }
 }

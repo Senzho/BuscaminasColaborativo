@@ -20,7 +20,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
@@ -32,6 +31,8 @@ import javafx.stage.Stage;
 public class VentanaMejorJugadorController implements Initializable{
     @FXML
     private Label lblMejoresJugadores;
+    @FXML
+    private Label lblPorque;
     @FXML
     private Button btnAceptar;
     @FXML
@@ -48,6 +49,7 @@ public class VentanaMejorJugadorController implements Initializable{
         this.rb = resource;
         lblMejoresJugadores.setText(rb.getString("lblMejoresJugadores"));
         btnAceptar.setText(rb.getString("btnAceptar"));
+        this.lblPorque.setText(rb.getString("lblPorque"));
         this.stage.setTitle(rb.getString("nombreVentanaMejor"));
     }
     public void setStage(Stage stage){
@@ -81,5 +83,18 @@ public class VentanaMejorJugadorController implements Initializable{
     
     public void btnAceptar_click(){
         this.stage.close();
+    }
+    public void lblPorque_mouseEnter(){
+        this.lblPorque.setStyle("-fx-text-fill: #0066ff");
+    }
+    public void lblPorque_mouseDown(){
+        this.lblPorque.setStyle("-fx-text-fill: #58ACFA");
+    }
+    public void lblPorque_mouseUp(){
+        this.lblPorque.setStyle("-fx-text-fill: #0066ff");
+        MessageFactory.showMessage(this.rb.getString("mensaje"), this.rb.getString("politicas"), this.rb.getString("mensajePoliticas"), Alert.AlertType.INFORMATION);
+    }
+    public void lblPorque_mouseLeave(){
+        this.lblPorque.setStyle("-fx-text-fill: #808080");
     }
 }

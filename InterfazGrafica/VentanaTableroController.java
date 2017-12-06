@@ -375,6 +375,13 @@ public class VentanaTableroController implements Initializable, CasillaListener,
             @Override
             public void call(Object... os) {
                 if(solicitudTurno != null){
+                    Platform.runLater(()->{
+                        semaforo(null, "");
+                        if (miTurno){
+                            miTurno = false;
+                        }
+                        timer.stop();
+                    });
                     socket.emit("terminarPartida",solicitudTurno.getIdCompañero());
                 }
                 JSONObject solicitudJson = (JSONObject) os[0];

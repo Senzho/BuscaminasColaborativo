@@ -24,5 +24,6 @@
         <FlowPane fx:id="panelJugadores" prefHeight="313.0" prefWidth="392.0001220703125" />
       </content>
     </ScrollPane>
+    <Label fx:id="lblPorque" onMouseEntered="#lblPorque_mouseEnter" onMouseExited="#lblPorque_mouseLeave" onMousePressed="#lblPorque_mouseDown" onMouseReleased="#lblPorque_mouseUp" text="¿Porque no estoy en la lista?" textFill="GREY" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" />
   </children>
 </AnchorPane>

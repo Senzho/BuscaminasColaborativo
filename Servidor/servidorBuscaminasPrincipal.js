@@ -44,31 +44,30 @@ io.on("connection", function (socket) {
         socket.emit("jugadorLista", listaDatos);
     });
     socket.on("disconnect", function () {
-    	console.log("Jugadores actuales");
-        for (var i = 0; i< listaDatos.length; i++) {
+        var socketAuxiliar;
+        for(var i = 0; i< listaSockets.length; i++){
+        	socketAuxiliar = listaSockets[i];
+        	if(socketAuxiliar.socket == socket){
+        		listaSockets.splice(i,1);
+        		console.log("jugador borrado de la lista");
+        		for(var j = 0; j < listaDatos.length; j++){
+        			if(listaDatos[j].idJugador == socketAuxiliar.idJugador){
+        				listaDatos.splice(j,1);
+        				break;
+        			}
+        		}
+        		break;
+        	}
+        }
+        console.log("jugadores actuales");
+        for(var i = 0; i < listaDatos.length; i++){
         	console.log(listaDatos[i].nombreJugador);
         }
-        
-    });
-    socket.on("jugadorDesconectado",function(idJugador){
-    	var auxiliarBusqueda;
-		for (var i = 0; i < listaDatos.length; i++) {
-            auxiliarBusqueda = listaDatos[i];
-            if (auxiliarBusqueda.idJugador == idJugador) {
-            	listaDatos.splice(i, 1);
-                console.log("jugador "+auxiliarBusqueda.idJugador+" desconectado.");
-                break;
-            }
-        }
-        for (var i = 0; i < listaSockets.length; i++) {
-            auxiliarBusqueda = listaSockets[i];
-            if (auxiliarBusqueda.idJugador == idJugador) {
-                listaSockets.splice(i, 1);
-                console.log("jugador "+auxiliarBusqueda.idJugador+" desconectado.");
-                break;
-            }
-        }
-        socket.broadcast.emit("jugadorDesconectado", idJugador);
+		console.log("lista de sockets actuales");
+		for(var i = 0; i < listaSockets.length; i++){
+			console.log(listaSockets[i].idJugador);
+		}        
+		console.log("borrar esto");
     });
 	socket.on("solicitudPartida",function(solicitud){
         var nombre;
@@ -108,7 +107,10 @@ io.on("connection", function (socket) {
         obtenerSocket(idDestino).emit("tiroRecibido",coordenadaX,coordenadaY);
     });
     socket.on("terminarPartida", function(idCompañero){
-    	obtenerSocket(idCompañero).emit("partidaTerminada");
+    	var socketAux = obtenerSocket(idCompañero);
+    	if(socketAux!=null){
+    		obtenerSocket(idCompañero).emit("partidaTerminada");
+    	}
     });
 	
     socket.on("marca", function(coordenadaX, coordenadaY, idDestino){

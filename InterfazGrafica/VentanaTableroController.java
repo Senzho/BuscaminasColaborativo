@@ -438,7 +438,7 @@ public class VentanaTableroController implements Initializable, CasillaListener,
                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                     alert.setTitle(resource.getString("nuevaPartida"));
                     alert.setHeaderText(resource.getString("solicitud"));
-                    alert.setContentText(resource.getString("elJugador")+ os[1].toString() + resource.getString("mensajeSolicitudPartida"));
+                    alert.setContentText(resource.getString("elJugador")+" "+os[1].toString() + " " + resource.getString("mensajeSolicitudPartida"));
                     Optional<ButtonType> respuesta = alert.showAndWait();
                     String aceptado;
                     if (respuesta.get().getButtonData().equals(ButtonData.OK_DONE)){
@@ -652,7 +652,6 @@ public class VentanaTableroController implements Initializable, CasillaListener,
         @Override
         public void handle(WindowEvent event) {
             int id = jugador.getIdJugador();
-            socket.emit("jugadorDesconectado", id);
             if (solicitudTurno != null){
                 socket.emit("terminarPartida", solicitudTurno.getIdCompañero());
             }

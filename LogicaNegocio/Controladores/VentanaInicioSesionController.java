@@ -1,5 +1,8 @@
-package InterfazGrafica;
+package LogicaNegocio.Controladores;
 
+import InterfazGrafica.MessageFactory;
+import InterfazGrafica.VentanaAjusteDireccion;
+import InterfazGrafica.VentanaTablero;
 import LogicaNegocio.Cliente;
 import LogicaNegocio.Jugador;
 import LogicaNegocio.RegistroJugador;
@@ -14,6 +17,7 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -21,6 +25,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public class VentanaInicioSesionController implements Initializable {
     @FXML
@@ -47,6 +52,7 @@ public class VentanaInicioSesionController implements Initializable {
     }
     public void setStage(Stage stage){
         this.stage = stage;
+        this.stage.setOnCloseRequest(eventoVentana);
     }
     
     public void internacionalizar(ResourceBundle resources){
@@ -113,7 +119,7 @@ public class VentanaInicioSesionController implements Initializable {
                 if (jugador != null) {
                     socket.emit("validarSesion",jugador.getIdJugador());
                 } else {
-                    MessageFactory.showMessage(rb.getString("error"), rb.getString("cuentaAcceso"),rb.getString("noEncontrado") + this.txtNombreUsuario.getText() + rb.getString("baseDatos"), Alert.AlertType.WARNING);
+                    MessageFactory.showMessage(rb.getString("error"), rb.getString("cuentaAcceso"),rb.getString("noEncontrado") +" "+ this.txtNombreUsuario.getText() +" "+ rb.getString("baseDatos"), Alert.AlertType.WARNING);
                 }
             } catch (RemoteException | NotBoundException ex) {
                 Logger.getLogger(VentanaInicioSesionController.class.getName()).log(Level.SEVERE, null, ex);
@@ -153,4 +159,11 @@ public class VentanaInicioSesionController implements Initializable {
         new VentanaAjusteDireccion(this.rb);
         this.stage.close();
     }
+    EventHandler<WindowEvent> eventoVentana = new EventHandler<WindowEvent>(){
+        @Override
+        public void handle(WindowEvent event) {
+            socket.disconnect();
+            System.exit(0);
+        }
+    };
 }

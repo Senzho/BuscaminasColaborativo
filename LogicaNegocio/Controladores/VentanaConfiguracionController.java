@@ -1,6 +1,8 @@
-package InterfazGrafica;
+package LogicaNegocio.Controladores;
 
-import AccesoDatos.RegistroIdioma;
+import AccesoDatos.RegistroArchivo;
+import InterfazGrafica.VentanaEstadistica;
+import InterfazGrafica.VentanaMejorJugador;
 import LogicaNegocio.Jugador;
 import java.io.File;
 import java.net.URL;
@@ -107,7 +109,7 @@ public class VentanaConfiguracionController implements Initializable {
         if (archivo.exists()){
             archivo.delete();
         }
-        RegistroIdioma.guardarIdioma(archivo, contenido);
+        RegistroArchivo.guardar(archivo, contenido);
     }
     
     //Eventos

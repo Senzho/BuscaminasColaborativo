@@ -1,5 +1,6 @@
-package InterfazGrafica;
+package LogicaNegocio.Controladores;
 
+import InterfazGrafica.MessageFactory;
 import LogicaNegocio.Cliente;
 import LogicaNegocio.DatosJugador;
 import LogicaNegocio.Jugador;

@@ -109,12 +109,15 @@ io.on("connection", function (socket) {
     socket.on("terminarPartida", function(idCompañero){
     	var socketAux = obtenerSocket(idCompañero);
     	if(socketAux!=null){
-    		obtenerSocket(idCompañero).emit("partidaTerminada");
+    		socketAux.emit("partidaTerminada");
     	}
     });
 	
     socket.on("marca", function(coordenadaX, coordenadaY, idDestino){
-    	obtenerSocket(idDestino).emit("marcaRecibida", coordenadaX, coordenadaY);
+    	var socketAux = obtenerSocket(idDestino);
+    	if(socketAux!=null){
+    		socketAux.emit("marcaRecibida", coordenadaX, coordenadaY);
+    	}
     });
 	socket.on("validarSesion",function(idJugador){
 		var valido = false;

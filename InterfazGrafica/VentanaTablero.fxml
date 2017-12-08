@@ -10,7 +10,7 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane id="AnchorPane" fx:id="anchorPane" prefHeight="560.609375" prefWidth="731.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="InterfazGrafica.VentanaTableroController">
+<AnchorPane id="AnchorPane" fx:id="anchorPane" prefHeight="560.609375" prefWidth="731.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="LogicaNegocio.Controladores.VentanaTableroController">
   <children>
     <ImageView fx:id="botonConfiguracion" fitHeight="53.0" fitWidth="53.0" focusTraversable="false" onMouseEntered="#botonCOnfiguracion_MouseEnter" onMouseExited="#botonCOnfiguracion_MouseLeave" onMousePressed="#botonCOnfiguracion_MouseDown" onMouseReleased="#botonConfiguracion_MouseUp" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="27.0">
       <image>

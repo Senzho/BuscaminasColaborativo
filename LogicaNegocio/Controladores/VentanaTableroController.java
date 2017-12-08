@@ -1,5 +1,9 @@
-package InterfazGrafica;
+package LogicaNegocio.Controladores;
 
+import InterfazGrafica.CasillaListener;
+import InterfazGrafica.MessageFactory;
+import InterfazGrafica.VentanaConfiguracion;
+import InterfazGrafica.VentanaNuevaPartida;
 import LogicaNegocio.Casilla;
 import LogicaNegocio.Cliente;
 import LogicaNegocio.Jugador;

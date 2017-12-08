@@ -5,6 +5,7 @@
  */
 package InterfazGrafica;
 
+import LogicaNegocio.Controladores.VentanaAjusteDireccionController;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;

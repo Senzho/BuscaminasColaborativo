@@ -1,5 +1,6 @@
-package InterfazGrafica;
+package LogicaNegocio.Controladores;
 
+import InterfazGrafica.MessageFactory;
 import LogicaNegocio.Jugador;
 import LogicaNegocio.Solicitud;
 import LogicaNegocio.TipoDificultad;

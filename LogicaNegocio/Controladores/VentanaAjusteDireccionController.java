@@ -3,9 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package InterfazGrafica;
+package LogicaNegocio.Controladores;
 
 import AccesoDatos.RegistroArchivo;
+import InterfazGrafica.MessageFactory;
+import InterfazGrafica.VentanaInicioSesion;
 import LogicaNegocio.InvalidIpAddressException;
 import LogicaNegocio.IpAddress;
 import java.io.File;
@@ -13,6 +15,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -20,6 +23,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 /**
  * FXML Controller class
@@ -64,6 +68,17 @@ public class VentanaAjusteDireccionController implements Initializable {
     }
     public void setStage(Stage stage){
         this.stage = stage;
+        stage.setOnCloseRequest(eventoVentana);
+    }
+    public void cerrarVentana(){
+        File direccionIp = new File("C:\\Buscaminas\\direccionIP.txt");
+        String direccion;
+        if (direccionIp.exists()){
+            direccion = RegistroArchivo.leerLinea(direccionIp);
+        }else{
+            direccion = "localhost";
+        }
+        new VentanaInicioSesion(this.resource, direccion);
     }
     public void btnGuardar_onClicked(){
         try {
@@ -76,14 +91,7 @@ public class VentanaAjusteDireccionController implements Initializable {
     }
     public void btnCancelar_onClicked(){
         this.stage.close();
-        File direccionIp = new File("C:\\Buscaminas\\direccionIP.txt");
-        String direccion;
-        if (direccionIp.exists()){
-            direccion = RegistroArchivo.leerLinea(direccionIp);
-        }else{
-            direccion = "localhost";
-        }
-        new VentanaInicioSesion(this.resource, direccion);
+        this.cerrarVentana();
     }
     public void internacionalizar(ResourceBundle resource){
         this.resource = resource;
@@ -93,4 +101,10 @@ public class VentanaAjusteDireccionController implements Initializable {
         this.lblDireccion.setText(this.resource.getString("labelDireccion"));
         this.lblMensajeInstruccion.setText(this.resource.getString("labelMensajeInstruccion"));
     }
+    EventHandler<WindowEvent> eventoVentana = new EventHandler<WindowEvent>(){
+        @Override
+        public void handle(WindowEvent event) {
+            cerrarVentana();
+        }
+    };
 }

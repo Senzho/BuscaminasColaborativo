@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="483.0" prefWidth="433.0000999999975" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="InterfazGrafica.VentanaMejorJugadorController">
+<AnchorPane id="AnchorPane" prefHeight="483.0" prefWidth="433.0000999999975" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="LogicaNegocio.Controladores.VentanaMejorJugadorController">
   <children>
     <Button fx:id="btnAceptar" mnemonicParsing="false" onMouseClicked="#btnAceptar_click" text="Ok" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="14.0">
       <font>

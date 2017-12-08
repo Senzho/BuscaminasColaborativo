@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="464.0" prefWidth="590.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="InterfazGrafica.VentanaNuevaPartidaController">
+<AnchorPane id="AnchorPane" prefHeight="464.0" prefWidth="590.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="LogicaNegocio.Controladores.VentanaNuevaPartidaController">
   <children>
     <Label fx:id="labelJugadores" text="Jugadores:" textFill="GREY" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="27.0">
       <font>

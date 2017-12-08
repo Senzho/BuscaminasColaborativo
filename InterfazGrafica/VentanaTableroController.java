@@ -13,6 +13,7 @@ import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -348,7 +349,7 @@ public class VentanaTableroController implements Initializable, CasillaListener,
             if(!this.cliente.registrarPartida(partidaJugador) || !this.cliente.registrarPartida(partidaCompañero)){
                 MessageFactory.showMessage(resource.getString("error"), resource.getString("partida"), resource.getString("accesoNegado"), Alert.AlertType.ERROR);
             }
-        } catch (RemoteException ex) {
+        } catch (RemoteException | NotBoundException ex) {
             Logger.getLogger(VentanaTableroController.class.getName()).log(Level.SEVERE, null, ex);
             MessageFactory.showMessage(this.resource.getString("errorConexion"), this.resource.getString("conexionServidor"), this.resource.getString("mensajeErrorIP"), Alert.AlertType.ERROR);
         }
@@ -360,7 +361,7 @@ public class VentanaTableroController implements Initializable, CasillaListener,
         }
         try {
             this.cliente.editarJugador(jugador);
-        } catch (RemoteException ex) {
+        } catch (RemoteException | NotBoundException ex) {
             Logger.getLogger(VentanaTableroController.class.getName()).log(Level.SEVERE, null, ex);
             MessageFactory.showMessage(this.resource.getString("errorConexion"), this.resource.getString("conexionServidor"), this.resource.getString("mensajeErrorIP"), Alert.AlertType.ERROR);
         }

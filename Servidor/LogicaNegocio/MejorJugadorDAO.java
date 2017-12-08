@@ -13,9 +13,9 @@ public class MejorJugadorDAO {
         JugadorJpaController jugadorController = new JugadorJpaController(managerFactory);
         List<Persistencia.Jugador> listaJugadores = jugadorController.findJugadorEntities();
         for (Persistencia.Jugador jugador : listaJugadores){
-            List<Persistencia.Partida> partidas = this.getListaPorJugador(jugador.getIdJugador(), managerFactory);
+            List<Persistencia.Partida> partidasGanadas = this.getListaPorJugador(jugador.getIdJugador(), managerFactory);
             double porcentaje = jugador.getPartidasJugadas() * 0.4;
-            if (partidas.size() >= porcentaje && partidas.size() > 9){
+            if (partidasGanadas.size() >= porcentaje && jugador.getPartidasJugadas() > 9){
                 lista.add(new Jugador(jugador.getIdJugador(), jugador.getNombreJugador(), jugador.getPartidasJugadas(), jugador.getPartidasPerdidas()));
             }
         }

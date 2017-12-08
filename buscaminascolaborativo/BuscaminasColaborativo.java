@@ -1,6 +1,6 @@
 package buscaminascolaborativo;
 
-import AccesoDatos.RegistroIdioma;
+import AccesoDatos.RegistroArchivo;
 import InterfazGrafica.VentanaAjusteDireccion;
 import InterfazGrafica.VentanaInicioSesion;
 import java.io.File;
@@ -16,7 +16,7 @@ public class BuscaminasColaborativo extends Application {
         File idioma = new File("C:\\Buscaminas\\Idioma.txt");
         File direccionIp = new File("C:\\Buscaminas\\direccionIP.txt");
         if (idioma.exists()){
-            String contenido = RegistroIdioma.obtenerIdioma(idioma);
+            String contenido = RegistroArchivo.leerLinea(idioma);
             switch(contenido){
                 case "ESP":
                     bundle = "Recursos/Idioma_ESP";
@@ -30,7 +30,7 @@ public class BuscaminasColaborativo extends Application {
         if(!direccionIp.exists()){
             new VentanaAjusteDireccion(recursos);
         }else{
-            String direccion = RegistroIdioma.obtenerIdioma(direccionIp);
+            String direccion = RegistroArchivo.leerLinea(direccionIp);
             new VentanaInicioSesion(recursos,direccion);
         }
     }

@@ -8,6 +8,7 @@ import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -92,44 +93,61 @@ public class VentanaInicioSesionController implements Initializable {
         });
         socket.connect();
     }
+    public String obtenerTextoAbsoluto(String texto){
+        String textoAbsoluto = "";
+        int lenght = texto.length();
+        for (int i = 0; i < lenght; i++) {
+            char caracter = texto.charAt(i);
+            if (caracter != 32) {
+                textoAbsoluto = textoAbsoluto + caracter;
+            }
+        }
+        return textoAbsoluto;
+    }
 
     public void btnIngresar_MouseUp() {
-        try {
-            jugador = this.cliente.validarSesión(this.txtNombreUsuario.getText());
-            if (jugador != null) {
-                socket.emit("validarSesion",jugador.getIdJugador());
-            } else {
-                MessageFactory.showMessage(rb.getString("error"), rb.getString("cuentaAcceso"),rb.getString("noEncontrado") + this.txtNombreUsuario.getText() + rb.getString("baseDatos"), Alert.AlertType.WARNING);
+        String texto = this.obtenerTextoAbsoluto(txtNombreUsuario.getText());
+        if (!texto.equals("")){
+            try {
+                jugador = this.cliente.validarSesión(texto);
+                if (jugador != null) {
+                    socket.emit("validarSesion",jugador.getIdJugador());
+                } else {
+                    MessageFactory.showMessage(rb.getString("error"), rb.getString("cuentaAcceso"),rb.getString("noEncontrado") + this.txtNombreUsuario.getText() + rb.getString("baseDatos"), Alert.AlertType.WARNING);
+                }
+            } catch (RemoteException | NotBoundException ex) {
+                Logger.getLogger(VentanaInicioSesionController.class.getName()).log(Level.SEVERE, null, ex);
+                MessageFactory.showMessage(rb.getString("errorConexion"), rb.getString("conexionServidor"), rb.getString("mensajeErrorIP"), Alert.AlertType.ERROR);
             }
-        } catch (RemoteException ex) {
-            Logger.getLogger(VentanaInicioSesionController.class.getName()).log(Level.SEVERE, null, ex);
-            MessageFactory.showMessage(rb.getString("errorConexion"), rb.getString("conexionServidor"), rb.getString("mensajeErrorIP"), Alert.AlertType.ERROR);
-        }
+        }else{
+            MessageFactory.showMessage(rb.getString("error"), rb.getString("formatoNombre"), rb.getString("mensajeFormatoNombre"), Alert.AlertType.ERROR);
+        }  
     }
 
     public void btnRegistrar_Click(){
-        if(!this.txtNombreUsuario.getText().trim().equals("")){
+        String texto = this.obtenerTextoAbsoluto(txtNombreUsuario.getText());
+        if(!texto.equals("")){
             try {
-                RegistroJugador registro = cliente.registrarJugador(this.txtNombreUsuario.getText());
+                RegistroJugador registro = cliente.registrarJugador(texto);
                 switch(registro){
                     case JUGADOR_APROBADO:
-                        MessageFactory.showMessage(rb.getString("exito"),rb.getString("registroJugador"), rb.getString("elJugador") + this.txtNombreUsuario.getText() + rb.getString("registroExitoso"), Alert.AlertType.INFORMATION);
+                        this.txtNombreUsuario.setText(texto);
+                        MessageFactory.showMessage(rb.getString("exito"),rb.getString("registroJugador"), rb.getString("elJugador") + " " + texto + " " + rb.getString("registroExitoso"), Alert.AlertType.INFORMATION);
                         break;
                     case JUGADOR_EXISTENTE:
-                        MessageFactory.showMessage(rb.getString("error"), rb.getString("registroJugador"),  rb.getString("elJugador")+ this.txtNombreUsuario.getText() + rb.getString("yaExiste"), Alert.AlertType.ERROR);
+                        MessageFactory.showMessage(rb.getString("error"), rb.getString("registroJugador"),  rb.getString("elJugador")+ " " + texto + " " + rb.getString("yaExiste"), Alert.AlertType.ERROR);
                         break;
                     case ERROR_REGISTRO:
                         MessageFactory.showMessage(rb.getString("error"), rb.getString("registroJugador"), rb.getString("accesoNegado"), Alert.AlertType.NONE);
                         break;
                 }
-            } catch (RemoteException ex) {
+            } catch (RemoteException | NotBoundException ex) {
                 Logger.getLogger(VentanaInicioSesionController.class.getName()).log(Level.SEVERE, null, ex);
                 MessageFactory.showMessage(rb.getString("errorConexion"), rb.getString("conexionServidor"), rb.getString("mensajeErrorIP"), Alert.AlertType.ERROR);
             }
         }else{
              MessageFactory.showMessage(rb.getString("error"), rb.getString("formatoNombre"), rb.getString("mensajeFormatoNombre"), Alert.AlertType.ERROR);
         }
-            
     }
     public void btnIp_Click(){
         new VentanaAjusteDireccion(this.rb);

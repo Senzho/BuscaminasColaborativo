@@ -4,6 +4,7 @@ import LogicaNegocio.Cliente;
 import LogicaNegocio.DatosJugador;
 import LogicaNegocio.Jugador;
 import java.net.URL;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -79,7 +80,7 @@ public class VentanaEstadisticaController implements Initializable{
             this.lblNumeroPartidasPerdidas.setText("" + jugador.getPartidasPerdidas());
             this.lblNumeroPartidasGanadas.setText("" + datosJugador.getPartidasGanadas());
             this.lblValorTiempoPromedio.setText(datosJugador.getTiempoPromedio());
-        } catch (RemoteException ex) {
+        } catch (RemoteException | NotBoundException ex) {
             Logger.getLogger(VentanaEstadisticaController.class.getName()).log(Level.SEVERE, null, ex);
             MessageFactory.showMessage(rb.getString("errorConexion"), rb.getString("conexionServidor"), rb.getString("mensajeErrorIP"), Alert.AlertType.ERROR);
         }

@@ -9,6 +9,7 @@ import LogicaNegocio.Cliente;
 import LogicaNegocio.Jugador;
 import java.io.IOException;
 import java.net.URL;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -75,7 +76,7 @@ public class VentanaMejorJugadorController implements Initializable{
                     Logger.getLogger(VentanaMejorJugadorController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-        } catch (RemoteException ex) {
+        } catch (RemoteException | NotBoundException ex) {
             Logger.getLogger(VentanaMejorJugadorController.class.getName()).log(Level.SEVERE, null, ex);
             MessageFactory.showMessage(rb.getString("errorConexion"), rb.getString("conexionServidor"), rb.getString("mensajeErrorIP"), Alert.AlertType.ERROR);
         }

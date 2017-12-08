@@ -17,64 +17,40 @@ public class Cliente {
         this.registro = LocateRegistry.getRegistry(direccionServidor);
     }
     
-    public Jugador validarSesión(String nombreJugador) throws RemoteException{
+    public Jugador validarSesión(String nombreJugador) throws RemoteException, NotBoundException{
         Jugador jugador = null;
-        try {
-            ServidorDatos stub = (ServidorDatos) this.registro.lookup(this.ID_SERVIDOR);
-            jugador = stub.validarSesion(nombreJugador);
-        } catch (NotBoundException ex) {
-            Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        ServidorDatos stub = (ServidorDatos) this.registro.lookup(this.ID_SERVIDOR);
+        jugador = stub.validarSesion(nombreJugador);
         return jugador;
     }
-    public RegistroJugador registrarJugador(String nombre) throws RemoteException{
+    public RegistroJugador registrarJugador(String nombre) throws RemoteException, NotBoundException{
         RegistroJugador registro = RegistroJugador.JUGADOR_APROBADO;
-        try {
-            ServidorDatos stub = (ServidorDatos) this.registro.lookup(this.ID_SERVIDOR);
-            registro = stub.registrarJugador(nombre);
-        } catch (NotBoundException ex) {
-            Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        ServidorDatos stub = (ServidorDatos) this.registro.lookup(this.ID_SERVIDOR);
+        registro = stub.registrarJugador(nombre);
         return registro;
     }
-    public boolean registrarPartida(Partida partida)throws RemoteException{
+    public boolean registrarPartida(Partida partida)throws RemoteException, NotBoundException{
         boolean registrada = false;
-        try {
-            ServidorDatos stub = (ServidorDatos) this.registro.lookup(this.ID_SERVIDOR);
-            registrada = stub.registrarPartida(partida);
-        } catch (NotBoundException ex) {
-            Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        ServidorDatos stub = (ServidorDatos) this.registro.lookup(this.ID_SERVIDOR);
+        registrada = stub.registrarPartida(partida);
         return registrada;
     }
-    public DatosJugador getEstadisticas(int idJugador) throws RemoteException{
+    public DatosJugador getEstadisticas(int idJugador) throws RemoteException, NotBoundException{
         DatosJugador datosJugador = null;
-        try {
-            ServidorDatos stub = (ServidorDatos) this.registro.lookup(this.ID_SERVIDOR);
-            datosJugador = stub.getEstadisticas(idJugador);
-        } catch (NotBoundException ex) {
-            Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        ServidorDatos stub = (ServidorDatos) this.registro.lookup(this.ID_SERVIDOR);
+        datosJugador = stub.getEstadisticas(idJugador);
         return datosJugador;
     }
-    public ArrayList<Jugador> getListaJugadores() throws RemoteException{
+    public ArrayList<Jugador> getListaJugadores() throws RemoteException, NotBoundException{
         ArrayList<Jugador> jugadores = new ArrayList();
-        try {
-            ServidorDatos stub = (ServidorDatos) this.registro.lookup(this.ID_SERVIDOR);
-            jugadores = stub.getListaJugadores();
-        } catch (NotBoundException ex) {
-            Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        ServidorDatos stub = (ServidorDatos) this.registro.lookup(this.ID_SERVIDOR);
+        jugadores = stub.getListaJugadores();
         return jugadores;
     }
-    public boolean editarJugador(Jugador jugador) throws RemoteException{
+    public boolean editarJugador(Jugador jugador) throws RemoteException, NotBoundException{
         boolean editado = true;
-        try {
-            ServidorDatos stub = (ServidorDatos) this.registro.lookup(this.ID_SERVIDOR);
-            editado = stub.editarJugador(jugador);
-        } catch (NotBoundException ex) {
-            Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        ServidorDatos stub = (ServidorDatos) this.registro.lookup(this.ID_SERVIDOR);
+        editado = stub.editarJugador(jugador);
         return editado;
     }
 }

@@ -5,7 +5,7 @@
  */
 package InterfazGrafica;
 
-import AccesoDatos.RegistroIdioma;
+import AccesoDatos.RegistroArchivo;
 import LogicaNegocio.InvalidIpAddressException;
 import LogicaNegocio.IpAddress;
 import java.io.File;
@@ -56,11 +56,7 @@ public class VentanaAjusteDireccionController implements Initializable {
         if (!directorio.exists()){
             directorio.mkdir();
         }
-        File archivo = new File(ruta);
-        if (archivo.exists()){
-            archivo.delete();
-        }
-        if(RegistroIdioma.guardarIdioma(archivo,contenido)){
+        if(RegistroArchivo.guardar(new File(ruta),contenido)){
             MessageFactory.showMessage(this.resource.getString("contenido"),resource.getString("informacion"),resource.getString("direccionRegistrada"), Alert.AlertType.INFORMATION);
             this.stage.close();
             new VentanaInicioSesion(this.resource, this.txtDireccionIP.getText());
@@ -80,6 +76,14 @@ public class VentanaAjusteDireccionController implements Initializable {
     }
     public void btnCancelar_onClicked(){
         this.stage.close();
+        File direccionIp = new File("C:\\Buscaminas\\direccionIP.txt");
+        String direccion;
+        if (direccionIp.exists()){
+            direccion = RegistroArchivo.leerLinea(direccionIp);
+        }else{
+            direccion = "localhost";
+        }
+        new VentanaInicioSesion(this.resource, direccion);
     }
     public void internacionalizar(ResourceBundle resource){
         this.resource = resource;

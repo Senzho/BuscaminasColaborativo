@@ -6,8 +6,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class RegistroIdioma {
-    public static boolean guardarIdioma(File archivo, String contenido){
+public class RegistroArchivo {
+    public static boolean guardar(File archivo, String contenido){
         boolean guardado = false;
         FileWriter escritor = null;
         try{
@@ -25,7 +25,7 @@ public class RegistroIdioma {
         }
         return guardado;
     }
-    public static String obtenerIdioma(File archivo){
+    public static String leerLinea(File archivo){
         String idioma = "";
         FileReader lector = null;
         BufferedReader contenidoTotal = null;

@@ -8,6 +8,11 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 public class PartidaDAO {
+    /**
+     * 
+     * @param partida, la entidad lógica de partida a guerdar en base de datos
+     * @return registrada, regresa un booleano indicando si se pudo registrar o no.
+     */
     public boolean registrarPartida(Partida partida) {
         boolean registrada = false;
         EntityManagerFactory managerFactory = Persistence.createEntityManagerFactory("ServidorBuscaminasPU");
@@ -26,6 +31,10 @@ public class PartidaDAO {
         }
         return registrada;
     }
+    /**
+     * 
+     * @return id, regresa el identificador para un nuevo registro de partida.
+     */
     public int getNuevoId(){
         long id = 0;
         EntityManagerFactory managerFactory = Persistence.createEntityManagerFactory("ServidorBuscaminasPU");

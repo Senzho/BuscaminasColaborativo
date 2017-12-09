@@ -31,6 +31,12 @@ public class Solicitud {
     public Solicitud(){
         
     }
+    /**
+     * Establece los valores de una partida de juego.
+     * @param idSolicitante, el id el jugador que solicita la partida.
+     * @param idCompañero, el id del compañero de juego seleccionado.
+     * @param tipoDificultad, la dificultad de la partida.
+     */
     public Solicitud(int idSolicitante, int idCompañero, TipoDificultad tipoDificultad){
         this.idSolicitante = idSolicitante;
         this.idCompañero = idCompañero;

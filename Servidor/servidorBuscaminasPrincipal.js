@@ -49,7 +49,7 @@ io.on("connection", function (socket) {
         	socketAuxiliar = listaSockets[i];
         	if(socketAuxiliar.socket == socket){
         		listaSockets.splice(i,1);
-        		console.log("jugador borrado de la lista");
+        		console.log("Jugador: " + socketAuxiliar.idJugador + " desconectado");
         		for(var j = 0; j < listaDatos.length; j++){
         			if(listaDatos[j].idJugador == socketAuxiliar.idJugador){
         				listaDatos.splice(j,1);
@@ -63,22 +63,19 @@ io.on("connection", function (socket) {
         for(var i = 0; i < listaDatos.length; i++){
         	console.log(listaDatos[i].nombreJugador);
         }
-		console.log("lista de sockets actuales");
-		for(var i = 0; i < listaSockets.length; i++){
-			console.log(listaSockets[i].idJugador);
-		}        
-		console.log("borrar esto");
     });
 	socket.on("solicitudPartida",function(solicitud){
         var nombre;
         for(var i = 0; i < listaDatos.length; i++){
             if(listaDatos[i].idJugador == solicitud.idSolicitante){
                 nombre = listaDatos[i].nombreJugador;
-                console.log(nombre);
                 break;
             }
         }
-        obtenerSocket(solicitud.idCompañero).emit("solicitud",solicitud, nombre);
+        var socketAuxiliar = obtenerSocket(solicitud.idCompañero);
+        if (socketAuxiliar != null){
+        	socketAuxiliar.emit("solicitud",solicitud, nombre);
+        }
 	});
     socket.on("respuestaPartida", function(aceptado,solicitud){//solicitud.idCompañero...id cliente .iddestino dificultad
     	var auxiliarBusqueda;
@@ -88,7 +85,6 @@ io.on("connection", function (socket) {
             for(var i = 0; i < solicitud.numeroMinas; i++){
                 var coordenada = new coordenadas( GenerarNumeros(0,solicitud.numeroFilas), GenerarNumeros(0,solicitud.numeroColumnas));
                 listaNumeros.push(coordenada);
-                console.log(coordenada);
             }
             socketAuxiliar.emit("iniciarPartida",solicitud,listaNumeros);
             var idJugador;
@@ -103,7 +99,6 @@ io.on("connection", function (socket) {
         }
     });
     socket.on("tiro",function(coordenadaX,coordenadaY,idDestino){
-        console.log("recibido"+idDestino);
         obtenerSocket(idDestino).emit("tiroRecibido",coordenadaX,coordenadaY);
     });
     socket.on("terminarPartida", function(idCompañero){

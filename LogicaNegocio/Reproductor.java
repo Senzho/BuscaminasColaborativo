@@ -10,12 +10,17 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 public class Reproductor implements Runnable{
     private final String ruta;
-    
+    /**
+     * 
+     * @param ruta, la ruta al archivo de audio wav.
+     */
     public Reproductor(String ruta){
         this.ruta = ruta;
         this.run();
     }
-
+    /**
+     * Reproduce el archivo wav.
+     */
     @Override
     public void run() {
         try {

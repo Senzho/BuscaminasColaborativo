@@ -74,7 +74,12 @@ public class IpAddress {
         this.x4 = 1;
         this.address = "" + x1 + '.' + x2 + '.' + x3 + '.' + x4;
     }
-    
+    /**
+     * Establece la dirección IP.
+     * @param address, la cadena con una dirección IP.
+     * @throws InvalidIpAddressException, lanzada si la dirección IP ingresada es
+     *         incorrecta.
+     */
     public IpAddress(String address) throws InvalidIpAddressException{
         if (this.testAddress(address) || address.equals("localhost")){
             if (address.equals("localhost")){
@@ -86,19 +91,38 @@ public class IpAddress {
             throw new InvalidIpAddressException("La dirección no es válida");
         }
     }
-
+    /**
+     * 
+     * @return address, regresa la dirección IP.
+     */
     public String getAddress() {
         return address;
     }
+    /**
+     * 
+     * @return x1, regresa el primer valor entero de la IP.
+     */
     public int getX1() {
         return x1;
     }
+    /**
+     * 
+     * @return x2, regresa el segundo valor entero de la IP.
+     */
     public int getX2() {
         return x2;
     }
+    /**
+     * 
+     * @return x3, regresa el tercer valor entero de la IP.
+     */
     public int getX3() {
         return x3;
     }
+    /**
+     * 
+     * @return x4, regresa el cuarto valor entero de la IP.
+     */
     public int getX4() {
         return x4;
     }

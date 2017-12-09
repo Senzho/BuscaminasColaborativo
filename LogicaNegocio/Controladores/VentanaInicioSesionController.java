@@ -26,6 +26,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import org.json.JSONObject;
 
 public class VentanaInicioSesionController implements Initializable {
     @FXML
@@ -89,6 +90,7 @@ public class VentanaInicioSesionController implements Initializable {
                 boolean valido = (boolean) os[0];
                 Platform.runLater(()->{
                     if(!valido){
+                        socket.emit("jugadorConectado",new JSONObject(jugador));
                         new VentanaTablero(rb, jugador, direccionIp);
                         stage.close();
                     }else{

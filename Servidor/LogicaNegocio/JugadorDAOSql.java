@@ -20,6 +20,11 @@ import javax.persistence.Query;
  * @author Compaq-presario-cq43
  */
 public class JugadorDAOSql implements JugadorDAO {
+    /**
+     * metodo que funciona para buscar todos los jugadores existentes y asignar un identificador mayor a 
+     * los ya existentes
+     * @return id + 1, parametro de tipo entero saliente de la consulta en los jugadores existentes
+     */
     public int getAsignarId(){
         int id = 0;
         EntityManagerFactory managerFactory = Persistence.createEntityManagerFactory("ServidorBuscaminasPU");
@@ -27,6 +32,11 @@ public class JugadorDAOSql implements JugadorDAO {
         id = Integer.parseInt(String.valueOf(managerFactory.createEntityManager().createQuery(consulta, Integer.class).getSingleResult()));
         return id + 1;
     }
+    /**
+     * metodo de tipo booleano que permite el registro de jugadores, recibe un argumento de texto
+     * @param nombre valor de tipo String perteneciente al nombre del jugador.
+     * @return registrado valor de tipo booleano que verifica el correcto almacenamiento del jugador
+     */
     private boolean RegistroJugador(String nombre){
         boolean registrado = false;
         EntityManagerFactory managerFactory = Persistence.createEntityManagerFactory("ServidorBuscaminasPU");
@@ -42,7 +52,12 @@ public class JugadorDAOSql implements JugadorDAO {
         }
         return registrado;
     }
-    
+    /**
+     * metodo del tipo RegistroJugador que permite registrar a un nuevo jugador  validando la entrada de nombre
+     * @param nombre parametro del tipo String que permite un registro usando como clave de jugador su nombre
+     * @return registro parametro del tipo enumerador que muestra la validacion de la entrada y el registro
+     * correcto
+     */
     @Override
     public RegistroJugador registrarJugador(String nombre) {
         RegistroJugador registro = RegistroJugador.ERROR_REGISTRO;
@@ -65,7 +80,12 @@ public class JugadorDAOSql implements JugadorDAO {
         }
         return registro;
     }
-
+    /**
+     * metodo del tipo LogicaNegocio.Jugador que permite validar los inicios de sesion validar su ingreso
+     * @param nombreJugador parametro del tipo String perteneciente al nombre del jugador que quiere conectarse
+     * @return jugadorPrincipal permite la validacion del jugador conectado retonrnando un objeto del tipo 
+     * LogicaNegocio.Jugador
+     */
     @Override
     public LogicaNegocio.Jugador validarSesion(String nombreJugador) {
         Persistencia.Jugador jugadorPersistencia = null;
@@ -85,6 +105,11 @@ public class JugadorDAOSql implements JugadorDAO {
         }
         return jugadorPrincipal;
     }
+    /**
+     * metodo de tipo booleano que permite modificar las partidas de un jugador dependiente de su identificador 
+     * @param jugador objeto del tipo LogicaNegocio.Jugador que permite la edicion de sus atributos
+     * @return editado muestra la validez del registro y modificacion del objeto
+     */
     public boolean editarJugador(LogicaNegocio.Jugador jugador){
         boolean editado = true;
         EntityManagerFactory managerFactory = Persistence.createEntityManagerFactory("ServidorBuscaminasPU");

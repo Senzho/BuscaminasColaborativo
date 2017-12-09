@@ -147,7 +147,7 @@ public class VentanaTableroController implements Initializable, CasillaListener,
     public void setJugador(Jugador jugador){
         this.jugador = jugador;
         this.nombreCuentaLabel.setText(jugador.getNombreJugador());
-        this.socket.emit("jugadorConectado", new JSONObject(this.jugador));
+        //this.socket.emit("jugadorConectado", new JSONObject(this.jugador));
     }
     public void setNuevaPartidaController(VentanaNuevaPartidaController controller){
         this.nuevaPartidaContrller = controller;

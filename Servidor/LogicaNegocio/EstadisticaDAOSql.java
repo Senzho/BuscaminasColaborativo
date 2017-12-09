@@ -18,7 +18,12 @@ import javax.persistence.Query;
  * @author Compaq-presario-cq43
  */
 public class EstadisticaDAOSql implements EstadisticaDAO {
-
+    /**
+     * Metodo del tipo LogicaNegocio.Jugador, permite obtener un Jugador a partir de un numero entero
+     * identificador
+     * @param idJugador es el identificador unico del jugador buscado
+     * @return JugadorPrincipal es el tipo de datos Jugador encontrado en la lista
+     */
     @Override
     public LogicaNegocio.Jugador getJugador(int idJugador) {
         EntityManagerFactory managerFactory = Persistence.createEntityManagerFactory("ServidorBuscaminasPU");
@@ -28,6 +33,12 @@ public class EstadisticaDAOSql implements EstadisticaDAO {
         jugador.getPartidasJugadas(),jugador.getPartidasPerdidas());
         return jugadorPrincipal;
     }
+    /**
+     * Metodo de tipo entero que permite buscar las partidas ganadas por un jugador mediante un identificado 
+     * unico
+     * @param idJugador identificador unico del jugador que es buscado 
+     * @return numeroPartidas, parametro de tipo entero que muestra las partidas jugadas ganadas
+     */
 
     @Override
     public int getPatidasGanadas(int idJugador) {
@@ -39,6 +50,14 @@ public class EstadisticaDAOSql implements EstadisticaDAO {
        int numeroPartidas = partidas.size();
        return numeroPartidas;
     }
+    /**
+     * Metodo privado de tipo entero, permite el calculo de segundos de una partida  a partir de un
+     * parametro String dividiendo y concatenando sus valores
+     * @param numero  es la cantidas de segundos deducida del parametro de entrada que cuenta con
+     * minutos y segundo en un string y con dos puntos suspensivos para su diferenciacion
+     * @return minSeconds + seconds es la suma de los parametros de minutos convertidos en segundos
+     * y segundos sobrantes que no abarcan un minuto
+     */
     private int calcularSegundos(String numero){
         String[] parts = numero.split(":");
         String part1 = parts[0];
@@ -48,7 +67,11 @@ public class EstadisticaDAOSql implements EstadisticaDAO {
         minSeconds = minSeconds*60;
         return minSeconds+seconds;
     }
- 
+    /**
+     * Metodo que obtiene el tiempo promedio de partidas jugadas y ganadas mediente un identificado entero
+     * @param idJugador parametro unico de un jugador, permite su indetificacion 
+     * @return calcularMinutos(String); valor de tipo String que muestra el tiempo promedio de juego
+     */
     @Override
     public String getTiempoPromedio(int idJugador) {
         int numeroPartidas = 0;
@@ -67,6 +90,11 @@ public class EstadisticaDAOSql implements EstadisticaDAO {
         }
         return calcularMinutos(numeroPartidas);
     }
+    /**
+     * metodode tipo String que permite el calculo de minutos dependiente del numero de segundos calculados
+     * @param numeroPartidas parametro de tipo entero que muestra  el tiempo jugado en segundos
+     * @return tiempoPromedio parametro de tipo String que muestra los minutos y segundo jugador por un jugador
+     */
     public String calcularMinutos(int numeroPartidas){
         String tiempoPromedio = "";
         int minutos = numeroPartidas/60;

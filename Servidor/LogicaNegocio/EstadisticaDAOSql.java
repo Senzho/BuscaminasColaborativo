@@ -18,6 +18,7 @@ import javax.persistence.Query;
  * @author Compaq-presario-cq43
  */
 public class EstadisticaDAOSql implements EstadisticaDAO {
+    private static final String UNIDAD_PERSISTENCIA = "ServidorBuscaminasPU";
     /**
      * Metodo del tipo LogicaNegocio.Jugador, permite obtener un Jugador a partir de un numero entero
      * identificador
@@ -26,12 +27,11 @@ public class EstadisticaDAOSql implements EstadisticaDAO {
      */
     @Override
     public LogicaNegocio.Jugador getJugador(int idJugador) {
-        EntityManagerFactory managerFactory = Persistence.createEntityManagerFactory("ServidorBuscaminasPU");
+        EntityManagerFactory managerFactory = Persistence.createEntityManagerFactory(EstadisticaDAOSql.UNIDAD_PERSISTENCIA);
         JugadorJpaController jugadorController = new JugadorJpaController(managerFactory);
         Jugador jugador = jugadorController.findJugador(idJugador);
-        LogicaNegocio.Jugador jugadorPrincipal = new LogicaNegocio.Jugador(jugador.getIdJugador(),jugador.getNombreJugador(),
-        jugador.getPartidasJugadas(),jugador.getPartidasPerdidas());
-        return jugadorPrincipal;
+        return new LogicaNegocio.Jugador(jugador.getIdJugador(),jugador.getNombreJugador(),
+                jugador.getPartidasJugadas(),jugador.getPartidasPerdidas());
     }
     /**
      * Metodo de tipo entero que permite buscar las partidas ganadas por un jugador mediante un identificado 
@@ -42,13 +42,12 @@ public class EstadisticaDAOSql implements EstadisticaDAO {
 
     @Override
     public int getPatidasGanadas(int idJugador) {
-       EntityManagerFactory managerFactory = Persistence.createEntityManagerFactory("ServidorBuscaminasPU");
+       EntityManagerFactory managerFactory = Persistence.createEntityManagerFactory(EstadisticaDAOSql.UNIDAD_PERSISTENCIA);
        EntityManager entityManager = managerFactory.createEntityManager();
        Query query = entityManager.createQuery("select P from Partida P where P.idJugador.idJugador = :idJugador");
        query.setParameter("idJugador",idJugador);
        List<Persistencia.Partida> partidas = query.getResultList();
-       int numeroPartidas = partidas.size();
-       return numeroPartidas;
+       return partidas.size();
     }
     /**
      * Metodo privado de tipo entero, permite el calculo de segundos de una partida  a partir de un
@@ -75,7 +74,7 @@ public class EstadisticaDAOSql implements EstadisticaDAO {
     @Override
     public String getTiempoPromedio(int idJugador) {
         int numeroPartidas = 0;
-        EntityManagerFactory managerFactory = Persistence.createEntityManagerFactory("ServidorBuscaminasPU");
+        EntityManagerFactory managerFactory = Persistence.createEntityManagerFactory(EstadisticaDAOSql.UNIDAD_PERSISTENCIA);
         EntityManager entityManager = managerFactory.createEntityManager();
         Query query = entityManager.createQuery("select P from Partida P where P.idJugador.idJugador = :idJugador");
         query.setParameter("idJugador",idJugador);

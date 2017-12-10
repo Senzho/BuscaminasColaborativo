@@ -20,6 +20,7 @@ import javax.persistence.Query;
  * @author Compaq-presario-cq43
  */
 public class JugadorDAOSql implements JugadorDAO {
+    private static final String UNIDAD_PERSISTENCIA = "ServidorBuscaminasPU";
     /**
      * metodo que funciona para buscar todos los jugadores existentes y asignar un identificador mayor a 
      * los ya existentes
@@ -27,7 +28,7 @@ public class JugadorDAOSql implements JugadorDAO {
      */
     public int getAsignarId(){
         int id = 0;
-        EntityManagerFactory managerFactory = Persistence.createEntityManagerFactory("ServidorBuscaminasPU");
+        EntityManagerFactory managerFactory = Persistence.createEntityManagerFactory(JugadorDAOSql.UNIDAD_PERSISTENCIA);
         String consulta = "SELECT COUNT(j) FROM Jugador j";
         id = Integer.parseInt(String.valueOf(managerFactory.createEntityManager().createQuery(consulta, Integer.class).getSingleResult()));
         return id + 1;
@@ -37,11 +38,10 @@ public class JugadorDAOSql implements JugadorDAO {
      * @param nombre valor de tipo String perteneciente al nombre del jugador.
      * @return registrado valor de tipo booleano que verifica el correcto almacenamiento del jugador
      */
-    private boolean RegistroJugador(String nombre){
+    private boolean registroJugador(String nombre){
         boolean registrado = false;
-        EntityManagerFactory managerFactory = Persistence.createEntityManagerFactory("ServidorBuscaminasPU");
+        EntityManagerFactory managerFactory = Persistence.createEntityManagerFactory(JugadorDAOSql.UNIDAD_PERSISTENCIA);
         EntityManager entityManager = managerFactory.createEntityManager();
-        Persistencia.Jugador jugadorP = new Persistencia.Jugador();
         Query query = entityManager.createQuery("select j from Jugador j");
         List<Persistencia.Jugador> listaJugadores = query.getResultList();
         for (int i = 0; i < listaJugadores.size(); i++) {
@@ -61,8 +61,8 @@ public class JugadorDAOSql implements JugadorDAO {
     @Override
     public RegistroJugador registrarJugador(String nombre) {
         RegistroJugador registro = RegistroJugador.ERROR_REGISTRO;
-        EntityManagerFactory managerFactory = Persistence.createEntityManagerFactory("ServidorBuscaminasPU");
-        if(this.RegistroJugador(nombre) == false){           
+        EntityManagerFactory managerFactory = Persistence.createEntityManagerFactory(JugadorDAOSql.UNIDAD_PERSISTENCIA);
+        if(!this.registroJugador(nombre)){           
             Persistencia.Jugador jugadorP = new Persistencia.Jugador();
             jugadorP.setIdJugador(getAsignarId());
             jugadorP.setNombreJugador(nombre);
@@ -75,7 +75,7 @@ public class JugadorDAOSql implements JugadorDAO {
             } catch (Exception ex) {
                 Logger.getLogger(JugadorDAOSql.class.getName()).log(Level.SEVERE, null, ex);
             }        
-        }else if(this.RegistroJugador(nombre) == true){
+        }else if(this.registroJugador(nombre)){
             registro = RegistroJugador.JUGADOR_EXISTENTE;
         }
         return registro;
@@ -90,7 +90,7 @@ public class JugadorDAOSql implements JugadorDAO {
     public LogicaNegocio.Jugador validarSesion(String nombreJugador) {
         Persistencia.Jugador jugadorPersistencia = null;
         LogicaNegocio.Jugador jugadorPrincipal = null;
-        EntityManagerFactory managerFactory = Persistence.createEntityManagerFactory("ServidorBuscaminasPU");
+        EntityManagerFactory managerFactory = Persistence.createEntityManagerFactory(JugadorDAOSql.UNIDAD_PERSISTENCIA);
         EntityManager entityManager = managerFactory.createEntityManager();
         Query query = entityManager.createQuery("select j from Jugador j where j.nombreJugador = :nombreJugador");
         query.setParameter("nombreJugador",nombreJugador);
@@ -112,7 +112,7 @@ public class JugadorDAOSql implements JugadorDAO {
      */
     public boolean editarJugador(LogicaNegocio.Jugador jugador){
         boolean editado = true;
-        EntityManagerFactory managerFactory = Persistence.createEntityManagerFactory("ServidorBuscaminasPU");
+        EntityManagerFactory managerFactory = Persistence.createEntityManagerFactory(JugadorDAOSql.UNIDAD_PERSISTENCIA);
         JugadorJpaController jugadorJpaController = new JugadorJpaController(managerFactory);
         Persistencia.Jugador jugadorJpa = new Persistencia.Jugador();
         jugadorJpa.setIdJugador(jugador.getIdJugador());

@@ -91,7 +91,7 @@ public class VentanaInicioSesionController implements Initializable {
                 Platform.runLater(()->{
                     if(!valido){
                         socket.emit("jugadorConectado",new JSONObject(jugador));
-                        new VentanaTablero(rb, jugador, direccionIp);
+                        new VentanaTablero(rb, jugador, direccionIp, socket);
                         stage.close();
                     }else{
                         MessageFactory.showMessage(rb.getString("error"), rb.getString("cuentaAcceso"),rb.getString("inicioSesionFallido"),Alert.AlertType.WARNING);

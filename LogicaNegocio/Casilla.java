@@ -124,31 +124,32 @@ public class Casilla{
      * @param numero, el número de minas correspondiente al rango de la casilla.
      */
     public void establecerNumeros(int numero){
+        Image numeroMaximo = new Image(this.getClass().getResourceAsStream("/RecursosGraficos/ocho.png"));
         switch(numero){
-        case 1:
-            imagen.setImage(new Image(this.getClass().getResourceAsStream("/RecursosGraficos/uno.png")));
-            break;
-        case 2:
-            imagen.setImage(new Image(this.getClass().getResourceAsStream("/RecursosGraficos/dos.png")));
-            break;
-        case 3:
-            imagen.setImage(new Image(this.getClass().getResourceAsStream("/RecursosGraficos/tres.png")));
-            break;
-        case 4:
-            imagen.setImage(new Image(this.getClass().getResourceAsStream("/RecursosGraficos/cuatro.png")));
-            break;
-        case 5:
-            imagen.setImage(new Image(this.getClass().getResourceAsStream("/RecursosGraficos/cinco.png")));
-            break;
-        case 6:
-            imagen.setImage(new Image(this.getClass().getResourceAsStream("/RecursosGraficos/seis.png")));
-            break;
-        case 7:
-            imagen.setImage(new Image(this.getClass().getResourceAsStream("/RecursosGraficos/siete.png")));
-            break;
-        case 8:
-            imagen.setImage(new Image(this.getClass().getResourceAsStream("/RecursosGraficos/ocho.png")));
-            break;
+            case 1:
+                imagen.setImage(new Image(this.getClass().getResourceAsStream("/RecursosGraficos/uno.png")));
+                break;
+            case 2:
+                imagen.setImage(new Image(this.getClass().getResourceAsStream("/RecursosGraficos/dos.png")));
+                break;
+            case 3:
+                imagen.setImage(new Image(this.getClass().getResourceAsStream("/RecursosGraficos/tres.png")));
+                break;
+            case 4:
+                imagen.setImage(new Image(this.getClass().getResourceAsStream("/RecursosGraficos/cuatro.png")));
+                break;
+            case 5:
+                imagen.setImage(new Image(this.getClass().getResourceAsStream("/RecursosGraficos/cinco.png")));
+                break;
+            case 6:
+                imagen.setImage(new Image(this.getClass().getResourceAsStream("/RecursosGraficos/seis.png")));
+                break;
+            case 7:
+                imagen.setImage(new Image(this.getClass().getResourceAsStream("/RecursosGraficos/siete.png")));
+                break;
+            default:
+                imagen.setImage(numeroMaximo);
+                break;
         }     
     }
     /**

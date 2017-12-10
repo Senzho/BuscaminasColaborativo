@@ -48,6 +48,7 @@ public class VentanaAjusteDireccionController implements Initializable {
     
     private static final String NOMBRE_ARCHIVO = "direccionIP.txt";
     private static final String NOMBRE_DIRECTORIO = "C:\\Buscaminas";
+    private static final String SEPARADOR = "\\";
     private Stage stage;
     private ResourceBundle resource;
     
@@ -55,15 +56,25 @@ public class VentanaAjusteDireccionController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         
     }    
-    public void guardarArchivo(String ruta, String contenido){
+    public void validarDirectorio(String ruta, String contenido){
         File directorio = new File(VentanaAjusteDireccionController.NOMBRE_DIRECTORIO);
         if (!directorio.exists()){
-            directorio.mkdir();
+            if (directorio.mkdir()){
+                this.guardarArchivo(ruta, contenido);
+            }else{
+                MessageFactory.showMessage(this.resource.getString("error"), this.resource.getString("archivo"), this.resource.getString("errorDirectorioIp"), Alert.AlertType.ERROR);
+            }
+        }else{
+            this.guardarArchivo(ruta, contenido);
         }
+    }
+    public void guardarArchivo(String ruta, String contenido){
         if(RegistroArchivo.guardar(new File(ruta),contenido)){
             MessageFactory.showMessage(this.resource.getString("contenido"),resource.getString("informacion"),resource.getString("direccionRegistrada"), Alert.AlertType.INFORMATION);
             this.stage.close();
             new VentanaInicioSesion(this.resource, this.txtDireccionIP.getText());
+        }else{
+            MessageFactory.showMessage(this.resource.getString("error"), this.resource.getString("archivo"), this.resource.getString("errorGuardadoIp"), Alert.AlertType.ERROR);
         }
     }
     public void setStage(Stage stage){
@@ -71,7 +82,7 @@ public class VentanaAjusteDireccionController implements Initializable {
         stage.setOnCloseRequest(eventoVentana);
     }
     public void cerrarVentana(){
-        File direccionIp = new File("C:\\Buscaminas\\direccionIP.txt");
+        File direccionIp = new File(VentanaAjusteDireccionController.NOMBRE_DIRECTORIO + VentanaAjusteDireccionController.SEPARADOR + VentanaAjusteDireccionController.NOMBRE_ARCHIVO);
         String direccion;
         if (direccionIp.exists()){
             direccion = RegistroArchivo.leerLinea(direccionIp);
@@ -83,7 +94,7 @@ public class VentanaAjusteDireccionController implements Initializable {
     public void btnGuardar_onClicked(){
         try {
             IpAddress direccion = new IpAddress(this.txtDireccionIP.getText());
-            this.guardarArchivo(VentanaAjusteDireccionController.NOMBRE_DIRECTORIO+"\\"+VentanaAjusteDireccionController.NOMBRE_ARCHIVO, direccion.getAddress());
+            this.validarDirectorio(VentanaAjusteDireccionController.NOMBRE_DIRECTORIO+ VentanaAjusteDireccionController.SEPARADOR +VentanaAjusteDireccionController.NOMBRE_ARCHIVO, direccion.getAddress());
         } catch (InvalidIpAddressException ex) {
             Logger.getLogger(VentanaAjusteDireccionController.class.getName()).log(Level.SEVERE, null, ex);
             MessageFactory.showMessage(resource.getString("error"),resource.getString("direccion"),resource.getString("ipNoValida"), Alert.AlertType.INFORMATION);

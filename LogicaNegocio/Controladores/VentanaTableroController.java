@@ -129,14 +129,17 @@ public class VentanaTableroController implements Initializable, CasillaListener,
         this.stage = stage;
         this.stage.setOnCloseRequest(this.windowHandler);
     }
+    public void setSocket(Socket socket){
+        this.socket = socket;
+    }
     public void setDireccionIp(String direccionIp){
         this.direccionIp = direccionIp;
-        try {
-            this.socket = IO.socket("http://" + this.direccionIp + ":7000");
+        //try {
+            //this.socket = IO.socket("http://" + this.direccionIp + ":7000");
             this.conectar();
-        } catch (URISyntaxException ex) {
+        /*} catch (URISyntaxException ex) {
             Logger.getLogger(VentanaTableroController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }*/
         try {
             this.cliente = new Cliente(this.direccionIp);
         } catch (RemoteException ex) {

@@ -62,6 +62,8 @@ public class IpAddress {
                     case 4:
                         this.x4 = Integer.parseInt(section);
                         break;
+                    default:
+                        break;
                 }
                 this.address = "" + x1 + '.' + x2 + '.' + x3 + '.' + x4;
             }

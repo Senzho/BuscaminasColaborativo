@@ -5,8 +5,13 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class RegistroArchivo {
+    private RegistroArchivo(){
+        
+    }
     /**
      * metodo estatico de tipo booleano que permite guardar un archivo con contenido establecido
      * @param archivo parametro del tipo File escribe un archivo
@@ -21,12 +26,14 @@ public class RegistroArchivo {
             escritor.write(contenido);
             guardado = true;
         }catch(IOException excepcion){
-            
+            Logger.getLogger(RegistroArchivo.class.getName()).log(Level.SEVERE, null, excepcion);
         }finally{
-            try{
-                escritor.close();
-            }catch(IOException excepcion){
-                
+            if (escritor != null){
+                try{
+                    escritor.close();
+                }catch(IOException excepcion){
+                    Logger.getLogger(RegistroArchivo.class.getName()).log(Level.SEVERE, null, excepcion);
+                }
             }
         }
         return guardado;
@@ -45,14 +52,16 @@ public class RegistroArchivo {
             contenidoTotal = new BufferedReader(lector);
             idioma = contenidoTotal.readLine();
         }catch(IOException excepcion){
-            
+            Logger.getLogger(RegistroArchivo.class.getName()).log(Level.SEVERE, null, excepcion);
         }finally{
-            try{
-                lector.close();
-                contenidoTotal.close();
-            }catch(IOException excepcion){
-                
-            }
+            if (lector != null && contenidoTotal != null){
+                try{
+                    lector.close();
+                    contenidoTotal.close();
+                }catch(IOException excepcion){
+                    Logger.getLogger(RegistroArchivo.class.getName()).log(Level.SEVERE, null, excepcion);
+                }
+            } 
         }
         return idioma;
     }

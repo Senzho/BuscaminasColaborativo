@@ -18,7 +18,7 @@ public class MejorJugadorDAO {
         JugadorJpaController jugadorController = new JugadorJpaController(managerFactory);
         List<Persistencia.Jugador> listaJugadores = jugadorController.findJugadorEntities();
         for (Persistencia.Jugador jugador : listaJugadores){
-            int partidasGanadas = this.getNumeroPartidas(jugador.getIdJugador(), managerFactory);
+            int partidasGanadas = Integer.parseInt(String.valueOf(this.getNumeroPartidas(jugador.getIdJugador(), managerFactory)));
             double porcentaje = jugador.getPartidasJugadas() * 0.4;
             if (partidasGanadas >= porcentaje && jugador.getPartidasJugadas() > 9){
                 lista.add(new Jugador(jugador.getIdJugador(), jugador.getNombreJugador(), jugador.getPartidasJugadas(), jugador.getPartidasPerdidas()));
@@ -33,10 +33,10 @@ public class MejorJugadorDAO {
      * @param managerFactory, EntityManagerFactory para la unidad de persistencia.
      * @return 
      */
-    public int getNumeroPartidas(int idJugador, EntityManagerFactory managerFactory){
-        int cuenta;
-        String consulta = "selct count(p) from Partida p where p.idJugador.idJugador = :id";
-        cuenta = managerFactory.createEntityManager().createQuery(consulta, Integer.class)
+    public long getNumeroPartidas(int idJugador, EntityManagerFactory managerFactory){
+        long cuenta;
+        String consulta = "select count(p) from Partida p where p.idJugador.idJugador = :id";
+        cuenta = managerFactory.createEntityManager().createQuery(consulta, Long.class)
                 .setParameter("id", idJugador)
                 .getSingleResult();
         return cuenta;

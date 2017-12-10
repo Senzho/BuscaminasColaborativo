@@ -66,20 +66,23 @@ public class VentanaMejorJugadorController implements Initializable{
             Cliente cliente = new Cliente(this.direccionIp);
             ArrayList<Jugador> jugadores = cliente.getListaJugadores();
             for (Jugador jugador : jugadores){
-                FXMLLoader loader = new FXMLLoader(this.getClass().getResource("PanelJugador.fxml"));
-                AnchorPane panel;
-                try {
-                    panel = loader.load();
-                    panelJugadorController controller = loader.getController();
-                    controller.setValues(jugador.getNombreJugador() + ":", (jugador.getPartidasJugadas() - jugador.getPartidasPerdidas()) + " partidas ganadas de: " + jugador.getPartidasJugadas());
-                    this.panelJugadores.getChildren().add(panel);
-                } catch (IOException ex) {
-                    Logger.getLogger(VentanaMejorJugadorController.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                this.agregarPanelJugador(jugador);
             }
         } catch (RemoteException | NotBoundException ex) {
             Logger.getLogger(VentanaMejorJugadorController.class.getName()).log(Level.SEVERE, null, ex);
             MessageFactory.showMessage(rb.getString("errorConexion"), rb.getString("conexionServidor"), rb.getString("mensajeErrorIP"), Alert.AlertType.ERROR);
+        }
+    }
+    public void agregarPanelJugador(Jugador jugador){
+        FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/InterfazGrafica/PanelJugador.fxml"));
+        AnchorPane panel;
+        try {
+            panel = loader.load();
+            panelJugadorController controller = loader.getController();
+            controller.setValues(jugador.getNombreJugador() + ":", (jugador.getPartidasJugadas() - jugador.getPartidasPerdidas()) + " partidas ganadas de: " + jugador.getPartidasJugadas());
+            this.panelJugadores.getChildren().add(panel);
+        } catch (IOException ex) {
+            Logger.getLogger(VentanaMejorJugadorController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     

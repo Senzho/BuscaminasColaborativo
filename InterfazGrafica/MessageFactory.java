@@ -3,6 +3,9 @@ package InterfazGrafica;
 import javafx.scene.control.Alert;
 
 public class MessageFactory {
+    private MessageFactory(){
+        
+    }
     /**
      * Muestra una ventana de mensaje Alert.
      * @param title, el título de la ventana de mensaje.

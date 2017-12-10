@@ -2,6 +2,7 @@ package InterfazGrafica;
 
 import LogicaNegocio.Controladores.VentanaTableroController;
 import LogicaNegocio.Jugador;
+import io.socket.client.Socket;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -15,11 +16,13 @@ public class VentanaTablero extends Application{
     private ResourceBundle resource;
     private Jugador jugador;
     private String direccionIp;
+    private Socket socket;
     
-    public VentanaTablero(ResourceBundle rb, Jugador jugador, String direccionIp){
+    public VentanaTablero(ResourceBundle rb, Jugador jugador, String direccionIp, Socket socket){
         this.jugador = jugador;
         this.resource = rb;
         this.direccionIp = direccionIp;
+        this.socket = socket;
         try {
             this.start(new Stage());
         } catch (Exception ex) {
@@ -33,6 +36,7 @@ public class VentanaTablero extends Application{
         AnchorPane layout = loader.load();
         VentanaTableroController tableroController = loader.getController();
         tableroController.setStage(primaryStage);
+        tableroController.setSocket(this.socket);
         tableroController.setDireccionIp(this.direccionIp);
         tableroController.setJugador(this.jugador);
         tableroController.internacionalizar(resource);

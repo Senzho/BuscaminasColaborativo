@@ -2,7 +2,6 @@ package InterfazGrafica;
 
 import LogicaNegocio.Controladores.VentanaConfiguracionController;
 import LogicaNegocio.Controladores.VentanaTableroController;
-import LogicaNegocio.Jugador;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;

@@ -1,7 +1,7 @@
 package LogicaNegocio;
 
 public class InvalidIpAddressException extends Exception{
-    private String message;
+    private final String message;
     /**
      * 
      * @param message, el mensaje personalizado de la excepción.

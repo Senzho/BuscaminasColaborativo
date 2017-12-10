@@ -8,24 +8,34 @@ public class Solicitud {
     private int filas;
     private int columnas;
     
+    private static final int MINAS_DEFAULT = 15;
+    private static final int FILAS_DEFAULT = 7;
+    private static final int COLUMNAS_DEFAULT = 10;
+    
     private void setCuadricula(){
         switch(this.tipoDificultad){
-            case facil:
-                this.numeroMinas = 15;
-                this.filas = 7;
-                this.columnas = 10;
+            case FACIL:
+                this.establecerValoresDefault();
                 break;
-            case medio:
+            case MEDIO:
                 this.numeroMinas = 30;
                 this.filas = 10;
                 this.columnas = 14;
                 break;
-            case avanzado:
+            case AVANZADO:
                 this.numeroMinas = 45;
                 this.filas = 13;
                 this.columnas = 17;
                 break;
+            default:
+                this.establecerValoresDefault();
+                break;
         }
+    }
+    private void establecerValoresDefault(){
+        this.numeroMinas = Solicitud.MINAS_DEFAULT;
+        this.filas = Solicitud.FILAS_DEFAULT;
+        this.columnas = Solicitud.COLUMNAS_DEFAULT;
     }
     
     public Solicitud(){

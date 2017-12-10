@@ -1,6 +1,7 @@
 package LogicaNegocio.Controladores;
 
 import AccesoDatos.RegistroArchivo;
+import InterfazGrafica.MessageFactory;
 import InterfazGrafica.VentanaEstadistica;
 import InterfazGrafica.VentanaMejorJugador;
 import java.io.File;
@@ -8,6 +9,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
@@ -37,6 +39,7 @@ public class VentanaConfiguracionController implements Initializable {
     
     private static final String NOMBRE_ARCHIVO = "Idioma.txt";
     private static final String NOMBRE_DIRECTORIO = "C:\\Buscaminas";
+    private static final String COLOR_ENTER = "-fx-text-fill: #0066ff";
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -77,63 +80,65 @@ public class VentanaConfiguracionController implements Initializable {
     }
     public void radioEspañol_click(){
         this.rb = ResourceBundle.getBundle("Recursos/Idioma_ESP");
-        this.guardarArchivo(VentanaConfiguracionController.NOMBRE_DIRECTORIO + "\\" + VentanaConfiguracionController.NOMBRE_ARCHIVO, "ESP");
-        this.internacionalizar(rb);
-        this.controlerTablero.internacionalizar(rb);
-        if(this.estadisticaController!=null){
-            this.estadisticaController.internacionalizar(rb);
-        }
-        if(this.mejorJugadorController!=null){
-            this.mejorJugadorController.internacionalizar(rb);
-        }
+        this.validarDirectorio(VentanaConfiguracionController.NOMBRE_DIRECTORIO + "\\" + VentanaConfiguracionController.NOMBRE_ARCHIVO, "ESP");
     }
     public void radioIngles_click(){
         this.rb = ResourceBundle.getBundle("Recursos/Idioma_ING");
-        this.guardarArchivo(VentanaConfiguracionController.NOMBRE_DIRECTORIO + "\\" + VentanaConfiguracionController.NOMBRE_ARCHIVO, "ING");
-        this.internacionalizar(rb);
-        this.controlerTablero.internacionalizar(rb);
-        if(this.estadisticaController!=null){
-            this.estadisticaController.internacionalizar(rb);
-        }
-        if(this.mejorJugadorController!=null){
-            this.mejorJugadorController.internacionalizar(rb);
+        this.validarDirectorio(VentanaConfiguracionController.NOMBRE_DIRECTORIO + "\\" + VentanaConfiguracionController.NOMBRE_ARCHIVO, "ING");
+    }
+    public void validarDirectorio(String ruta, String contenido){
+        File directorio = new File(VentanaConfiguracionController.NOMBRE_DIRECTORIO);
+        if (!directorio.exists()){
+            if(directorio.mkdir()){
+                this.guardarArchivo(ruta, contenido);
+            }else{
+                MessageFactory.showMessage(this.rb.getString("error"), this.rb.getString("archivo"), this.rb.getString("errorDirectorioIdioma"), Alert.AlertType.ERROR);
+            }
+        }else{
+            this.guardarArchivo(ruta, contenido);
         }
     }
     public void guardarArchivo(String ruta, String contenido){
-        File directorio = new File(VentanaConfiguracionController.NOMBRE_DIRECTORIO);
-        if (!directorio.exists()){
-            directorio.mkdir();
-        }
         File archivo = new File(ruta);
-        if (archivo.exists()){
-            archivo.delete();
+        if (RegistroArchivo.guardar(archivo, contenido)){
+            this.internacionalizar(rb);
+            if (this.controlerTablero != null){
+                this.controlerTablero.internacionalizar(rb);
+            }
+            if(this.estadisticaController!=null){
+                this.estadisticaController.internacionalizar(rb);
+            }
+            if(this.mejorJugadorController!=null){
+                this.mejorJugadorController.internacionalizar(rb);
+            }
+        }else{
+            MessageFactory.showMessage(this.rb.getString("error"), this.rb.getString("archivo"), this.rb.getString("errorGuardadoIdioma"), Alert.AlertType.ERROR);
         }
-        RegistroArchivo.guardar(archivo, contenido);
     }
     
     //Eventos
     
     public void labelEstadisticas_MouseEnter(){
-        this.labelEstadisticas.setStyle("-fx-text-fill: #0066ff");
+        this.labelEstadisticas.setStyle(VentanaConfiguracionController.COLOR_ENTER);
     }
     public void labelEstadisticas_MouseDown(){
         this.labelEstadisticas.setStyle("-fx-text-fill: #58ACFA");
     }
     public void labelEstadisticas_MouseUp(){
-        this.labelEstadisticas.setStyle("-fx-text-fill: #0066ff");
+        this.labelEstadisticas.setStyle(VentanaConfiguracionController.COLOR_ENTER);
         new VentanaEstadistica(this, this.rb, this.idJugador, this.direccionIp);
     }
     public void labelEstadisticas_MouseLeave(){
         this.labelEstadisticas.setStyle("-fx-text-fill: #808080");
     }
     public void labelMejores_MouseEnter(){
-        this.labelMejores.setStyle("-fx-text-fill: #0066ff");
+        this.labelMejores.setStyle(VentanaConfiguracionController.COLOR_ENTER);
     }
     public void labelMejores_MouseDown(){
         this.labelMejores.setStyle("-fx-text-fill: #58ACFA");
     }
     public void labelMejores_MouseUp(){
-        this.labelMejores.setStyle("-fx-text-fill: #0066ff");
+        this.labelMejores.setStyle(VentanaConfiguracionController.COLOR_ENTER);
         new VentanaMejorJugador(this, this.rb, this.direccionIp);
     }
     public void labelMejores_MouseLeave(){

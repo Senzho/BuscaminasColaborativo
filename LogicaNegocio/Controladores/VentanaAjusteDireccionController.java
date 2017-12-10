@@ -46,17 +46,17 @@ public class VentanaAjusteDireccionController implements Initializable {
     @FXML
     private Label lblMensajeInstruccion;
     
-    private final String NOMBRE_ARCHIVO = "direccionIP.txt";
-    private final String NOMBRE_DIRECTORIO = "C:\\Buscaminas";
+    private static final String NOMBRE_ARCHIVO = "direccionIP.txt";
+    private static final String NOMBRE_DIRECTORIO = "C:\\Buscaminas";
     private Stage stage;
     private ResourceBundle resource;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        
     }    
     public void guardarArchivo(String ruta, String contenido){
-        File directorio = new File(this.NOMBRE_DIRECTORIO);
+        File directorio = new File(VentanaAjusteDireccionController.NOMBRE_DIRECTORIO);
         if (!directorio.exists()){
             directorio.mkdir();
         }
@@ -83,7 +83,7 @@ public class VentanaAjusteDireccionController implements Initializable {
     public void btnGuardar_onClicked(){
         try {
             IpAddress direccion = new IpAddress(this.txtDireccionIP.getText());
-            this.guardarArchivo(NOMBRE_DIRECTORIO+"\\"+this.NOMBRE_ARCHIVO, direccion.getAddress());
+            this.guardarArchivo(VentanaAjusteDireccionController.NOMBRE_DIRECTORIO+"\\"+VentanaAjusteDireccionController.NOMBRE_ARCHIVO, direccion.getAddress());
         } catch (InvalidIpAddressException ex) {
             Logger.getLogger(VentanaAjusteDireccionController.class.getName()).log(Level.SEVERE, null, ex);
             MessageFactory.showMessage(resource.getString("error"),resource.getString("direccion"),resource.getString("ipNoValida"), Alert.AlertType.INFORMATION);

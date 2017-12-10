@@ -8,7 +8,6 @@ import java.util.TimerTask;
 public class TareaTimer extends TimerTask{
     private int minutos = 0;
     private int segundos = 0;
-    private String tiempo = "";
     private TimerListener listener;
     /**
      * metodo que establece la asignacion de un timer listener  o interfaz con metodos para
@@ -23,6 +22,7 @@ public class TareaTimer extends TimerTask{
      */
     @Override
     public void run() {
+        String tiempo = "";
         if(segundos%60 == 0 && segundos!= 0){
             minutos ++;
             segundos = 0;
@@ -43,7 +43,6 @@ public class TareaTimer extends TimerTask{
      * @return fecha, valor String que muestra un tiempo progresivo actualizado en el timer 
      */
     public String validarDatos(int minutos,int segundos){
-        String fecha ="";
         String segundo = "";
         String minuto = "";
         if(segundos < 10){
@@ -58,6 +57,6 @@ public class TareaTimer extends TimerTask{
         if(segundos >= 10){
             segundo = Integer.toString(segundos);
         }
-        return fecha = minuto+":"+segundo;
+        return minuto+":"+segundo;
     }
 }

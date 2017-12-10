@@ -43,7 +43,6 @@ public class RegistroArchivo {
         try{
             lector = new FileReader(archivo);
             contenidoTotal = new BufferedReader(lector);
-            String linea = "";
             idioma = contenidoTotal.readLine();
         }catch(IOException excepcion){
             

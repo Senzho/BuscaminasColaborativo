@@ -30,7 +30,8 @@ public class TimerBuscaminas {
     public void stop(){
         if (this.timer != null){
             this.timer.cancel();
-        }if (this.tareaTimer != null){
+        }
+        if (this.tareaTimer != null){
             this.tareaTimer.cancel();
         }
     }

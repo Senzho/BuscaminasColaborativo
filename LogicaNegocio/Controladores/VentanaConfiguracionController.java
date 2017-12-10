@@ -3,7 +3,6 @@ package LogicaNegocio.Controladores;
 import AccesoDatos.RegistroArchivo;
 import InterfazGrafica.VentanaEstadistica;
 import InterfazGrafica.VentanaMejorJugador;
-import LogicaNegocio.Jugador;
 import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -36,8 +35,8 @@ public class VentanaConfiguracionController implements Initializable {
     private int idJugador;
     private String direccionIp;
     
-    private final String NOMBRE_ARCHIVO = "Idioma.txt";
-    private final String NOMBRE_DIRECTORIO = "C:\\Buscaminas";
+    private static final String NOMBRE_ARCHIVO = "Idioma.txt";
+    private static final String NOMBRE_DIRECTORIO = "C:\\Buscaminas";
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -78,7 +77,7 @@ public class VentanaConfiguracionController implements Initializable {
     }
     public void radioEspañol_click(){
         this.rb = ResourceBundle.getBundle("Recursos/Idioma_ESP");
-        this.guardarArchivo(this.NOMBRE_DIRECTORIO + "\\" + this.NOMBRE_ARCHIVO, "ESP");
+        this.guardarArchivo(VentanaConfiguracionController.NOMBRE_DIRECTORIO + "\\" + VentanaConfiguracionController.NOMBRE_ARCHIVO, "ESP");
         this.internacionalizar(rb);
         this.controlerTablero.internacionalizar(rb);
         if(this.estadisticaController!=null){
@@ -90,7 +89,7 @@ public class VentanaConfiguracionController implements Initializable {
     }
     public void radioIngles_click(){
         this.rb = ResourceBundle.getBundle("Recursos/Idioma_ING");
-        this.guardarArchivo(this.NOMBRE_DIRECTORIO + "\\" + this.NOMBRE_ARCHIVO, "ING");
+        this.guardarArchivo(VentanaConfiguracionController.NOMBRE_DIRECTORIO + "\\" + VentanaConfiguracionController.NOMBRE_ARCHIVO, "ING");
         this.internacionalizar(rb);
         this.controlerTablero.internacionalizar(rb);
         if(this.estadisticaController!=null){
@@ -101,7 +100,7 @@ public class VentanaConfiguracionController implements Initializable {
         }
     }
     public void guardarArchivo(String ruta, String contenido){
-        File directorio = new File(this.NOMBRE_DIRECTORIO);
+        File directorio = new File(VentanaConfiguracionController.NOMBRE_DIRECTORIO);
         if (!directorio.exists()){
             directorio.mkdir();
         }

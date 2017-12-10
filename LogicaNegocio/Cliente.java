@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class Cliente {
     private Registry registro;
     
-    private final String ID_SERVIDOR = "ServidorBuscaminasOnline";
+    private static final String ID_SERVIDOR = "ServidorBuscaminasOnline";
     /**
      * 
      * @param direccionServidor, la dirección IP del servidor.
@@ -28,24 +28,23 @@ public class Cliente {
      */
     public Jugador validarSesión(String nombreJugador) throws RemoteException, NotBoundException{
         Jugador jugador = null;
-        ServidorDatos stub = (ServidorDatos) this.registro.lookup(this.ID_SERVIDOR);
+        ServidorDatos stub = (ServidorDatos) this.registro.lookup(Cliente.ID_SERVIDOR);
         jugador = stub.validarSesion(nombreJugador);
         return jugador;
-    }/**
-     * 
-     * @param nombre, el nombre del jugador que pretend registrarse.
-     * @return registro, regresa un Enum RegistroJugador:
-    *           JUGADOR_APROBADO: el jugador fue aprobado.
-    *           JUGADOR_EXISTENTE: el jugador ya está registrado.
-    *           ERROR_REGISTRO: ocurrió un error al registrar el jugador.
+    }
+    /**
+     *
+     * @param nombre , el nombre del jugador que pretend registrarse.
+     * @return registroJugador, regresa un Enum RegistroJugador:
+           JUGADOR_APROBADO: el jugador fue aprobado.
+           JUGADOR_EXISTENTE: el jugador ya está registrado.
+           ERROR_REGISTRO: ocurrió un error al registrar el jugador.
      * @throws RemoteException
-     * @throws NotBoundException 
+     * @throws NotBoundException
      */
     public RegistroJugador registrarJugador(String nombre) throws RemoteException, NotBoundException{
-        RegistroJugador registro = RegistroJugador.JUGADOR_APROBADO;
-        ServidorDatos stub = (ServidorDatos) this.registro.lookup(this.ID_SERVIDOR);
-        registro = stub.registrarJugador(nombre);
-        return registro;
+        ServidorDatos stub = (ServidorDatos) this.registro.lookup(Cliente.ID_SERVIDOR);
+        return  stub.registrarJugador(nombre);
     }
     /**
      * 
@@ -58,7 +57,7 @@ public class Cliente {
      */
     public boolean registrarPartida(Partida partida)throws RemoteException, NotBoundException{
         boolean registrada = false;
-        ServidorDatos stub = (ServidorDatos) this.registro.lookup(this.ID_SERVIDOR);
+        ServidorDatos stub = (ServidorDatos) this.registro.lookup(Cliente.ID_SERVIDOR);
         registrada = stub.registrarPartida(partida);
         return registrada;
     }
@@ -72,7 +71,7 @@ public class Cliente {
      */
     public DatosJugador getEstadisticas(int idJugador) throws RemoteException, NotBoundException{
         DatosJugador datosJugador = null;
-        ServidorDatos stub = (ServidorDatos) this.registro.lookup(this.ID_SERVIDOR);
+        ServidorDatos stub = (ServidorDatos) this.registro.lookup(Cliente.ID_SERVIDOR);
         datosJugador = stub.getEstadisticas(idJugador);
         return datosJugador;
     }
@@ -83,10 +82,8 @@ public class Cliente {
      * @throws NotBoundException 
      */
     public ArrayList<Jugador> getListaJugadores() throws RemoteException, NotBoundException{
-        ArrayList<Jugador> jugadores = new ArrayList();
-        ServidorDatos stub = (ServidorDatos) this.registro.lookup(this.ID_SERVIDOR);
-        jugadores = stub.getListaJugadores();
-        return jugadores;
+        ServidorDatos stub = (ServidorDatos) this.registro.lookup(Cliente.ID_SERVIDOR);
+        return stub.getListaJugadores();
     }
     /**
      * 
@@ -99,7 +96,7 @@ public class Cliente {
      */
     public boolean editarJugador(Jugador jugador) throws RemoteException, NotBoundException{
         boolean editado = true;
-        ServidorDatos stub = (ServidorDatos) this.registro.lookup(this.ID_SERVIDOR);
+        ServidorDatos stub = (ServidorDatos) this.registro.lookup(Cliente.ID_SERVIDOR);
         editado = stub.editarJugador(jugador);
         return editado;
     }

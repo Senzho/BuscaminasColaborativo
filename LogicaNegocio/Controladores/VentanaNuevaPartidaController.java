@@ -139,11 +139,11 @@ public class VentanaNuevaPartidaController implements Initializable {
             idCompañero = this.getId(itemSeleccionado.toString());
             Solicitud solicitud = null;
             if (this.radioFacil.isSelected()){
-                solicitud = new Solicitud(idSolicitante, idCompañero, TipoDificultad.facil);
+                solicitud = new Solicitud(idSolicitante, idCompañero, TipoDificultad.FACIL);
             }else if(this.radioMedio.isSelected()){
-                solicitud = new Solicitud(idSolicitante, idCompañero, TipoDificultad.medio);
+                solicitud = new Solicitud(idSolicitante, idCompañero, TipoDificultad.MEDIO);
             }else if(this.radioAvanzado.isSelected()){
-                solicitud = new Solicitud(idSolicitante, idCompañero, TipoDificultad.avanzado);
+                solicitud = new Solicitud(idSolicitante, idCompañero, TipoDificultad.AVANZADO);
             }
             if (solicitud != null){
                 this.labelRespuesta.setText(recursos.getString("labelRespuestaEspera"));

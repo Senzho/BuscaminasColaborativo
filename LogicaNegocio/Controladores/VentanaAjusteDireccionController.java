@@ -49,6 +49,7 @@ public class VentanaAjusteDireccionController implements Initializable {
     private static final String NOMBRE_ARCHIVO = "direccionIP.txt";
     private static final String NOMBRE_DIRECTORIO = "C:\\Buscaminas";
     private static final String SEPARADOR = "\\";
+    private static final String ERROR = "error";
     private Stage stage;
     private ResourceBundle resource;
     
@@ -62,7 +63,7 @@ public class VentanaAjusteDireccionController implements Initializable {
             if (directorio.mkdir()){
                 this.guardarArchivo(ruta, contenido);
             }else{
-                MessageFactory.showMessage(this.resource.getString("error"), this.resource.getString("archivo"), this.resource.getString("errorDirectorioIp"), Alert.AlertType.ERROR);
+                MessageFactory.showMessage(this.resource.getString(ERROR), this.resource.getString("archivo"), this.resource.getString("errorDirectorioIp"), Alert.AlertType.ERROR);
             }
         }else{
             this.guardarArchivo(ruta, contenido);
@@ -74,7 +75,7 @@ public class VentanaAjusteDireccionController implements Initializable {
             this.stage.close();
             new VentanaInicioSesion(this.resource, this.txtDireccionIP.getText());
         }else{
-            MessageFactory.showMessage(this.resource.getString("error"), this.resource.getString("archivo"), this.resource.getString("errorGuardadoIp"), Alert.AlertType.ERROR);
+            MessageFactory.showMessage(this.resource.getString(ERROR), this.resource.getString("archivo"), this.resource.getString("errorGuardadoIp"), Alert.AlertType.ERROR);
         }
     }
     public void setStage(Stage stage){
@@ -97,7 +98,7 @@ public class VentanaAjusteDireccionController implements Initializable {
             this.validarDirectorio(VentanaAjusteDireccionController.NOMBRE_DIRECTORIO+ VentanaAjusteDireccionController.SEPARADOR +VentanaAjusteDireccionController.NOMBRE_ARCHIVO, direccion.getAddress());
         } catch (InvalidIpAddressException ex) {
             Logger.getLogger(VentanaAjusteDireccionController.class.getName()).log(Level.SEVERE, null, ex);
-            MessageFactory.showMessage(resource.getString("error"),resource.getString("direccion"),resource.getString("ipNoValida"), Alert.AlertType.INFORMATION);
+            MessageFactory.showMessage(resource.getString(ERROR),resource.getString("direccion"),resource.getString("ipNoValida"), Alert.AlertType.INFORMATION);
         }
     }
     public void btnCancelar_onClicked(){

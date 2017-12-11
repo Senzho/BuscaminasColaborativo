@@ -53,10 +53,8 @@ public class ServidorBuscaminas implements ServidorDatos {
     @Override
     public DatosJugador getEstadisticas(int idJugador) throws RemoteException {
         EstadisticaDAOSql estadisticaDao = new EstadisticaDAOSql();
-        
-        DatosJugador datos = new DatosJugador(estadisticaDao.getJugador(idJugador),estadisticaDao.getPatidasGanadas(idJugador),
+        return new DatosJugador(estadisticaDao.getJugador(idJugador),estadisticaDao.getPatidasGanadas(idJugador),
         estadisticaDao.getTiempoPromedio(idJugador));
-        return datos;
     }
 
     @Override

@@ -12,10 +12,8 @@ import LogicaNegocio.Reproductor;
 import LogicaNegocio.Solicitud;
 import LogicaNegocio.TimerBuscaminas;
 import LogicaNegocio.TimerListener;
-import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -49,8 +47,6 @@ public class VentanaTableroController implements Initializable, CasillaListener,
     private ImageView botonConfiguracion;
     @FXML
     private ImageView botonPlayPause;
-    @FXML
-    private ImageView botonReply;
     @FXML
     private ImageView botonTerminar;
     @FXML
@@ -134,12 +130,7 @@ public class VentanaTableroController implements Initializable, CasillaListener,
     }
     public void setDireccionIp(String direccionIp){
         this.direccionIp = direccionIp;
-        //try {
-            //this.socket = IO.socket("http://" + this.direccionIp + ":7000");
-            this.conectar();
-        /*} catch (URISyntaxException ex) {
-            Logger.getLogger(VentanaTableroController.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
+        this.conectar();
         try {
             this.cliente = new Cliente(this.direccionIp);
         } catch (RemoteException ex) {
@@ -557,18 +548,6 @@ public class VentanaTableroController implements Initializable, CasillaListener,
     }
     public void botonTerminar_MouseLeave(){
         this.botonTerminar.setImage(this.X);
-    }
-    public void botonReply_MouseEnter(){
-        this.botonReply.setImage(this.REPLY_HOVER);
-    }
-    public void botonReply_MouseDown(){
-        this.botonReply.setImage(this.REPLY_PRESSED);
-    }
-    public void botonReply_MouseUp(){
-        this.botonReply.setImage(this.REPLY_HOVER);
-    }
-    public void botonReply_MouseLeave(){
-        this.botonReply.setImage(this.REPLY);
     }
     public void botonCOnfiguracion_MouseEnter(){
         this.botonConfiguracion.setImage(this.GEAR_HOVER);

@@ -72,11 +72,26 @@ public class VentanaInicioSesionController implements Initializable {
             MessageFactory.showMessage(rb.getString("errorConexion"),rb.getString("conexionServidor"), rb.getString("mensajeErrorIP"), Alert.AlertType.ERROR);
         }
         try {
-            this.socket = IO.socket("http://"+direccionIp+":7000");
+            this.socket = IO.socket("http://"+direccionIp+":"+this.getPuerto());
             this.conectar();
         } catch (URISyntaxException ex) {
             Logger.getLogger(VentanaInicioSesionController.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    public int getPuerto(){
+        ResourceBundle bundle = ResourceBundle.getBundle("buscaminascolaborativo.Conexion");
+        int puertoDefault = 7000;
+        int puerto;
+        try{
+            puerto = Integer.valueOf(bundle.getString("puerto"));
+            if (puerto < 1){
+                puerto = puertoDefault;
+            }
+        }catch(NumberFormatException exception){
+            Logger.getLogger(VentanaInicioSesionController.class.getName()).log(Level.SEVERE, null, exception);
+            puerto = puertoDefault;
+        }
+        return puerto;
     }
     public void conectar(){
         this.socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {

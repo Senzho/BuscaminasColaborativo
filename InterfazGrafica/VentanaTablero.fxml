@@ -23,7 +23,7 @@
         <Font size="30.0" fx:id="x1" />
       </font>
     </Label>
-    <ImageView fx:id="botonPlayPause" fitHeight="21.0" fitWidth="21.0" layoutX="137.0" onMouseEntered="#botonPlayPause_MouseEnter" onMouseExited="#botonPlayPause_MouseLeave" onMousePressed="#botonPlayPause_MouseDown" onMouseReleased="#botonPlayPause_MouseUp" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="25.0">
+    <ImageView fx:id="botonPlayPause" fitHeight="21.0" fitWidth="21.0" layoutX="112.0" onMouseEntered="#botonPlayPause_MouseEnter" onMouseExited="#botonPlayPause_MouseLeave" onMousePressed="#botonPlayPause_MouseDown" onMouseReleased="#botonPlayPause_MouseUp" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="25.0">
       <image>
         <Image url="@../RecursosGraficos/triangle-right.png" />
       </image>
@@ -31,11 +31,6 @@
     <ImageView fx:id="botonTerminar" fitHeight="21.0" fitWidth="21.0" layoutX="163.0" onMouseEntered="#botonTerminar_MouseEnter" onMouseExited="#botonTerminar_MouseLeave" onMousePressed="#botonTerminar_MouseDown" onMouseReleased="#botonTerminar_MouseUp" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="25.0">
       <image>
         <Image url="@../RecursosGraficos/x.png" />
-      </image>
-    </ImageView>
-    <ImageView id="botonReiniciar" fx:id="botonReply" fitHeight="21.0" fitWidth="21.0" layoutX="112.0" onMouseEntered="#botonReply_MouseEnter" onMouseExited="#botonReply_MouseLeave" onMousePressed="#botonReply_MouseDown" onMouseReleased="#botonReply_MouseUp" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="25.0">
-      <image>
-        <Image url="@../RecursosGraficos/reply.png" />
       </image>
     </ImageView>
     <Label fx:id="labelTextoMinas" font="$x1" text="Minas:" textFill="BLACK" AnchorPane.bottomAnchor="33.0" AnchorPane.rightAnchor="136.0" />
